@@ -28,6 +28,14 @@ spec:
           ui:options:
             catalogFilter:
               kind: Group
+        system:
+          title: System
+          type: string
+          description: The system this service belongs to
+          ui:field: SystemPicker
+          ui:options:
+            catalogFilter:
+              kind: System
 
   steps:
     - id: fetch-base
