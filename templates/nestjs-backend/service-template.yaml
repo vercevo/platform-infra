@@ -44,12 +44,13 @@ spec:
       name: Fetch NestJS boilerplate
       action: fetch:template
       input:
-        url: ./skeleton/app
+        url: ./content/app
         targetPath: .
         values:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
+          system: ${{ parameters.system }}
 
     - id: publish
       name: Publish to GitHub
