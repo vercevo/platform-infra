@@ -16,7 +16,7 @@ spec:
       - CreateNamespace=true
   source:
     repoURL: https://github.com/vercevo/platform-infra
-    targetRevision: main
+    targetRevision: HEAD
     path: charts/namespace-bootstrap-chart
     helm:
       values: |
