@@ -9,35 +9,36 @@ spec:
   type: service
 
   parameters:
-    - title: Fill in some steps
-      required:
-        - name
-        - owner
-        - system
-      properties:
-        name:
-          title: Name
-          type: string
-          description: Unique name of the component
-          ui:autofocus: true
-          ui:options:
-            rows: 5
-        owner:
-          title: Owner
-          type: string
-          description: Owner of the component
-          ui:field: OwnerPicker
-          ui:options:
-            catalogFilter:
-              kind: Group
-        system:
-          title: System
-          type: string
-          description: The system this service belongs to
-          ui:field: EntityPicker
-          ui:options:
-            catalogFilter:
-              kind: System
+    title: Fill in some steps
+    type: object
+    required:
+      - name
+      - owner
+      - system
+    properties:
+      name:
+        title: Name
+        type: string
+        description: Unique name of the component
+        ui:autofocus: true
+        ui:options:
+          rows: 5
+      owner:
+        title: Owner
+        type: string
+        description: Owner of the component
+        ui:field: OwnerPicker
+        ui:options:
+          catalogFilter:
+            kind: Group
+      system:
+        title: System
+        type: string
+        description: The system this service belongs to
+        ui:field: EntityPicker
+        ui:options:
+          catalogFilter:
+            kind: System
 
   steps:
     - id: fetch-base
