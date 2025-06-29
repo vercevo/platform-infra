@@ -1,0 +1,6 @@
+apiVersion: v2
+name: system-bootstrap
+description: Helm chart to bootstrap a namespace for a system with policies and quotas
+type: application
+version: 0.1.0
+appVersion: "1.0"

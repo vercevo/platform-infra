@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ${{ parameters.name }}
+  name: ${{ values.name }}
   labels:
-    backstage.io/kubernetes-id: ${{ parameters.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
 spec:
   selector:
-    app: ${{ parameters.name }}
+    app: ${{ values.name }}
   ports:
     - port: 80
       targetPort: 3000

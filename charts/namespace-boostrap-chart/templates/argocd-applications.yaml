@@ -1,0 +1,36 @@
+{{- range .Values.apps }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $.Values.namespace }}-{{ default (replace (base .repoUrl) ".git" "") "" }}-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: {{ .repoUrl }}
+    targetRevision: {{ .revision }}
+    path: {{ .path }}
+    {{- if eq .type "helm" }}
+    helm:
+      {{- if .helm.valuesFiles }}
+      valueFiles:
+        {{- range .helm.valuesFiles }}
+        - {{ . }}
+        {{- end }}
+      {{- end }}
+      {{- if .helm.parameters }}
+      parameters:
+        {{- range .helm.parameters }}
+        - name: {{ .name }}
+          value: {{ .value }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ $.Values.namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

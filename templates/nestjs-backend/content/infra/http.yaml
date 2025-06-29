@@ -1,16 +1,16 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: ${{ parameters.name }}
+  name: ${{ values.name }}
   labels:
-    backstage.io/kubernetes-id: ${{ parameters.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
 spec:
   parentRefs:
     - name: gateway # Must match the Gateway name
       namespace: istio-system # Must match the Gateway namespace
   hostnames:
-    - ${{ parameters.name }}.bergtobias.com # Must be consistent with your Gateway’s hostname(s) if you set any
+    - ${{ values.name }}.bergtobias.com # Must be consistent with your Gateway’s hostname(s) if you set any
   rules:
     - backendRefs:
-        - name: ${{ parameters.name }} # The Service receiving traffic
+        - name: ${{ values.name }} # The Service receiving traffic
           port: 80

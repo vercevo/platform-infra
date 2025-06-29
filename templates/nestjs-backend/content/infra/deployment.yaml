@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${{ parameters.name }}
+  name: ${{ values.name }}
   labels:
-    backstage.io/kubernetes-id: ${{ parameters.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ${{ parameters.name }}
+      app: ${{ values.name }}
   template:
     metadata:
       annotations:
@@ -16,12 +16,12 @@ spec:
         prometheus.io/path: "/metrics"
         prometheus.io/port: "3000" # Change to 3000 if metrics are exposed on port 3000
       labels:
-        app: ${{ parameters.name }}
-        backstage.io/kubernetes-id: ${{ parameters.name }}
+        app: ${{ values.name }}
+        backstage.io/kubernetes-id: ${{ values.name }}
     spec:
       containers:
-        - name: ${{ parameters.name }}
-          image: ghcr.io/bergtobias/${{ parameters.name }}:latest
+        - name: ${{ values.name }}
+          image: ghcr.io/bergtobias/${{ values.name }}:latest
           ports:
             - containerPort: 3000 # No change here if the app serves on port 3000
           resources:
@@ -33,4 +33,4 @@ spec:
               memory: 256Mi
           envFrom:
             - secretRef:
-                name: ${{ parameters.name }}
+                name: ${{ values.name }}
