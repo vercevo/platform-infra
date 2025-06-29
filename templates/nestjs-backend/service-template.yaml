@@ -32,7 +32,7 @@ spec:
           title: System
           type: string
           description: The system this service belongs to
-          ui:field: SystemPicker
+          ui:field: EntityPicker
           ui:options:
             catalogFilter:
               kind: System
