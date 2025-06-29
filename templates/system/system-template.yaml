@@ -22,28 +22,24 @@ spec:
           type: string
           title: Owner (Backstage user or group)
   steps:
-    - id: create-files
+    - id: generate-manifests
       name: Generate system and namespace manifests
       action: fetch:template
       input:
         url: ./templates/system
-        targetPath: .
+        targetPath: manifests
         values:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
-    - id: publish
+
+    - id: create-pr
       name: Create PR in platform-infra repo
-      action: publish:github
+      action: github:publish:pull-request
       input:
         repoUrl: github.com?owner=vercevo&repo=platform-infra
-        branch: main
+        branchName: backstage/add-system-${{ parameters.name }}
+        defaultBranch: main
         title: Add new system and namespace for ${{ parameters.name }}
         body: This PR adds namespace and system manifests for ${{ parameters.name }}
-        changes:
-          - type: append
-            path: namespaces/{{ parameters.name }}.yaml
-            content: ${{ steps.generateNamespace.output.manifest }}
-          - type: append
-            path: systems/{{ parameters.name }}.yaml
-            content: ${{ steps.generateSystem.output.manifest }}
+        dir: manifests
