@@ -12,6 +12,8 @@ spec:
     - title: Fill in some steps
       required:
         - name
+        - owner
+        - system
       properties:
         name:
           title: Name
@@ -63,11 +65,3 @@ spec:
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
-
-    - id: create-pr
-      name: Create PR to GitOps repo
-      action: publish:github:pull-request
-      input:
-        repoUrl: github.com?repo=homelab-infra&owner=vercevo
-        branchName: add-${{ parameters.name }}-manifests
-        title: Add
