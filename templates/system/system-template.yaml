@@ -26,8 +26,8 @@ spec:
       name: Generate Namespace Manifest
       action: fetch:template
       input:
-        url: ./templates/namespace
-        targetPath: namespace
+        url: ./templates/namespaces
+        targetPath: namespaces
         values:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
@@ -37,8 +37,8 @@ spec:
       name: Generate System Manifest
       action: fetch:template
       input:
-        url: ./templates/system
-        targetPath: system
+        url: ./templates/systems
+        targetPath: systems
         values:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
@@ -61,7 +61,7 @@ spec:
         changes:
           - type: add
             path: namespaces/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-namespace.output.files['namespace/namespace.yaml'] }}
+            content: ${{ steps.generate-namespace.output.files['namespaces/namespace.yaml'] }}
           - type: add
             path: systems/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-system.output.files['system/system.yaml'] }}
+            content: ${{ steps.generate-system.output.files['systems/system-template.yaml'] }}
