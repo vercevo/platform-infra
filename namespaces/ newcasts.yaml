@@ -8,6 +8,12 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: newcasts
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
   source:
     repoURL: https://github.com/vercevo/platform-infra
     targetRevision: main
@@ -15,9 +21,8 @@ spec:
     helm:
       values: |
         namespace: newcasts
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+        apps:
+          - repoURL: https://github.com/bergtobias/homelab-infra
+            revision: main
+            path: apps/eggman
+            
