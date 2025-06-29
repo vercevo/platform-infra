@@ -51,11 +51,3 @@ spec:
           It includes the following changes:
           - A Kubernetes Namespace manifest for ${{ parameters.name }}
           - A Backstage System entity manifest for ${{ parameters.name }}
-        update: true
-        changes:
-          - type: add
-            path: namespaces/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-files.output.files['namespace/namespace.yaml'] }}
-          - type: add
-            path: systems/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-files.output.files['systems/system.yaml'] }}
