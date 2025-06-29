@@ -51,3 +51,16 @@ spec:
           It includes the following changes:
           - A Kubernetes Namespace manifest for ${{ parameters.name }}
           - A Backstage System entity manifest for ${{ parameters.name }}
+    - id: register-system
+      name: Register Backstage System
+      action: catalog:register
+      input:
+        catalogInfo:
+          apiVersion: backstage.io/v1alpha1
+          kind: System
+          metadata:
+            name: ${{ parameters.name }}
+            description: ${{ parameters.description }}
+          spec:
+            owner: ${{ parameters.owner }}
+            lifecycle: production
