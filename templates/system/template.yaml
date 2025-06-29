@@ -37,6 +37,12 @@ spec:
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
 
+    - id: debug-namespace
+      name: Debug Namespace Output Files
+      action: log:info
+      input:
+        message: ${{ steps.generate-namespace.output.files }}
+
     - id: generate-system
       name: Generate System Manifest
       action: fetch:template
@@ -47,6 +53,12 @@ spec:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
+
+    - id: debug-system
+      name: Debug System Output Files
+      action: log:info
+      input:
+        message: ${{ steps.generate-system.output.files }}
 
     - id: create-pr
       name: Create PR in platform-infra repo
