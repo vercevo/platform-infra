@@ -1,11 +1,11 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: ${{ parameters.name }}
-  description: ${{ parameters.description }}
-  owner: ${{ parameters.owner }}
+  name: { { parameters.name } }
+  description: { { parameters.description } }
+  owner: { { parameters.owner } }
 spec:
   type: service
   lifecycle: experimental
-  owner: ${{ parameters.owner }}
-  system: ${{ parameters.system }}
+  owner: { { parameters.owner } }
+  system: { { parameters.system } }
