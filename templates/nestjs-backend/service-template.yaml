@@ -67,7 +67,7 @@ spec:
         repoUrl: github.com?owner=vercevo&repo=${{ parameters.name }}
         defaultBranch: main
         description: ${{ parameters.description }}
-        commitMessage: Add NestJS service ${{ parameters.name }} [skip ci]
+        gitCommitMessage: Add NestJS service ${{ parameters.name }} [skip ci]
 
     - id: register
       name: Register in Backstage
