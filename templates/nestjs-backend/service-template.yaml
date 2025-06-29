@@ -9,31 +9,25 @@ spec:
   type: service
 
   parameters:
-    - title: Service Details
-      required: [name, owner]
+    - title: Fill in some steps
+      required:
+        - name
       properties:
         name:
+          title: Name
           type: string
-          title: Name of the service
-
+          description: Unique name of the component
+          ui:autofocus: true
+          ui:options:
+            rows: 5
         owner:
+          title: Owner
           type: string
-          title: Owning Team
-          description: Select the team that will own this service
-
-        description:
-          type: string
-          title: Description
-
-  uiSchema:
-    owner:
-      "ui:field": EntityPicker
-      "ui:options":
-        catalogFilter:
-          - kind: Group
-            spec.type: team
-        allowArbitraryValues: false
-        defaultNamespace: default
+          description: Owner of the component
+          ui:field: OwnerPicker
+          ui:options:
+            catalogFilter:
+              kind: Group
 
   steps:
     - id: fetch-base
