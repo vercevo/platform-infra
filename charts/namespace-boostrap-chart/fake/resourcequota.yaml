@@ -9,6 +9,6 @@ spec:
     cpu: {{ .Values.resourceQuota.limits.cpu }}
     memory: {{ .Values.resourceQuota.limits.memory }}
     pods: {{ .Values.resourceQuota.limits.pods }}
-    requests.cpu: {{ .Values.resourceQuota.limits.requests.cpu }}
-    requests.memory: {{ .Values.resourceQuota.limits.requests.memory }}
+    requests.cpu: {{ index .Values.resourceQuota.limits "requests.cpu" }}
+    requests.memory: {{ index .Values.resourceQuota.limits "requests.memory" }}
 {{- end }}
