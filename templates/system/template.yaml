@@ -56,3 +56,4 @@ spec:
       action: catalog:register
       input:
         catalogInfoUrl: https://github.com/vercevo/platform-infra/blob/main/systems/${{ parameters.name }}.yaml
+        optional: true
