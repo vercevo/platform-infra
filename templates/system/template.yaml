@@ -30,7 +30,7 @@ spec:
       name: Generate Namespace Manifest
       action: fetch:template
       input:
-        url: ./templates/system
+        url: .
         targetPath: namespaces
         values:
           name: ${{ parameters.name }}
@@ -47,7 +47,7 @@ spec:
       name: Generate System Manifest
       action: fetch:template
       input:
-        url: ./templates/system
+        url: .
         targetPath: systems
         values:
           name: ${{ parameters.name }}
