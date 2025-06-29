@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: newcast
+  description: system for newcast group
+  annotations:
+    backstage.io/managed-by-location: https://github.com/vercevo/platform-infra/blob/main/systems/newcast.yaml
+spec:
+  owner: newcast
+  lifecycle: production
