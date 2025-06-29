@@ -30,37 +30,13 @@ spec:
       name: Generate Namespace Manifest
       action: fetch:template
       input:
-        url: .
-        targetPath: namespaces
+        url: ./templates/system/content
         values:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
           owner: ${{ parameters.owner }}
 
-    - id: debug-namespace
-      name: Debug Namespace Output Files
-      action: log:info
-      input:
-        message: ${{ steps.generate-namespace.output.files }}
-
-    - id: generate-system
-      name: Generate System Manifest
-      action: fetch:template
-      input:
-        url: .
-        targetPath: systems
-        values:
-          name: ${{ parameters.name }}
-          description: ${{ parameters.description }}
-          owner: ${{ parameters.owner }}
-
-    - id: debug-system
-      name: Debug System Output Files
-      action: log:info
-      input:
-        message: ${{ steps.generate-system.output.files }}
-
-    - id: create-pr
+{{- /*     - id: create-pr
       name: Create PR in platform-infra repo
       action: publish:github:pull-request
       input:
@@ -80,4 +56,4 @@ spec:
             content: ${{ steps.generate-namespace.output.files['namespace.yaml'] }}
           - type: add
             path: systems/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-system.output.files['system.yaml'] }}
+            content: ${{ steps.generate-system.output.files['system.yaml'] }} */ }}
