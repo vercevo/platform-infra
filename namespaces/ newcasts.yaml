@@ -21,9 +21,5 @@ spec:
     helm:
       values: |
         namespace: newcasts
-        apps:
-          - repoURL: https://github.com/bergtobias/homelab-infra
-            revision: main
-            path: apps/eggman
-            type: kustomize
+
             
