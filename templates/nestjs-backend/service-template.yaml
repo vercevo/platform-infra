@@ -15,12 +15,19 @@ spec:
       - name
       - owner
       - system
+      - description
     properties:
       name:
         title: Name
         type: string
         description: Unique name of the component
         ui:autofocus: true
+        ui:options:
+          rows: 5
+      description:
+        title: Description
+        type: string
+        description: A short description of the component
         ui:options:
           rows: 5
       owner:
