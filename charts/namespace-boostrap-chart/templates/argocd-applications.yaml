@@ -1,13 +1,14 @@
 {{- range .Values.apps }}
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ $.Values.namespace }}-{{ default (replace (base .repoUrl) ".git" "") "" }}-app
+  name: {{ $.Values.namespace }}-{{ default (replace (base .repoURL) ".git" "") "" }}-app
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: {{ .repoUrl }}
+    repoURL: {{ .repoURL }}
     targetRevision: {{ .revision }}
     path: {{ .path }}
     {{- if eq .type "helm" }}
