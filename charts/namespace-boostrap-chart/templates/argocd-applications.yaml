@@ -11,22 +11,6 @@ spec:
     repoURL: {{ .repoURL }}
     targetRevision: {{ .revision }}
     path: {{ .path }}
-    {{- if eq .type "helm" }}
-    helm:
-      {{- if .helm.valuesFiles }}
-      valueFiles:
-        {{- range .helm.valuesFiles }}
-        - {{ . }}
-        {{- end }}
-      {{- end }}
-      {{- if .helm.parameters }}
-      parameters:
-        {{- range .helm.parameters }}
-        - name: {{ .name }}
-          value: {{ .value }}
-        {{- end }}
-      {{- end }}
-    {{- end }}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ $.Values.namespace }}
