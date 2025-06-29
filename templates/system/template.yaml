@@ -55,7 +55,7 @@ spec:
         changes:
           - type: add
             path: namespaces/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-files.output.files['namespace.yaml'] }}
+            content: ${{ steps.generate-files.output.files['namespace/namespace.yaml'] }}
           - type: add
             path: systems/${{ parameters.name }}.yaml
-            content: ${{ steps.generate-files.output.files['system.yaml'] }}
+            content: ${{ steps.generate-files.output.files['systems/system.yaml'] }}
