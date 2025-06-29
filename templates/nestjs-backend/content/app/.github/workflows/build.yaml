@@ -1,13 +1,7 @@
-name: Build and Push Docker Image
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**[skip ci]**'
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - uses: actions/checkout@v3
       - name: Log in to GitHub Container Registry
@@ -18,7 +12,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/vercevo/${{ values.name }}:latest .
+          docker build -t ghcr.io/vercevo/${{ env.NAME }}:latest .
       - name: Push Docker image
         run: |
-          docker push ghcr.io/vercevo/${{ values.name }}:latest
+          docker push ghcr.io/vercevo/${{ env.NAME }}:latest
