@@ -39,7 +39,7 @@ spec:
 
     - id: create-pr
       name: Create PR in platform-infra repo
-      action: publish:github:pull-request
+      action: publish:github:push
       input:
         repoUrl: github.com?owner=vercevo&repo=platform-infra
         defaultBranch: main
