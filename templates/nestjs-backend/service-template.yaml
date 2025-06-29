@@ -15,24 +15,25 @@ spec:
         name:
           type: string
           title: Name of the service
+
         owner:
           type: string
-          title: Owner (Backstage group/user)
-          description: Select the team or user who owns this service
+          title: Owning Team
+          description: Select the team that will own this service
+
         description:
           type: string
           title: Description
 
-      ui:order:
-        - name
-        - owner
-        - description
-
-      uiSchema:
-        owner:
-          "ui:field": OwnerPicker
-          "ui:props":
-            allowedKinds: [Group, User]
+  uiSchema:
+    owner:
+      "ui:field": EntityPicker
+      "ui:options":
+        catalogFilter:
+          - kind: Group
+            spec.type: team
+        allowArbitraryValues: false
+        defaultNamespace: default
 
   steps:
     - id: fetch-base
@@ -67,7 +68,4 @@ spec:
       input:
         repoUrl: github.com?repo=homelab-infra&owner=vercevo
         branchName: add-${{ parameters.name }}-manifests
-        title: Add manifests for ${{ parameters.name }}
-        description: This PR adds manifests for the ${{ parameters.name }} service
-        targetPath: apps/${{ parameters.name }}
-        sourcePath: ./infra
+        title: Add
