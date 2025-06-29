@@ -9,29 +9,42 @@ spec:
   type: service
 
   parameters:
-    title: System Information
-    type: object
-    required:
-      - name
-      - description
-      - owner
-    properties:
-      name:
-        type: string
-        title: System Name
-        description: Unique system name (lowercase, no spaces)
+    - title: System Information
+      type: object
+      required:
+        - name
+        - description
+        - owner
+      properties:
+        name:
+          type: string
+          title: System Name
+          description: Unique system name (lowercase, no spaces)
 
-      description:
-        type: string
-        title: System Description
+        description:
+          type: string
+          title: System Description
 
-      owner:
-        type: string
-        title: Owning Team
-        description: Select an existing team from the Backstage catalog
-        ui:field: OwnerPicker
-        ui:props:
-          allowedKinds: [Group]
+        owner:
+          type: string
+          title: Owning Team
+          description: Select an existing team from the Backstage catalog
+
+      ui:order:
+        - name
+        - description
+        - owner
+
+      ui:field: {}
+      ui:options: {}
+      ui:layout: {}
+      ui:props: {}
+      ui:rootFieldId: systemInfo
+      uiSchema:
+        owner:
+          "ui:field": OwnerPicker
+          "ui:props":
+            allowedKinds: [Group]
 
   steps:
     - id: generate-files
