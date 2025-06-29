@@ -35,7 +35,7 @@ spec:
 
     - id: create-pr
       name: Create PR in platform-infra repo
-      action: github:publish:pull-request
+      action: publish:github:pull-request
       input:
         repoUrl: github.com?owner=vercevo&repo=platform-infra
         branchName: backstage/add-system-${{ parameters.name }}
