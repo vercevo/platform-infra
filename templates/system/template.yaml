@@ -7,6 +7,7 @@ metadata:
 spec:
   owner: group:default/your-group
   type: service
+
   parameters:
     title: System Information
     type: object
@@ -19,12 +20,18 @@ spec:
         type: string
         title: System Name
         description: Unique system name (lowercase, no spaces)
+
       description:
         type: string
         title: System Description
+
       owner:
         type: string
-        title: Owner (Backstage user or group)
+        title: Owning Team
+        description: Select an existing team from the Backstage catalog
+        ui:field: OwnerPicker
+        ui:props:
+          allowedKinds: [Group]
 
   steps:
     - id: generate-files

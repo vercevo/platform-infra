@@ -1,0 +1,56 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: nest-service
+  title: NestJS Microservice
+  description: Creates a new NestJS app with GitOps manifests and registers it in Backstage
+spec:
+  owner: group:default/eggmans
+  type: service
+  parameters:
+    - title: Service Details
+      required: [name, owner]
+      properties:
+        name:
+          type: string
+          title: Name of the service
+        owner:
+          type: string
+          title: Owner (Backstage group/user)
+        description:
+          type: string
+          title: Description
+  steps:
+    - id: fetch-base
+      name: Fetch NestJS boilerplate
+      action: fetch:template
+      input:
+        url: ./skeleton/app
+        targetPath: .
+        values:
+          name: ${{ parameters.name }}
+          owner: ${{ parameters.owner }}
+          description: ${{ parameters.description }}
+    - id: publish
+      name: Publish to GitHub
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=vercevo&repo=${{ parameters.name }}
+        defaultBranch: main
+        description: ${{ parameters.description }}
+    - id: register
+      name: Register in Backstage
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+    - id: create-pr
+      name: Create PR to GitOps repo
+      action: publish:github:pull-request
+      input:
+        repoUrl: github.com?repo=homelab-infra&owner=vercevo
+        branchName: add-${{ parameters.name }}-manifests
+        title: Add manifests for ${{ parameters.name }}
+        description: This PR adds manifests for the ${{ parameters.name }} service
+        targetPath: apps/${{ parameters.name }}
+        sourcePath: ./infra
