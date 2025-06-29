@@ -19,7 +19,4 @@ spec:
     targetRevision: HEAD
     path: charts/namespace-bootstrap-chart
     helm:
-      values: |
-        namespace: newcasts
-
-            
+      values: "namespace: newcasts\n\n    \n"
