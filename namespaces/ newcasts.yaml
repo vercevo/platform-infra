@@ -25,4 +25,5 @@ spec:
           - repoURL: https://github.com/bergtobias/homelab-infra
             revision: main
             path: apps/eggman
+            type: kustomize
             
