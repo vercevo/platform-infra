@@ -30,7 +30,7 @@ spec:
       name: Generate Namespace Manifest
       action: fetch:template
       input:
-        url: ./templates/system/content
+        url: ./content
         values:
           name: ${{ parameters.name }}
           description: ${{ parameters.description }}
