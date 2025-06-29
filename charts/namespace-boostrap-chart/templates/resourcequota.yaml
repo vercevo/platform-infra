@@ -2,11 +2,11 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: system-quota
-  namespace: {{ .Values.namespace | default "default" }}
+  namespace: {{ .Values.namespace }}
 spec:
   hard:
-    cpu: {{ .Values.resourceQuota.limits.cpu | default "2" }}
-    memory: {{ .Values.resourceQuota.limits.memory | default "4Gi" }}
-    pods: {{ .Values.resourceQuota.limits.pods | default "10" }}
-    requests.cpu: {{ index .Values.resourceQuota.limits "requests.cpu" | default "1" }}
-    requests.memory: {{ index .Values.resourceQuota.limits "requests.memory" | default "2Gi" }}
+    cpu: "2"
+    memory: "4Gi"
+    pods: "10"
+    requests.cpu: "1"
+    requests.memory: "2Gi"
