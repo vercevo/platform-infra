@@ -55,4 +55,4 @@ spec:
       name: Register Backstage System
       action: catalog:register
       input:
-        catalogInfoUrl: /system/${{ parameters.name }}
+        catalogInfoUrl: https://github.com/vercevo/platform-infra/blob/main/systems/${{ parameters.name }}.yaml
