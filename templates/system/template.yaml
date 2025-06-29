@@ -55,12 +55,4 @@ spec:
       name: Register Backstage System
       action: catalog:register
       input:
-        catalogInfo:
-          apiVersion: backstage.io/v1alpha1
-          kind: System
-          metadata:
-            name: ${{ parameters.name }}
-            description: ${{ parameters.description }}
-          spec:
-            owner: ${{ parameters.owner }}
-            lifecycle: production
+        catalogInfoUrl: /system/${{ parameters.name }}
