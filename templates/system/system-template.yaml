@@ -1,0 +1,49 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: create-system-with-namespace
+  title: Create Backstage System with Kubernetes Namespace
+  description: Creates a new Backstage System entity and Kubernetes Namespace by opening a PR in your GitOps repo.
+spec:
+  owner: group:default/your-group
+  type: service
+  parameters:
+    - title: System Information
+      required: [name, description, owner]
+      properties:
+        name:
+          type: string
+          title: System Name
+          description: Unique system name (lowercase, no spaces)
+        description:
+          type: string
+          title: System Description
+        owner:
+          type: string
+          title: Owner (Backstage user or group)
+  steps:
+    - id: create-files
+      name: Generate system and namespace manifests
+      action: fetch:template
+      input:
+        url: ./templates/system
+        targetPath: .
+        values:
+          name: ${{ parameters.name }}
+          description: ${{ parameters.description }}
+          owner: ${{ parameters.owner }}
+    - id: publish
+      name: Create PR in platform-infra repo
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=vercevo&repo=platform-infra
+        branch: main
+        title: Add new system and namespace for ${{ parameters.name }}
+        body: This PR adds namespace and system manifests for ${{ parameters.name }}
+        changes:
+          - type: append
+            path: namespaces/{{ parameters.name }}.yaml
+            content: ${{ steps.generateNamespace.output.manifest }}
+          - type: append
+            path: systems/{{ parameters.name }}.yaml
+            content: ${{ steps.generateSystem.output.manifest }}

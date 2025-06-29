@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: { { name } }
+  description: { { description } }
+  annotations:
+    backstage.io/managed-by-location: https://github.com/vercevo/platform-infra/blob/main/systems/{{ name }}.yaml
+spec:
+  owner: { { owner } }
+  lifecycle: production
