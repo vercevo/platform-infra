@@ -22,7 +22,8 @@ spec:
       values: |
         namespace: newcasts
         apps:
-          - repoURL: https://github.com/bergtobias/homelab-infra
+          - name: eggman
+            repoURL: https://github.com/bergtobias/homelab-infra
             revision: main
             path: apps/eggman
             type: kustomize
