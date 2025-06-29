@@ -7,6 +7,7 @@ metadata:
 spec:
   owner: group:default/eggmans
   type: service
+
   parameters:
     - title: Service Details
       required: [name, owner]
@@ -17,9 +18,22 @@ spec:
         owner:
           type: string
           title: Owner (Backstage group/user)
+          description: Select the team or user who owns this service
         description:
           type: string
           title: Description
+
+      ui:order:
+        - name
+        - owner
+        - description
+
+      uiSchema:
+        owner:
+          "ui:field": OwnerPicker
+          "ui:props":
+            allowedKinds: [Group, User]
+
   steps:
     - id: fetch-base
       name: Fetch NestJS boilerplate
@@ -31,6 +45,7 @@ spec:
           name: ${{ parameters.name }}
           owner: ${{ parameters.owner }}
           description: ${{ parameters.description }}
+
     - id: publish
       name: Publish to GitHub
       action: publish:github
@@ -38,12 +53,14 @@ spec:
         repoUrl: github.com?owner=vercevo&repo=${{ parameters.name }}
         defaultBranch: main
         description: ${{ parameters.description }}
+
     - id: register
       name: Register in Backstage
       action: catalog:register
       input:
         repoContentsUrl: ${{ steps['publish'].output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
+
     - id: create-pr
       name: Create PR to GitOps repo
       action: publish:github:pull-request
