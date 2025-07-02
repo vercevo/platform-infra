@@ -8,7 +8,7 @@ need to be deployed manually first.
 kubectl apply -k cluster/cluster-config -n kube-system
 kubectl apply -k cluster/cert-manager
 
-kubectl apply -f cluster/argocd/argo-cd-auth-secret.yaml -n argocd
+kubectl apply -f cluster/argocd/argo-cd-auth-secret.yaml
 
 kubectl apply -k cluster/argocd -n argocd
 
