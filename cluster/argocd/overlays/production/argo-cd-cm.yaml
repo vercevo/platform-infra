@@ -17,14 +17,12 @@ data:
       id: github
       name: GitHub
       config:
-        clientID: fb563b3a8dd7ea52f683
+        clientID: Iv23liYT6ofML2cJDGIy
         clientSecret: $argocd-auth:dex.github.clientSecret
         orgs:
-        - name: argoproj
+        - name: vercevo
           teams:
-          - argo-rollouts-approvers
-          - argo-workflows-approvers
-          - argocd-approvers
+          - eggmans
 kind: ConfigMap
 metadata:
   name: argocd-cm
