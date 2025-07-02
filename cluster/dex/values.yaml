@@ -1,17 +1,13 @@
 dex:
   replicaCount: 1
-
   priorityClassName: cluster-medium
-
   configSecret:
     # TODO: need to manually create configs as a Secret
     create: false
     name: 'dex'
-
   rbac:
     create: true
     createClusterScoped: false
-
   ingress:
     enabled: true
     className: nginx
@@ -27,6 +23,5 @@ dex:
       - secretName: dex-secret
         hosts:
           - dex.apps.argoproj.io
-
   serviceMonitor:
-    enabled: true
+    enabled: false

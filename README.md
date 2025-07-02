@@ -6,7 +6,10 @@ need to be deployed manually first.
 
 ```
 kubectl apply -k cluster/cluster-config -n kube-system
-kubectl apply -k cluster/cert-manager -n cert-manager
+kubectl apply -k cluster/cert-manager
+
+kubectl apply -f cluster/argocd/argo-cd-auth-secret.yaml -n argocd
+
 kubectl apply -k cluster/argocd -n argocd
 
 // If the apply for argocd fails, run it again. It might fail the first time due to missing CRDs

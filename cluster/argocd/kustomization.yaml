@@ -5,7 +5,6 @@ resources:
   - base/argo-cd-issuer.yaml
   - base/argo-cd-certificate.yaml
   - base/argo-cd-ui-ingress.yaml
-  - base/rollouts-extension.yaml
   - base/sync-project.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/ha/install.yaml
 components:
@@ -13,8 +12,6 @@ components:
 patches:
   - path: overlays/production/argo-cd-cm.yaml
   - path: overlays/production/argocd-cmd-params-cm.yaml
-  - path: overlays/production/argocd-notifications-cm.yaml
-  - path: overlays/production/argocd-notifications-controller-deploy.yaml
   - path: overlays/production/argocd-rbac-cm.yaml
   - path: overlays/production/argocd-server-service.yaml
   - path: https://raw.githubusercontent.com/argoproj/argo-cd/master/notifications_catalog/install.yaml
