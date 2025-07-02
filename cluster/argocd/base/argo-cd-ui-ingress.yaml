@@ -8,17 +8,17 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - cd.apps.argoproj.io
-    secretName: argocd-secret
+    - hosts:
+        - argo-cd.bergtobias.com
+      secretName: argocd-secret
   rules:
-  - host: cd.apps.argoproj.io
-    http:
-      paths:
-      - path: /
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: argocd-server
-            port:
-              name: http
+    - host: argo-cd.bergtobias.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: argocd-server
+                port:
+                  name: http

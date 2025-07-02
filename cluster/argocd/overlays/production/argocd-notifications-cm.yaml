@@ -4,8 +4,7 @@ metadata:
   name: argocd-notifications-cm
 data:
   context: |
-    argocdUrl: https://cd.apps.argoproj.io
-
+    argocdUrl: https://argo-cd.bergtobias.com
   trigger.sync-operation-change: |
     - when: app.status.operationState.phase in ['Succeeded']
       send: [github-commit-status, app-sync-succeeded]
@@ -13,7 +12,6 @@ data:
       send: [github-commit-status, app-sync-running]
     - when: app.status.operationState.phase in ['Error', 'Failed']
       send: [github-commit-status, app-sync-failed]
-
   template.github-commit-status: |
     description: Generates Github webhook payload
     webhook:
@@ -30,15 +28,12 @@ data:
             "target_url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
             "context": "continuous-delivery/{{.app.metadata.name}}"
           }
-
   service.slack: |
     token: $slack-token
     signingSecret: $slack-signing-secret
-  
   service.grafana: |
     apiUrl: https://grafana.apps.argoproj.io/api
     apiKey: $grafana-token
-
   service.webhook.github: |
     url: https://api.github.com
     headers: #optional headers
