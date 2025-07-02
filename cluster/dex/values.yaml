@@ -14,13 +14,13 @@ dex:
       ingress.kubernetes.io/proxy-body-size: 100M
       ingress.kubernetes.io/app-root: '/'
     hosts:
-      - host: dex.apps.argoproj.io
+      - host: dex.bergtobias.com
         paths:
           - path: /
             pathType: ImplementationSpecific
     tls:
       - secretName: dex-secret
         hosts:
-          - dex.apps.argoproj.io
+          - dex.bergtobias.com
   serviceMonitor:
     enabled: false
