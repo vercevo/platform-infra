@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: dex
+    path: cluster/dex
     repoURL: https://github.com/vercevo/platform-infra
     targetRevision: HEAD
   syncPolicy:

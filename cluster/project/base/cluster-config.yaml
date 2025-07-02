@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    path: cluster-config
+    path: cluster/cluster-config
     repoURL: https://github.com/vercevo/platform-infra
     targetRevision: HEAD
   destination:
