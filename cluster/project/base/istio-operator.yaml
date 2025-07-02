@@ -1,18 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istio-controlplane
+  name: istio-operator
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   source:
-    path: istio-controlplane
-    repoURL: https://github.com/argoproj/argoproj-deployments
-    targetRevision: HEAD
+    repoURL: https://github.com/istio/istio
+    path: manifests/charts/istio-operator
+    targetRevision: release-1.20
+    helm:
+      parameters:
+        - name: enableCRDTemplates
+          value: 'true'
   destination:
     server: https://kubernetes.default.svc
-    namespace: istio-system
+    namespace: istio-operator
   project: default
   syncPolicy:
     syncOptions:

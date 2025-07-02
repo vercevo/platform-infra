@@ -1,19 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: dex
   namespace: argocd
-  ### Just as a prevention, we do not want Argo CD to destruct it's dependencies
-  # finalizers:
-  #   - resources-finalizer.argocd.argoproj.io
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: cert-manager
+    namespace: dex
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: cert-manager
-    repoURL: https://github.com/argoproj/argoproj-deployments
+    path: dex
+    repoURL: https://github.com/vercevo/platform-infra
     targetRevision: HEAD
   syncPolicy:
     syncOptions:
