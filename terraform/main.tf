@@ -77,4 +77,5 @@ resource "null_resource" "k3s_agent" {
       "K3S_URL=https://${var.master.ip}:6443 K3S_TOKEN=$TOKEN ./install_k3s.sh"
     ]
   }
+  
 }

@@ -1,6 +1,0 @@
-resources:
-  - deployment.yaml
-  - http.yaml
-  - service.yaml
-  - secrets.yaml
-  - config.yaml

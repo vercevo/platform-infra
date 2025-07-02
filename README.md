@@ -1,22 +1,17 @@
-# platform-infra
+# Argo CD deployment
 
-This is the gitops repository responsible for configuring k8's klusters
+After the GKE cluster is deployed, you can deploy Argo CD on it and use Applications resources to provision other
+components. Some componenets that are dependencies for Argo CD to work properly, such as Certificate Manager, will
+need to be deployed manually first.
 
-This is tighly coupled with backstage.
+```
+kubectl apply -k cluster/cluster-config -n kube-system
+kubectl apply -k cluster/cert-manager -n cert-manager
+kubectl apply -k cluster/argocd -n argocd
 
-## Platform stack
+// If the apply for argocd fails, run it again. It might fail the first time due to missing CRDs
 
-- Kubernetes
-- ArgoCD
-- Vault
-- Prometheus
-- Grafana
-- Kibana
-- Elasticsearch
-- Filebeat
-- External Secret manager
-- Backstage
-
-## Logic
-
-Each namespace in k8s referes to a system in backstage and vice verse.
+// Before applying the Applications, you might need to update the repoURL and targetRevision
+// if you are working on custom branch
+kubectl apply -k cluster/project -n argocd
+```
