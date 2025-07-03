@@ -6,7 +6,7 @@ resources:
   - base/argo-cd-certificate.yaml
   - base/argo-cd-ui-ingress.yaml
   - base/sync-project.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/ha/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/install.yaml
 patches:
   - path: overlays/production/argo-cd-cm.yaml
   - path: overlays/production/argocd-cmd-params-cm.yaml
