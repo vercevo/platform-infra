@@ -20,3 +20,30 @@ dex:
           - dex.bergtobias.com
   serviceMonitor:
     enabled: false
+  config:
+    issuer: https://dex.bergtobias.com
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+    web:
+      http: 5556
+    connectors:
+      - type: github
+        id: github
+        name: GitHub
+        config:
+          clientID: Iv23liYT6ofML2cJDGIy
+          clientSecret: ad5ca103d8ee1066f4b2dac714ebaa93f8eac52d ## will be replaced by the secret tempo now
+          redirectURI: https://dex.bergtobias.com/callback
+          orgs:
+            - name: YOUR_GITHUB_ORG
+    staticClients:
+      - id: example-app
+        redirectURIs:
+          - 'https://app.bergtobias.com/callback'
+        name: 'Example App'
+        secret: example-app-secret
+  service:
+    type: ClusterIP
+    port: 5556
