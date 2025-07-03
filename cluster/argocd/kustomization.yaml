@@ -7,8 +7,6 @@ resources:
   - base/argo-cd-ui-ingress.yaml
   - base/sync-project.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/ha/install.yaml
-components:
-  - https://github.com/argoproj-labs/argocd-extensions/manifests
 patches:
   - path: overlays/production/argo-cd-cm.yaml
   - path: overlays/production/argocd-cmd-params-cm.yaml
