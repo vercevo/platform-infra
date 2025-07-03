@@ -2,7 +2,7 @@ dex:
   replicaCount: 1
   configSecret:
     # TODO: need to manually create configs as a Secret
-    create: false
+    create: true
     name: 'dex'
   rbac:
     create: true
