@@ -1,9 +1,5 @@
 dex:
   replicaCount: 1
-  configSecret:
-    # TODO: need to manually create configs as a Secret
-    create: true
-    name: 'dex'
   rbac:
     create: true
     createClusterScoped: false
