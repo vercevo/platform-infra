@@ -17,4 +17,7 @@ kubectl apply -k cluster/argocd -n argocd
 // Before applying the Applications, you might need to update the repoURL and targetRevision
 // if you are working on custom branch
 kubectl apply -k cluster/project -n argocd
+
+
+kubectl port-forward svc/argocd-server 8080:443 -n argocd
 ```
