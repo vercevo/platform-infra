@@ -1,7 +1,0 @@
-resources:
-  - github.com/argoproj/argo-cd//manifests/cluster-install?ref=stable
-  - clusters-secrets.yaml
-  - repos-secrets.yaml
-# changes to config maps
-patches:
-  - path: overlays/argo-cd-cm.yaml

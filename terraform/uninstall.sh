@@ -40,5 +40,6 @@ done
 echo "Reseting Terraform state..."
 cd "$(dirname "$0")" || exit 1
 terraform init -reconfigure
+terraform destroy -auto-approve || true
 
 echo "All done."
