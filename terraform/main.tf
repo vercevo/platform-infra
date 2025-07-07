@@ -26,7 +26,7 @@ resource "null_resource" "k3s_master" {
     inline = [
       "curl -sfL -o install_k3s.sh https://get.k3s.io",
       "chmod +x install_k3s.sh",
-      "INSTALL_K3S_EXEC='--disable=traefik --write-kubeconfig-mode 644' ./install_k3s.sh"
+      "INSTALL_K3S_EXEC='--disable=traefik --write-kubeconfig-mode 644 --disable=servicelb' ./install_k3s.sh"
     ]
   }
 }

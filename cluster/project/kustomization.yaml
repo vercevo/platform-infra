@@ -6,3 +6,4 @@ resources:
   - base/cert-manager.yaml
   - base/istio-controlplane.yaml
   - base/istio-operator.yaml
+  - base/metallb.yaml
