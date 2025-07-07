@@ -1,11 +1,11 @@
 #!/bin/bash
 
 MASTER_TARGETS=(
-  "k3s@rasp-pi"  
+  "k3s@192.168.10.218"  
 )
 
 AGENT_TARGETS=(
-  "k3s@laptop"
+  "k3s@192.168.10.160"
 )
 
 SSH_KEY="$HOME/.ssh/id_ed25519"  
