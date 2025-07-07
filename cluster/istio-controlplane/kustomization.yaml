@@ -4,5 +4,4 @@ resources:
   - base/certificate.yaml
   - base/issuer.yaml
   - base/http-filter.yaml
-  - base/acme-route.yaml
   - https://github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.3.0
