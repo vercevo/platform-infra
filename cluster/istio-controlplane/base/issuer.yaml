@@ -1,14 +1,13 @@
 apiVersion: cert-manager.io/v1
-kind: Issuer
+kind: ClusterIssuer
 metadata:
-  name: prod-issuer
-  namespace: istio-system
+  name: letsencrypt-production
 spec:
   acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
     email: tobiaswillyberg@gmail.com
+    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-prod-private-key
+      name: letsencrypt-production
     solvers:
       - http01:
           gatewayHTTPRoute:
