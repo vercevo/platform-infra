@@ -1,13 +1,12 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: bergtobias-com-cert
+  name: wildcard-bergtobias-com
   namespace: istio-system
 spec:
-  secretName: bergtobias-com-tls
-  issuerRef:
-    name: prod-issuer
-    kind: Issuer
-  commonName: "*.bergtobias.com"
+  secretName: bergtobias-com-cert
   dnsNames:
     - "*.bergtobias.com"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer

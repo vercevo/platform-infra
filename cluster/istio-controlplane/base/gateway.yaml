@@ -5,26 +5,30 @@ metadata:
   namespace: istio-system
 spec:
   gatewayClassName: istio
-  addresses:
-    - type: IPAddress
-      value: "192.168.10.218"
   listeners:
-    - name: http
-      hostname: "*.bergtobias.com"
-      port: 80
-      protocol: HTTP
-      allowedRoutes:
-        namespaces:
-          from: All
     - name: https
-      hostname: "*.bergtobias.com"
-      port: 443
       protocol: HTTPS
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - name: bergtobias-com-tls
-            kind: Secret
+      port: 443
+      hostname: "*.bergtobias.com"
       allowedRoutes:
         namespaces:
           from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: bergtobias-com-cert
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: tls
+      protocol: TLS
+      port: 8443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Passthrough
