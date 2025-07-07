@@ -1,4 +1,7 @@
-bases:
-  - base
 resources:
+  - base/gateway.yaml
+  - base/istio-controlplane.yaml
+  - base/certificate.yaml
+  - base/issuer.yaml
+  - base/http-filter.yaml
   - https://github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.3.0
