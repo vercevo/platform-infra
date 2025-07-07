@@ -8,8 +8,16 @@ spec:
     - name: gateway
       namespace: istio-system
   hostnames:
-    - "argocd.bergtobias.com" # change to your domain
+    - "argocd.bergtobias.com"
   rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known/acme-challenge/
+      backendRefs:
+        - name: cm-acme-http-solver-xxx47 # Replace with your actual solver service name
+          namespace: argocd
+          port: 8089 # Default solver port
     - matches:
         - path:
             type: PathPrefix
