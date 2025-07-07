@@ -5,3 +5,7 @@ metadata:
   name: istio-controlplane
 spec:
   profile: default
+  components:
+    ingressGateways:
+      - name: istio-ingressgateway
+        enabled: false
