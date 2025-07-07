@@ -1,3 +1,4 @@
 resources:
-  - base/
-  - github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.3.0
+  - base/gateway.yaml
+  - base/istio-controlplane.yaml
+  - https://github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.3.0
