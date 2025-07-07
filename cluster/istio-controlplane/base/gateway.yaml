@@ -1,7 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: istio-ingressgateway
+  name: gateway
   namespace: istio-system
 spec:
   gatewayClassName: istio
