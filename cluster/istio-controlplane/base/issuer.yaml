@@ -9,7 +9,9 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
-      - http01:
-          gatewayHTTPRoute:
-            parentRefs:
-              - name: gateway
+      - dns01:
+          cloudflare:
+            email: tobiaswillyberg@gmail.com
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret
+              key: api-token
