@@ -9,12 +9,8 @@ spec:
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
-      - dns01:
-          cloudflare:
-            email: tobiaswillyberg@gmail.com
-            apiTokenSecretRef:
-              name: cloudflare-api-token-secret
-              key: api-token
       - http01:
-          ingress:
-            class: istio
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: gateway
+                namespace: istio-system
