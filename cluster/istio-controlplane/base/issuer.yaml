@@ -2,15 +2,15 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: prod-issuer
+  namespace: istio-system
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
     email: tobiaswillyberg@gmail.com
     privateKeySecretRef:
-      name: letsencrypt
+      name: letsencrypt-prod-private-key
     solvers:
-      # An empty 'selector' means that this solver matches all domains
-      - selector: {}
-        http01:
-          ingress:
-            class: nginx
+      - http01:
+          gatewayHTTPRoute:
+            parentRefs:
+              - name: gateway
