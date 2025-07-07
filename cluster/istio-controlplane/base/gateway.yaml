@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
 spec:
   gatewayClassName: istio
-  address:
+  addresses:
     - type: IPAddress
       value: "192.168.10.218"
   listeners:
