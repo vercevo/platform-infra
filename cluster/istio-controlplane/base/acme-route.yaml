@@ -15,4 +15,5 @@ spec:
             value: "/.well-known/acme-challenge/"
       backendRefs:
         - name: cert-manager
-          port: 8080 # adjust if needed
+          namespace: cert-manager
+          port: 9402
