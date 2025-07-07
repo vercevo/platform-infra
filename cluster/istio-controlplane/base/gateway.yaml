@@ -24,7 +24,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: istio-ingressgateway-certs
-            kind: Secret
+            kind: letsencrypt
       allowedRoutes:
         namespaces:
           from: All
