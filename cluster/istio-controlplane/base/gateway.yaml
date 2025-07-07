@@ -9,10 +9,22 @@ spec:
     - type: IPAddress
       value: "192.168.10.218"
   listeners:
-    - name: default
+    - name: http
       hostname: "*.bergtobias.com"
       port: 80
       protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      hostname: "*.bergtobias.com"
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: istio-ingressgateway-certs
+            kind: Secret
       allowedRoutes:
         namespaces:
           from: All
