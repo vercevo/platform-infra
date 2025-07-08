@@ -27,4 +27,4 @@ terraform.rc
 
 /terraform/secrets
 
-/secrets
+*/secrets
