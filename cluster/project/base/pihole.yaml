@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://charts.bitnami.com/bitnami
     chart: pihole
-    targetRevision: 7.0.1 # or latest stable
+    targetRevision: 2.31.0 # or latest stable
     helm:
       values: |
         replicaCount: 2
