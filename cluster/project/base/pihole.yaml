@@ -6,48 +6,33 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://mojo2600.github.io/pihole-kubernetes/
     chart: pihole
-    targetRevision: 2.31.0 # or latest stable
+    targetRevision: 2.31.0
     helm:
       values: |
-        replicaCount: 2
+        dnsmasq:
+          customDnsEntries:
+            - address=/example.com/192.168.10.218
 
-        service:
-          dns:
-            type: LoadBalancer
-            ports:
-              - name: dns-tcp
-                port: 53
-                protocol: TCP
-                targetPort: 53
-              - name: dns-udp
-                port: 53
-                protocol: UDP
-                targetPort: 53
-          admin:
-            type: ClusterIP
-            port: 80
+        persistentVolumeClaim:
+          enabled: true
 
-        pihole:
-          webPassword: "YourStrongPasswordHere"
-          dnsmasq:
-            listeningBehavior: all
-          dnssec: false
-          revServer: false
+        serviceWeb:
+          loadBalancerIP: 192.168.10.218
+          type: LoadBalancer
+          annotations:
+            metallb.universe.tf/allow-shared-ip: pihole-svc-web
 
-        extraEnvVars:
-          - name: TZ
-            value: "UTC"
-
-        persistence:
-          enabled: false  # stateless; enable with PVC if needed
-
-        # ConfigMap with blocklists (optional alternative)
-        extraConfigmapMounts:
-          - configMapName: pihole-blocklists
-            mountPath: /etc/pihole/adlists.list
-            subPath: adlists.list
+        serviceDns:
+          mixedService: true
+          nodePorts:
+            tcp: 53
+            udp: 53
+          loadBalancerIP: 192.168.10.160
+          type: LoadBalancer
+          annotations:
+            metallb.universe.tf/allow-shared-ip: pihole-svc-dns
   destination:
     server: https://kubernetes.default.svc
     namespace: pihole
