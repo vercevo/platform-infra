@@ -6,22 +6,28 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: 'https://mojo2600.github.io/pihole-kubernetes/' # Helm repo URL
+    - repoURL: 'https://mojo2600.github.io/pihole-kubernetes/'
       chart: pihole
-      targetRevision: "2.31.0" # Pin to a specific chart version (check latest)
+      targetRevision: "2.31.0"
       helm:
         values: |
-          pihole:
-            password: "YourStrongPasswordHere"
+          password: "YourStrongPasswordHere"
+
+          hostNetwork: true
+
+          dns:
+            enabled: true
+            type: NodePort  # Ignored with hostNetwork, but required by chart
+
           service:
             type: ClusterIP
+
           persistence:
             enabled: true
             size: 5Gi
+
           cloudflared:
             enabled: false
-          dns:
-            server: 0.0.0.0
     - repoURL: 'https://github.com/vercevo/platform-infra'
       path: cluster/pihole
       targetRevision: HEAD
