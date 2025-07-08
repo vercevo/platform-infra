@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pihole
+  name: pihole-config
   namespace: pihole
 data:
   setupVars.conf: |
@@ -11,6 +11,6 @@ data:
     DNS_BOGUS_PRIV=true
     DNSSEC=false
     REV_SERVER=false
-  adlists.list: |
+  adlists.list: |-
     https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
     https://some.other.blocklist/url.txt
