@@ -5,12 +5,51 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  sources:
-    - repoURL: 'https://github.com/vercevo/platform-infra'
-      path: cluster/pihole
-      targetRevision: HEAD
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: pihole
+    targetRevision: 7.0.1 # or latest stable
+    helm:
+      values: |
+        replicaCount: 2
+
+        service:
+          dns:
+            type: LoadBalancer
+            ports:
+              - name: dns-tcp
+                port: 53
+                protocol: TCP
+                targetPort: 53
+              - name: dns-udp
+                port: 53
+                protocol: UDP
+                targetPort: 53
+          admin:
+            type: ClusterIP
+            port: 80
+
+        pihole:
+          webPassword: "YourStrongPasswordHere"
+          dnsmasq:
+            listeningBehavior: all
+          dnssec: false
+          revServer: false
+
+        extraEnvVars:
+          - name: TZ
+            value: "UTC"
+
+        persistence:
+          enabled: false  # stateless; enable with PVC if needed
+
+        # ConfigMap with blocklists (optional alternative)
+        extraConfigmapMounts:
+          - configMapName: pihole-blocklists
+            mountPath: /etc/pihole/adlists.list
+            subPath: adlists.list
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: pihole
   syncPolicy:
     automated:
