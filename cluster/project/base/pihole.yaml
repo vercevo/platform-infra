@@ -6,14 +6,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://mojo2600.github.io/pihole-kubernetes/
     chart: pihole
-    targetRevision: 7.0.1 # or latest stable
+    targetRevision: 2.31.0 # or latest stable
     helm:
       values: |
         dnsmasq:
           customDnsEntries:
-            - address=/nas/192.168.178.10
+            - address=/example.com/192.168.178.10
 
           customCnameEntries:
             - cname=foo.nas,nas
