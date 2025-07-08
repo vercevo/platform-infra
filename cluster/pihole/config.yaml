@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole
+  namespace: pihole
+data:
+  setupVars.conf: |
+    WEBPASSWORD=YourStrongPasswordHere
+    DNSMASQ_LISTENING=all
+    DNS_FQDN_REQUIRED=true
+    DNS_BOGUS_PRIV=true
+    DNSSEC=false
+    REV_SERVER=false
+  adlists.list: |
+    https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    https://some.other.blocklist/url.txt

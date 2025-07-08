@@ -6,35 +6,6 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: 'https://mojo2600.github.io/pihole-kubernetes/'
-      chart: pihole
-      targetRevision: "2.31.0"
-      helm:
-        values: |
-          hostNetwork: false
-
-          pihole:
-            password: "YourStrongPasswordHere"
-
-          dns:
-            enabled: true
-            type: NodePort
-
-          serviceDns:
-            annotations: {}
-            nodePort:
-              tcp: 3053
-              udp: 3053
-
-          serviceDhcp:
-            enabled: false
-
-          persistence:
-            enabled: true
-            size: 5Gi
-
-          cloudflared:
-            enabled: false
     - repoURL: 'https://github.com/vercevo/platform-infra'
       path: cluster/pihole
       targetRevision: HEAD
