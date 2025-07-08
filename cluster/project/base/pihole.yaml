@@ -11,16 +11,23 @@ spec:
       targetRevision: "2.31.0"
       helm:
         values: |
-          password: "YourStrongPasswordHere"
+          hostNetwork: false
 
-          hostNetwork: true
+          pihole:
+            password: "YourStrongPasswordHere"
 
           dns:
             enabled: true
-            type: NodePort  # Ignored with hostNetwork, but required by chart
+            type: NodePort
 
-          service:
-            type: ClusterIP
+          serviceDns:
+            annotations: {}
+            nodePort:
+              tcp: 3053
+              udp: 3053
+
+          serviceDhcp:
+            enabled: false
 
           persistence:
             enabled: true
