@@ -8,15 +8,26 @@ spec:
   source:
     repoURL: https://mojo2600.github.io/pihole-kubernetes/
     chart: pihole
-    targetRevision: 2.31.0 # or latest stable
+    targetRevision: 2.31.0
     helm:
       values: |
         dnsmasq:
+          customSettings: |
+            no-local-service
+            listen-address=0.0.0.0
           customDnsEntries:
             - address=/example.com/192.168.178.10
 
           customCnameEntries:
             - cname=foo.nas,nas
+
+          extraConfig: |
+            # Allow dnsmasq to listen on all interfaces and accept queries from any network
+            listen-address=0.0.0.0
+            # Remove 'local-service' restriction (if set by default)
+            no-resolv
+            # Explicitly allow queries from all clients (disable local-service)
+            local-service
 
         persistentVolumeClaim:
           enabled: true
