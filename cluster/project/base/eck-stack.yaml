@@ -30,23 +30,6 @@ spec:
     repoURL: https://helm.elastic.co
     chart: eck-stack
     targetRevision: 0.15.0
-    helm:
-      values: |
-        eck-elasticsearch:
-          enabled: true
-          # You can add specific Elasticsearch resource config here, e.g.:
-          # replicas: 1
-          # version: "8.5.1"
-        eck-kibana:
-          enabled: true
-        eck-agent:
-          enabled: false
-        eck-fleet-server:
-          enabled: false
-        eck-logstash:
-          enabled: false
-        eck-apm-server:
-          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: elastic-stack
