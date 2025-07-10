@@ -1,0 +1,13 @@
+cassandra:
+  enabled: true
+  replicaCount: 1 # Only 1 Cassandra pod
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1
+      memory: 2Gi
+  persistence:
+    enabled: true
+    size: 10Gi

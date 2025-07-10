@@ -6,12 +6,18 @@ metadata:
 spec:
   project: default
   sources:
-    - repoURL: https://jaegertracing.github.io/helm-charts
-      chart: jaeger
-      targetRevision: 3.4.1
     - path: cluster/jaeger
       repoURL: https://github.com/vercevo/platform-infra
       targetRevision: HEAD
+    - repoURL: https://jaegertracing.github.io/helm-charts
+      chart: jaeger
+      targetRevision: 3.4.1
+      helm:
+        valueFiles:
+          - $values/cluster/jaeger/values.yaml
+    - repoURL: 'https://github.com/vercevo/platform-infra'
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
