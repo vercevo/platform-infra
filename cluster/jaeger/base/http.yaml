@@ -8,12 +8,12 @@ spec:
     - name: gateway
       namespace: istio-system
   hostnames:
-    - "jaeger.bergtobias.com" # change to your domain
+    - "jaeger.bergtobias.com"
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: argocd-server
-          port: 80
+        - name: jaeger-query
+          port: 16686
