@@ -11,7 +11,7 @@ spec:
     targetRevision: 3.0.0
   destination:
     server: https://kubernetes.default.svc
-    namespace: elastic-system
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
@@ -32,7 +32,7 @@ spec:
     targetRevision: 0.15.0
   destination:
     server: https://kubernetes.default.svc
-    namespace: elastic-stack
+    namespace: observability
   syncPolicy:
     automated:
       prune: true
