@@ -5,10 +5,13 @@ metadata:
   namespace: argocd
 spec:
   project: default
-  source:
-    repoURL: https://jaegertracing.github.io/helm-charts
-    chart: jaeger
-    targetRevision: 3.4.1
+  sources:
+    - repoURL: https://jaegertracing.github.io/helm-charts
+      chart: jaeger
+      targetRevision: 3.4.1
+    - path: cluster/jaeger
+      repoURL: https://github.com/vercevo/platform-infra
+      targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
