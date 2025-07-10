@@ -6,4 +6,4 @@ data:
   policy.csv: |
     p, role:admin, applications, *, */*, allow
     g, github:org:vercevo:eggmans, role:admin
-  policy.default: role:admin
+  policy.default: role:readonly
