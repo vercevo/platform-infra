@@ -7,8 +7,8 @@ spec:
   project: default
   source:
     repoURL: https://helm.elastic.co
-    chart: elastic/eck-stack
-    targetRevision: 2.4.0
+    chart: eck-stack
+    targetRevision: 8.5.1
   destination:
     server: https://kubernetes.default.svc
     namespace: observability

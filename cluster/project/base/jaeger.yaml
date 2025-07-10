@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://jaegertracing.github.io/helm-charts
-    chart: jaegertracing/jaeger
+    chart: jaeger
     targetRevision: 3.4.1
   destination:
     server: https://kubernetes.default.svc

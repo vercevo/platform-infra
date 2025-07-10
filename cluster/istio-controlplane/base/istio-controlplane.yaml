@@ -9,3 +9,9 @@ spec:
     ingressGateways:
       - name: istio-ingressgateway
         enabled: false
+  meshConfig:
+    defaultConfig:
+      tracing:
+        sampling: 100.0
+        zipkin:
+          address: jaeger-collector.observability.svc.cluster.local:9411
