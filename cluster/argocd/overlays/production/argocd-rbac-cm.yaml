@@ -2,13 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: argocd-rbac-cm
-  namespace: argocd
 data:
   policy.csv: |
-    # Define admin role permissions
-    p, role:admin, applications, *, */*, allow
-
-    # Bind GitHub org team to admin role
-    g, github:org:vercevo:eggmans, role:admin
-  # Default to readonly for everyone else
-  policy.default: role:readonly
+    g, argoproj:argo-rollouts-approvers, role:admin
+    g, argoproj:argo-workflows-approvers, role:admin
+    g, argoproj:argocd-approvers, role:admin
+  policy.default: role:admin
