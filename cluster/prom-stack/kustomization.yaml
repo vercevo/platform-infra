@@ -1,2 +1,2 @@
 resources:
-  - https://github.com/prometheus-operator/prometheus-operator/releases/latest/download/monitoring.coreos.com-alertmanagers.yaml
+  - https://github.com/prometheus-community/helm-charts/tree/130414ca4fc855d0133d24892ff31512ab5c6fa1/charts/kube-prometheus-stack/charts/crds/crds
