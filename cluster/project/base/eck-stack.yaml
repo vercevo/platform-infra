@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/elastic/cloud-on-k8s.git
-    targetRevision: v2.7.1
-    path: config/crds
+    repoURL: https://helm.elastic.co
+    chart: eck-operator
+    targetRevision: 2.7.1
   destination:
     server: https://kubernetes.default.svc
     namespace: elastic-system
@@ -22,31 +22,37 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: eck-operator-main
+  name: eck-stack
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://github.com/elastic/cloud-on-k8s.git
-    targetRevision: v2.7.1
-    path: config/operator
+    repoURL: https://helm.elastic.co
+    chart: eck-stack
+    targetRevision: 0.15.0
+    helm:
+      values: |
+        eck-elasticsearch:
+          enabled: true
+          # You can add specific Elasticsearch resource config here, e.g.:
+          # replicas: 1
+          # version: "8.5.1"
+        eck-kibana:
+          enabled: true
+        eck-agent:
+          enabled: false
+        eck-fleet-server:
+          enabled: false
+        eck-logstash:
+          enabled: false
+        eck-apm-server:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
-    namespace: elastic-system
+    namespace: elastic-stack
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
----
-apiVersion: elasticsearch.k8s.elastic.co/v1
-kind: Elasticsearch
-metadata:
-  name: quickstart
-  namespace: elastic-system
-spec:
-  version: 8.5.1
-  nodeSets:
-    - name: default
-      count: 1
-      config:
-        node.store.allow_mmap: false
+    syncOptions:
+      - CreateNamespace=true
