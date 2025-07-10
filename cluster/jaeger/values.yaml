@@ -1,13 +1,12 @@
-cassandra:
+provisionDataStore:
+  cassandra: false
+allInOne:
   enabled: true
-  replicaCount: 1 # Only 1 Cassandra pod
-  resources:
-    requests:
-      cpu: 1
-      memory: 3Gi
-    limits:
-      cpu: 2
-      memory: 6Gi
-  persistence:
-    enabled: true
-    size: 10Gi
+storage:
+  type: memory
+agent:
+  enabled: false
+collector:
+  enabled: false
+query:
+  enabled: false
