@@ -5,6 +5,10 @@ metadata:
   namespace: argocd
 data:
   policy.csv: |
+    # Define admin role permissions
     p, role:admin, applications, *, */*, allow
+
+    # Bind GitHub org team to admin role
     g, github:org:vercevo:eggmans, role:admin
+  # Default to readonly for everyone else
   policy.default: role:readonly
