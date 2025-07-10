@@ -16,4 +16,4 @@ spec:
             value: /
       backendRefs:
         - name: jaeger-query
-          port: 16686
+          port: 80
