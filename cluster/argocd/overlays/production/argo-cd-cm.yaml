@@ -3,6 +3,7 @@ data:
   url: https://argocd.bergtobias.com
   users.anonymous.enabled: 'true'
   admin.enabled: 'false'
+  dex.enabled: 'true'
   dex.config: |
     connectors:
     - type: github
