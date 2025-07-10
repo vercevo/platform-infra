@@ -1,20 +1,52 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: eck-stack
+  name: eck-operator
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://helm.elastic.co
-    chart: eck-stack
-    targetRevision: 8.5.1
+    repoURL: https://github.com/elastic/cloud-on-k8s.git
+    targetRevision: v2.7.1
+    path: config/crds
   destination:
     server: https://kubernetes.default.svc
-    namespace: observability
+    namespace: elastic-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eck-operator-main
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/elastic/cloud-on-k8s.git
+    targetRevision: v2.7.1
+    path: config/operator
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: elastic-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: quickstart
+  namespace: elastic-system
+spec:
+  version: 8.5.1
+  nodeSets:
+    - name: default
+      count: 1
+      config:
+        node.store.allow_mmap: false
