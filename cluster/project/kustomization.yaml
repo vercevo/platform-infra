@@ -10,4 +10,4 @@ resources:
   #- base/pihole.yaml
   # - base/eck-stack.yaml
   - base/jaeger.yaml
-  #- base/prom-stack.yaml
+  - base/prom-stack.yaml
