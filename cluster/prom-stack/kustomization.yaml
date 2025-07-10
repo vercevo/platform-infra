@@ -1,0 +1,2 @@
+resources:
+  - https://github.com/prometheus-operator/prometheus-operator/releases/latest/download/monitoring.coreos.com-alertmanagers.yaml
