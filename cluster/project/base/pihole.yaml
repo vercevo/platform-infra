@@ -12,37 +12,50 @@ spec:
     helm:
       values: |
         dnsmasq:
-          customSettings: |
-            no-local-service
-            listen-address=0.0.0.0
+          customSettings:
+            - no-local-service
+            - listen-address=0.0.0.0
           customDnsEntries:
             - address=/example.com/192.168.178.10
-
           customCnameEntries:
             - cname=foo.nas,nas
-
-          extraConfig: |
+          extraConfig: |-
             # Allow dnsmasq to listen on all interfaces and accept queries from any network
             listen-address=0.0.0.0
             # Remove 'local-service' restriction (if set by default)
             no-resolv
             # Explicitly allow queries from all clients (disable local-service)
-            local-service
+            local-service=false
 
         persistentVolumeClaim:
           enabled: true
+          accessMode: ReadWriteOnce
+          size: 10Gi
+          storageClassName: standard
 
         serviceWeb:
+          type: LoadBalancer
           loadBalancerIP: 192.168.10.160
           annotations:
             metallb.universe.tf/allow-shared-ip: pihole-svc
-          type: LoadBalancer
+          ports:
+            - port: 80
+              targetPort: 80
+            - port: 443
+              targetPort: 443
 
         serviceDns:
+          type: LoadBalancer
           loadBalancerIP: 192.168.10.160
           annotations:
             metallb.universe.tf/allow-shared-ip: pihole-svc
-          type: LoadBalancer
+          ports:
+            - port: 53
+              protocol: UDP
+              targetPort: 53
+            - port: 53
+              protocol: TCP
+              targetPort: 53
   destination:
     server: https://kubernetes.default.svc
     namespace: pihole

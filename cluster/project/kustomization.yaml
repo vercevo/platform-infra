@@ -8,3 +8,6 @@ resources:
   - base/istio-operator.yaml
   - base/metallb.yaml
   - base/pihole.yaml
+  - base/eck-stack.yaml
+  - base/jaeger.yaml
+  - base/prom-stack.yaml

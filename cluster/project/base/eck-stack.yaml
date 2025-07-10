@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eck-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.elastic.co
+    chart: elastic/eck-stack
+    targetRevision: 2.4.0
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
