@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   sources:
-    # - repoURL: https://github.com/vercevo/platform-infra
-    #   targetRevision: HEAD
-    #   path: cluster/prom-stack
+    - repoURL: https://github.com/vercevo/platform-infra
+      targetRevision: HEAD
+      path: cluster/prom-stack
     - repoURL: https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
       targetRevision: 75.9.0
