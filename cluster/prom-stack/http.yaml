@@ -4,16 +4,17 @@ metadata:
   name: grafana
   namespace: observability
 spec:
-  parentRefs:
-    - name: gateway
-      namespace: istio-system
   hostnames:
-    - "grafana.bergtobias.com" # change to your domain
+    - "grafana.bergtobias.com"
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway
+      namespace: istio-system
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: prom-stack-grafana
+    - backendRefs:
+        - group: ''
+          kind: Service
+          name: prom-stack-grafana
           port: 80
+          weight: 1
