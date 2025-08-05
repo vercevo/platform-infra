@@ -1,8 +1,19 @@
 # Argo CD deployment
- 
+
+
+## Secrets
+
+See .examples in /cluster/secrets for secrets
+
+
 ```
 kubectl apply -k cluster/cluster-config -n kube-system
+kubectl apply -f cluster/project/base/istio-operator.yaml
+
 kubectl apply -k cluster/cert-manager
+
+kubectl apply -k cluster/istio-controlplane
+
 
 kubectl apply -f cluster/secrets
 

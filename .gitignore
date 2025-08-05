@@ -27,4 +27,15 @@ terraform.rc
 
 /terraform/secrets
 
-*/secrets
+# Ignore files (not folders) directly under /secrets
+*/secrets/*
+
+# But do NOT ignore directories under /secrets (unignore all directories)
+*/secrets/*/
+
+# Explicitly allow all files/folders inside /secrets/examples/
+!*/secrets/examples/
+!*/secrets/examples/**
+
+# (Optional) if you want to allow hidden files inside /secrets/examples
+!*/secrets/examples/.*
