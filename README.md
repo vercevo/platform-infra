@@ -1,9 +1,5 @@
 # Argo CD deployment
-
-After the GKE cluster is deployed, you can deploy Argo CD on it and use Applications resources to provision other
-components. Some componenets that are dependencies for Argo CD to work properly, such as Certificate Manager, will
-need to be deployed manually first.
-
+ 
 ```
 kubectl apply -k cluster/cluster-config -n kube-system
 kubectl apply -k cluster/cert-manager
