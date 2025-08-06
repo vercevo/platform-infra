@@ -1,3 +1,2 @@
 resources:
   - http.yaml
-  - security-policy.yaml
