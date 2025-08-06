@@ -1,12 +1,16 @@
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: jaeger-deny-all
+  name: ingress-lan-only
   namespace: istio-system
 spec:
-  selector:
-    matchLabels:
-      app: jaeger-query
-  action: DENY
+  targetRef:
+    kind: Gateway
+    group: gateway.networking.k8s.io
+    name: gateway-istio
+  action: ALLOW
   rules:
-    - {}
+  - from:
+    - source:
+        ipBlocks:
+          - 192.168.0.0/16
