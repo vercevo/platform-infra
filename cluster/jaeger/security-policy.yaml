@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: jaeger-lan-only
+  namespace: observability
+spec:
+  selector:
+    matchLabels:
+      app: jaeger-query
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            ipBlocks:
+              - 192.168.0.0/16
