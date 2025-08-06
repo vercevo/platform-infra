@@ -24,7 +24,7 @@ kubectl apply -k cluster/argocd -n argocd
 // if you are working on custom branch
 kubectl apply -k cluster/project -n argocd
 
-kubectl apply -k cluster/app-of-apps
+kubectl apply -f cluster/app-of-apps.yaml
 
 
 ```
