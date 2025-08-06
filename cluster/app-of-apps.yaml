@@ -6,7 +6,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://github.com/vercevor/platform-infra
+        repoURL: https://github.com/vercevo/platform-infra
         revision: HEAD # or 'main'
         directories:
           - path: apps/*
@@ -16,7 +16,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://github.com/vercevor/platform-infra
+        repoURL: https://github.com/vercevo/platform-infra
         targetRevision: HEAD
         path: '{{path}}' 
       destination:

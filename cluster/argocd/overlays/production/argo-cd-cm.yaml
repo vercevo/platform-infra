@@ -2,6 +2,7 @@ apiVersion: v1
 data:
   admin.enabled: "false"
   url: https://argocd.bergtobias.com
+  kustomize.buildOptions: "--enable-helm"
   dex.config: |
     connectors:
     - type: github
