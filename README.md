@@ -8,7 +8,6 @@ See .examples in /cluster/secrets for secrets
 
 ```
 kubectl apply -k cluster/cluster-config -n kube-system
-kubectl apply -f cluster/project/base/istio-operator.yaml
 
 kubectl apply -k cluster/cert-manager
 
@@ -25,6 +24,7 @@ kubectl apply -k cluster/argocd -n argocd
 // if you are working on custom branch
 kubectl apply -k cluster/project -n argocd
 
+kubectl apply -kcluster/ app-of-apps
 
-kubectl port-forward svc/argocd-server 8080:443 -n argocd
+
 ```
