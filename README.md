@@ -5,7 +5,6 @@
 
 See .examples in /cluster/secrets for secrets
 
-
 ```
 kubectl apply -k cluster/cluster-config -n kube-system
 
