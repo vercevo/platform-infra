@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: jaeger-query
+      app: gateway-istio
   action: ALLOW
   rules:
     - from:
