@@ -13,17 +13,15 @@ spec:
   template:
     metadata:
       name: '{{path.basename}}'
-      annotations:
-        backstage.io/kubernetes-id: eggman
     spec:
       project: default
       source:
         repoURL: https://github.com/vercevor/platform-infra
         targetRevision: HEAD
-        path: '{{path}}' # <-- resolves to teams/team-a/, etc.
+        path: '{{path}}' 
       destination:
         server: https://kubernetes.default.svc
-        namespace: '{{path.basename}}' # Creates a namespace matching team dir, e.g., 'team-a'
+        namespace: '{{path.basename}}' 
       syncPolicy:
         automated:
           prune: true
