@@ -6,7 +6,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: jaeger-query    # adjust to your Jaeger pod label
+      app.kubernetes.io/instance: jaeger
   policyTypes:
   - Ingress
   ingress:
