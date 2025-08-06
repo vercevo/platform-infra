@@ -39,3 +39,11 @@ terraform.rc
 
 # (Optional) if you want to allow hidden files inside /secrets/examples
 !*/secrets/examples/.*
+
+# Ignore anything with "secret" in the name
+**/*secret*
+**/secret*/**
+
+# But allow example secrets
+!**/secret.example.yaml
+!**/secret.*.example.yaml

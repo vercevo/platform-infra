@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valheim-server
+  namespace: valheim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valheim-server
+  template:
+    metadata:
+      labels:
+        app: valheim-server
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+      - name: valheim-server
+        image: ghcr.io/lloesche/valheim-server:latest
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "1"
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+        env:
+          - name: SERVER_NAME
+            value: "Eggman's Valheim Server"
+          - name: WORLD_NAME
+            value: "myworld"
+          - name: VALHEIM_SERVER_PUBLIC
+            value: "true"
+          - name: ENABLE_BEPINEX
+            value: "true"
+          - name: SERVER_PASS
+            valueFrom:
+              secretKeyRef:
+                name: valheim-server-secret
+                key: server-password
+        ports:
+          - containerPort: 2456
+            name: gameport
+            protocol: UDP
+          - containerPort: 2457
+            name: queryport
+            protocol: UDP
+        volumeMounts:
+          - name: config
+            mountPath: /config
+      volumes:
+        - name: config
+          hostPath:
+            path: /data/valheim
+            type: DirectoryOrCreate
