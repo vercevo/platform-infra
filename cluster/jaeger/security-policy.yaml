@@ -1,16 +1,15 @@
-apiVersion: security.istio.io/v1beta1
-kind: AuthorizationPolicy
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
-  name: ingress-lan-only
-  namespace: istio-system
+  name: allow-lan-only
+  namespace: observability
 spec:
-  targetRef:
-    kind: Gateway
-    group: gateway.networking.k8s.io
-    name: gateway-istio
-  action: ALLOW
-  rules:
+  podSelector:
+    matchLabels:
+      app: jaeger-query    # adjust to your Jaeger pod label
+  policyTypes:
+  - Ingress
+  ingress:
   - from:
-    - source:
-        ipBlocks:
-          - 192.168.0.0/16
+    - ipBlock:
+        cidr: 192.168.0.0/16
