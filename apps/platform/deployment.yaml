@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform   
+spec:
+  selector:
+    matchLabels:
+      app: platform
+  template:
+    metadata:
+      labels:
+        app: platform
+    spec:
+      containers:
+        - name: platform
+          image: ghcr.io/vercevo/platform-frontend:main   
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+          env:
+            - name: NEXT_PUBLIC_VALHEIM_BACKEND_URL
+              value: "http://valheim-server.valheim.svc.cluster.local:80"
+          ports:
+            - containerPort: 3000   
