@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: platform
-          image: ghcr.io/vercevo/platform-frontend:main   
+          image: ghcr.io/vercevo/platform-web:main   
           resources:
             limits:
               memory: "128Mi"
