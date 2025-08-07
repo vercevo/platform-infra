@@ -16,46 +16,52 @@ spec:
       nodeSelector:
         kubernetes.io/arch: amd64
       containers:
-      - name: valheim-server
-        image: ghcr.io/lloesche/valheim-server:latest
-        resources:
-          limits:
-            memory: "2Gi"
-            cpu: "1"
-          requests:
-            memory: "1Gi"
-            cpu: "500m"
-        env:
-          - name: SERVER_NAME
-            value: "Eggman's Valheim Server"
-          - name: WORLD_NAME
-            value: "myworld"
-          - name: VALHEIM_SERVER_PUBLIC
-            value: "true"
-          - name: ENABLE_BEPINEX
-            value: "true"
-          - name: STATUS_HTTP
-            value: "true"
-          - name: SERVER_PASS
-            valueFrom:
-              secretKeyRef:
-                name: valheim-server-secret
-                key: server-password
-        ports:
-          - containerPort: 2456
-            name: gameport
-            protocol: UDP
-          - containerPort: 2457
-            name: queryport
-            protocol: UDP
-          - containerPort: 80
-            name: httpport
-            protocol: TCP
-        volumeMounts:
-          - name: config
-            mountPath: /config
+        - name: valheim-server
+          image: ghcr.io/lloesche/valheim-server:latest
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+          env:
+            - name: SERVER_NAME
+              value: "Eggman's Valheim Server"
+            - name: WORLD_NAME
+              value: "myworld"
+            - name: VALHEIM_SERVER_PUBLIC
+              value: "true"
+            - name: ENABLE_BEPINEX
+              value: "true"
+            - name: STATUS_HTTP
+              value: "true"
+            - name: SERVER_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: valheim-server-secret
+                  key: server-password
+          ports:
+            - containerPort: 2456
+              name: gameport
+              protocol: UDP
+            - containerPort: 2457
+              name: queryport
+              protocol: UDP
+            - containerPort: 80
+              name: httpport
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: plugins
+              mountPath: /opt/valheim/BepInEx/plugins
       volumes:
         - name: config
           hostPath:
             path: /data/valheim
+            type: DirectoryOrCreate
+        - name: plugins
+          hostPath:
+            path: /data/valheim/plugins
             type: DirectoryOrCreate
