@@ -26,12 +26,6 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           env:
-            - name: BACKUPS
-              value: "false"
-            - name: UPDATE_CRON
-              value: ""
-            - name: STEAMCMD_ARGS
-              value: ""
             - name: SERVER_NAME
               value: "Eggman's Valheim Server"
             - name: WORLD_NAME
