@@ -14,7 +14,7 @@ spec:
       containers:
         - name: platform
           pullPolicy: Always
-          image: ghcr.io/vercevo/platform-web:mains
+          image: ghcr.io/vercevo/platform-web:main
           resources:
             limits:
               memory: "128Mi"
