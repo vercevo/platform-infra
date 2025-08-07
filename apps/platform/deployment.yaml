@@ -23,6 +23,6 @@ spec:
               cpu: "250m"
           env:
             - name: NEXT_PUBLIC_VALHEIM_BACKEND_URL
-              value: "http://valheim-server.valheim.svc.cluster.local:80"
+              value: "http://valheim-server.valheim.svc.cluster.local:80/status.json"
           ports:
             - containerPort: 3000   
