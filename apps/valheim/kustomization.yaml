@@ -1,5 +1,4 @@
 resources:
   - deployment.yaml
   - service.yaml
-  - http.yaml
   - service-udp.yaml
