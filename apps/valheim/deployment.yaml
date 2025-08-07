@@ -34,6 +34,8 @@ spec:
             value: "true"
           - name: ENABLE_BEPINEX
             value: "true"
+          - name: HTTP_STATUS
+            value: "true"
           - name: SERVER_PASS
             valueFrom:
               secretKeyRef:
@@ -46,6 +48,9 @@ spec:
           - containerPort: 2457
             name: queryport
             protocol: UDP
+          - containerPort: 80
+            name: httpport
+            protocol: TCP
         volumeMounts:
           - name: config
             mountPath: /config
