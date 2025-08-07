@@ -26,6 +26,10 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           env:
+            - name: UPDATE_CRON
+              value: ""
+            - name: STEAMCMD_ARGS
+              value: ""
             - name: SERVER_NAME
               value: "Eggman's Valheim Server"
             - name: WORLD_NAME
@@ -54,14 +58,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: plugins
-              mountPath: /config/bepinex/plugins # Correct mount path for plugins per container docs
+
       volumes:
         - name: config
           hostPath:
             path: /data/valheim
-            type: DirectoryOrCreate
-        - name: plugins
-          hostPath:
-            path: /data/valheim/plugins
             type: DirectoryOrCreate
