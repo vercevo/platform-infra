@@ -13,6 +13,7 @@ spec:
     spec:
       containers:
         - name: platform
+          pullPolicy: Always
           image: ghcr.io/vercevo/platform-web:main   
           resources:
             limits:
