@@ -16,3 +16,7 @@ spec:
       port: 2457
       targetPort: 2457
       protocol: UDP
+    - name: httpport
+      port: 80
+      targetPort: 80
+      protocol: TCP
