@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: platform   
+  name: platform
 spec:
   selector:
     matchLabels:
@@ -23,7 +23,7 @@ spec:
               memory: "64Mi"
               cpu: "250m"
           env:
-            - name: NEXT_PUBLIC_VALHEIM_BACKEND_URL
+            - name: VALHEIM_STATUS_ENDPOINT
               value: "https://valheim-server.valheim.svc.cluster.local:80/status.json"
           ports:
-            - containerPort: 3000   
+            - containerPort: 3000
