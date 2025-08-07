@@ -26,6 +26,8 @@ spec:
               memory: "1Gi"
               cpu: "500m"
           env:
+            - name: BACKUPS
+              value: "false"
             - name: UPDATE_CRON
               value: ""
             - name: STEAMCMD_ARGS
