@@ -57,3 +57,12 @@ spec:
             - containerPort: 80
               name: httpport
               protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+
+      volumes:
+        - name: config
+          hostPath:
+            path: /data/valheim
+            type: DirectoryOrCreate
