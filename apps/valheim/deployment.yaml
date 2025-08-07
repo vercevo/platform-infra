@@ -32,7 +32,7 @@ spec:
               value: "myworld"
             - name: VALHEIM_SERVER_PUBLIC
               value: "true"
-            - name: BEPINEX
+            - name: ENABLE_BEPINEX # Changed from BEPINEX to ENABLE_BEPINEX
               value: "true"
             - name: STATUS_HTTP
               value: "true"
@@ -55,7 +55,7 @@ spec:
             - name: config
               mountPath: /config
             - name: plugins
-              mountPath: /opt/valheim/BepInEx/plugins
+              mountPath: /config/bepinex/plugins # Correct mount path for plugins per container docs
       volumes:
         - name: config
           hostPath:
