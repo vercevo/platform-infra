@@ -24,6 +24,6 @@ spec:
               cpu: "250m"
           env:
             - name: VALHEIM_STATUS_ENDPOINT
-              value: "https://valheim-server.valheim.svc.cluster.local:80/status.json"
+              value: "http://valheim-server.valheim.svc.cluster.local:80/status.json"
           ports:
             - containerPort: 3000
