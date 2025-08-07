@@ -32,7 +32,7 @@ spec:
               value: "myworld"
             - name: VALHEIM_SERVER_PUBLIC
               value: "true"
-            - name: ENABLE_BEPINEX
+            - name: BEPINEX
               value: "true"
             - name: STATUS_HTTP
               value: "true"
