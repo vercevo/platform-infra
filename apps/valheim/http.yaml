@@ -15,5 +15,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: valheim-server
+        - name: valheim-server-http
           port: 80
