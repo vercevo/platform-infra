@@ -34,7 +34,7 @@ spec:
             value: "true"
           - name: ENABLE_BEPINEX
             value: "true"
-          - name: HTTP_STATUS
+          - name: STATUS_HTTP
             value: "true"
           - name: SERVER_PASS
             valueFrom:
