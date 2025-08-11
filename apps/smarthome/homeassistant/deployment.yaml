@@ -30,7 +30,8 @@ spec:
               cpu: "250m"
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /config/configuration.yaml
+              subPath: configuration.yaml
             - name: usb
               mountPath: /dev/ttyUSB0
           env:
@@ -38,8 +39,8 @@ spec:
               value: Europe/Stockholm
       volumes:
         - name: config
-          persistentVolumeClaim:
-            claimName: homeassistant
+          configMap:
+            name: homeassistant-config
         - name: usb
           hostPath:
             path: /dev/ttyUSB0
