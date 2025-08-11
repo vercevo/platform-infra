@@ -35,6 +35,12 @@ spec:
             runAsUser: 0
             runAsGroup: 0
             privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - SYS_RAWIO
+                - NET_RAW
+                - SYS_ADMIN
           ports:
             - containerPort: 8123
           resources:
@@ -49,6 +55,8 @@ spec:
               mountPath: /config
             - name: usb
               mountPath: /dev/ttyUSB0
+            - name: bluetooth
+              mountPath: /dev/hci0
           env:
             - name: TZ
               value: Europe/Stockholm
@@ -62,4 +70,8 @@ spec:
         - name: usb
           hostPath:
             path: /dev/ttyUSB0
+            type: CharDevice
+        - name: bluetooth
+          hostPath:
+            path: /dev/hci0
             type: CharDevice
