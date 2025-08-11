@@ -8,4 +8,7 @@ data:
     mqtt:
       broker: mqtt
       port: 1883
-    # add more HA config here
+    http:
+    use_x_forwarded_for: true
+    trusted_proxies:
+      - 10.42.0.0/16  # Replace with your actual pod CIDR if different

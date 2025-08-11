@@ -13,6 +13,12 @@ spec:
         - path:
             type: PathPrefix
             value: /
+      filters:
+        - type: RequestHeaderModifier
+          requestHeaderModifier:
+            set:
+              - name: Host
+                value: ha.bergtobias.com
       backendRefs:
         - name: homeassistant
           port: 8123
