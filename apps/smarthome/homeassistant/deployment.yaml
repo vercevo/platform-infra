@@ -55,7 +55,7 @@ spec:
       volumes:
         - name: config-pvc
           persistentVolumeClaim:
-            claimName: homeassistant-pvc
+            claimName: homeassistant
         - name: config-cm
           configMap:
             name: homeassistant
