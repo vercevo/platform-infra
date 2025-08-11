@@ -7,9 +7,6 @@ data:
   configuration.yaml: |
     default_config:
 
-    mqtt:
-      discovery: true
-      broker: "mqtt"   # hostname or IP of your broker
 
 
     http:
