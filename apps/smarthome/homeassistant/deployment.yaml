@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homeassistant
+  labels:
+    app: homeassistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homeassistant
+  template:
+    metadata:
+      labels:
+        app: homeassistant
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: arm64
+      containers:
+        - name: homeassistant
+          image: ghcr.io/home-assistant/home-assistant:stable
+          ports:
+            - containerPort: 8123
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: usb
+              mountPath: /dev/ttyUSB0
+          env:
+            - name: TZ
+              value: Europe/Stockholm
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: homeassistant
+        - name: usb
+          hostPath:
+            path: /dev/ttyUSB0
+            type: CharDevice

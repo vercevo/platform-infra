@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homeassistant
+data:
+  configuration.yaml: |
+    default_config:
+    mqtt:
+      broker: mqtt
+      port: 1883
+    # add more HA config here
