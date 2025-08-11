@@ -40,7 +40,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: homeassistant-config
+            name: homeassistant
         - name: usb
           hostPath:
             path: /dev/ttyUSB0
