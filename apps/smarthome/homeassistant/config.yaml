@@ -5,10 +5,12 @@ metadata:
 data:
   configuration.yaml: |
     default_config:
+
     mqtt:
       broker: mqtt
       port: 1883
+
     http:
-    use_x_forwarded_for: true
-    trusted_proxies:
-      - 10.42.0.0/16  # Replace with your actual pod CIDR if different
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 10.42.0.0/16  # Replace with your actual pod CIDR if different
