@@ -16,6 +16,18 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/arch: arm64
+      initContainers:
+        - name: copy-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - cp /tmp/configmap/configuration.yaml /config/configuration.yaml
+          volumeMounts:
+            - name: config-pvc
+              mountPath: /config
+            - name: config-cm
+              mountPath: /tmp/configmap
       containers:
         - name: homeassistant
           image: ghcr.io/home-assistant/home-assistant:stable
@@ -33,16 +45,18 @@ spec:
               memory: "512Mi"
               cpu: "250m"
           volumeMounts:
-            - name: config
-              mountPath: /config/configuration.yaml
-              subPath: configuration.yaml
+            - name: config-pvc
+              mountPath: /config
             - name: usb
               mountPath: /dev/ttyUSB0
           env:
             - name: TZ
               value: Europe/Stockholm
       volumes:
-        - name: config
+        - name: config-pvc
+          persistentVolumeClaim:
+            claimName: homeassistant-pvc
+        - name: config-cm
           configMap:
             name: homeassistant
         - name: usb

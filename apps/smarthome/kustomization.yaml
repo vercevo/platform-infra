@@ -3,6 +3,7 @@ resources:
   - homeassistant/service.yaml
   - homeassistant/config.yaml
   - homeassistant/http.yaml
+  - homeassistant/pvc.yaml
   - mqtt/deployment.yaml
   - mqtt/config.yaml
   - mqtt/service.yaml
