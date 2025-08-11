@@ -53,10 +53,8 @@ spec:
           volumeMounts:
             - name: config-pvc
               mountPath: /config
-            - name: usb
-              mountPath: /dev/ttyUSB0
-            - name: bluetooth
-              mountPath: /dev/hci0
+            - name: dev
+              mountPath: /dev
           env:
             - name: TZ
               value: Europe/Stockholm
@@ -67,11 +65,7 @@ spec:
         - name: config-cm
           configMap:
             name: homeassistant
-        - name: usb
+        - name: dev
           hostPath:
-            path: /dev/ttyUSB0
-            type: CharDevice
-        - name: bluetooth
-          hostPath:
-            path: /dev/hci0
-            type: CharDevice
+            path: /dev
+            type: Directory
