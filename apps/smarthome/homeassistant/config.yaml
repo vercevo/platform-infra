@@ -8,8 +8,9 @@ data:
     default_config:
 
     mqtt:
-      broker: mqtt
-      port: 1883
+      discovery: true
+      broker: "mqtt"   # hostname or IP of your broker
+
 
     http:
       use_x_forwarded_for: true
