@@ -19,3 +19,29 @@ data:
         default:
           primary-color: "#3498db"
           accent-color: "#e74c3c"
+
+    automation: [{alias: Gaming Light
+    description: ""
+    triggers:
+      - type: motion
+        device_id: b0d30164e5d7666d34cc294572f7d60f
+        entity_id: eeb9043d0f24a141192aedc6af15eebf
+        domain: binary_sensor
+        trigger: device
+        for:
+          hours: 0
+          minutes: 1
+          seconds: 0
+    conditions: []
+    actions:
+      - action: light.turn_on
+        metadata: {}
+        data: {}
+        target:
+          device_id: 24c80369a5bf5fcb657b1f66538e93b6
+    mode: single}
+    ]
+
+    script: {}
+
+    scene: {}
