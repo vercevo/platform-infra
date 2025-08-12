@@ -19,9 +19,3 @@ data:
         default:
           primary-color: "#3498db"
           accent-color: "#e74c3c"
-
-    automation: []
-
-    script: {}
-
-    scene: {}
