@@ -17,8 +17,12 @@ data:
     frontend:
       themes:
         default:
-          primary-color: "#3498db"
-          accent-color: "#e74c3c"
+            primary-color: "#FF4F00"
+            accent-color: "#1C1C1C"
+            background-color: "#F2F2F2"
+            text-primary-color: "#333333"
+            card-background-color: "#FFFFFF"
+            sidebar-background-color: "#1C1C1C"
 
     automation: !include automations.yaml
 
