@@ -16,6 +16,18 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/arch: arm64
+      initContainers:
+        - name: copy-config
+          image: busybox
+          command:
+            - sh
+            - -c
+            - cp /tmp/configmap/configuration.yaml /config/configuration.yaml
+          volumeMounts:
+            - name: config-pvc
+              mountPath: /config
+            - name: config-cm
+              mountPath: /tmp/configmap
       containers:
         - name: homeassistant
           image: ghcr.io/home-assistant/home-assistant:stable
@@ -43,9 +55,6 @@ spec:
               mountPath: /config
             - name: dev
               mountPath: /dev
-            - name: dbus-socket
-              mountPath: /var/run/dbus/system_bus_socket
-              readOnly: true
           env:
             - name: TZ
               value: Europe/Stockholm
@@ -60,7 +69,3 @@ spec:
           hostPath:
             path: /dev
             type: Directory
-        - name: dbus-socket
-          hostPath:
-            path: /var/run/dbus/system_bus_socket
-            type: Socket
