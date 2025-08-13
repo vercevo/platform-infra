@@ -26,6 +26,6 @@ data:
 
     automation: !include automations.yaml
 
-    script: {}
+    script: !include script.yaml
 
-    scene: {}
+    scene: !include scene.yaml
