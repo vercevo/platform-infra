@@ -53,6 +53,8 @@ spec:
           volumeMounts:
             - name: config-pvc
               mountPath: /config
+            - name: config-cm
+              mountPath: /config
             - name: dev
               mountPath: /dev
             - name: dbus-socket
