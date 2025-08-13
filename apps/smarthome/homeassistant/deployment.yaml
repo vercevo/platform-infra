@@ -16,18 +16,6 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/arch: arm64
-      initContainers:
-        - name: copy-config
-          image: busybox
-          command:
-            - sh
-            - -c
-            - cp /tmp/configmap/configuration.yaml /config/configuration.yaml
-          volumeMounts:
-            - name: config-pvc
-              mountPath: /config
-            - name: config-cm
-              mountPath: /tmp/configmap
       containers:
         - name: homeassistant
           image: ghcr.io/home-assistant/home-assistant:stable
