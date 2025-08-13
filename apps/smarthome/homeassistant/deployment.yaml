@@ -22,8 +22,7 @@ spec:
           command:
             - sh
             - -c
-            - cp /tmp/configmap/configuration.yaml /config/configuration.yaml && touch /config/scenes.yaml && touch /config/scripts.yaml && touch /config/automations.yaml
-
+            - cp /tmp/configmap/configuration.yaml /config/configuration.yaml
           volumeMounts:
             - name: config-pvc
               mountPath: /config
