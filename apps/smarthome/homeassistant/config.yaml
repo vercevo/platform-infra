@@ -4,7 +4,7 @@ metadata:
   name: homeassistant
   namespace: smarthome
 data:
-  configuration.yaml: |
+  configuration1.yaml: |
     default_config:
 
     http:
