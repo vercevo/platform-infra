@@ -25,3 +25,6 @@ helmCharts:
         enabled: true
       redis:
         enabled: false
+      migrateDatabaseJob:
+        useHelmHooks: true
+        applyCustomEnv: false
