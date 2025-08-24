@@ -1,21 +1,16 @@
+resources:
+  - http.yaml
+
 helmCharts:
   - name: airflow
-    repo: https://airflow.apache.org
-    version: 1.18.0
+    repo: https://charts.bitnami.com/bitnami
+    version: 13.0.4
     releaseName: airflow
     valuesInline:
       executor: LocalExecutor
       airflow:
-        fernetKey:
-          valueFrom:
-            secretKeyRef:
-              name: airflow
-              key: fernet
-        secretKey:
-          valueFrom:
-            secretKeyRef:
-              name: airflow
-              key: secretKey
+        fernetKey: "YOUR_FERNET_KEY"
+        secretKey: "YOUR_SECRET_KEY"
       webserver:
         defaultUser:
           enabled: true
@@ -23,8 +18,7 @@ helmCharts:
           password: admin
       postgresql:
         enabled: true
+        auth:
+          postgresPassword: postgres
       redis:
         enabled: false
-      migrateDatabaseJob:
-        useHelmHooks: true
-        applyCustomEnv: false
