@@ -33,3 +33,12 @@ helmCharts:
         postgresqlPassword: airflow
       redis:
         enabled: false
+      scheduler:
+        image:
+          tag: latest
+      web:
+        image:
+          tag: latest
+      worker:
+        image:
+          tag: latest
