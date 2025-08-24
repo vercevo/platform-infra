@@ -1,5 +1,31 @@
+# Use existing secret for Airflow keys
 airflow:
-  fernetKey: "MFRGGZDFMZTWQ2LKNNWG23TPOI======"
-  secretKey: "MFRGGZDFMZTWQ2LKNNWG23TPOI======"
+  existingSecret: "airflow-secret"
+# Disable Redis completely
+redis:
+  enabled: false
+# PostgreSQL (internal)
 postgresql:
-  postgresqlPassword: "YOUR_DB_PASSWORD"
+  enabled: true
+  postgresqlPassword: "YOUR_DB_PASSWORD" # or use existing secret
+# Use default Bitnami images (no custom registry)
+# image settings can be left empty to use Bitnami defaults
+image:
+  repository: bitnami/airflow
+  tag: 2.7.1-debian-11-r0
+  pullPolicy: IfNotPresent
+# Scheduler / Web / Worker
+scheduler:
+  replicas: 1
+web:
+  replicas: 1
+worker:
+  replicas: 1
+# Optional persistence
+persistence:
+  enabled: true
+  storageClass: standard
+  accessMode: ReadWriteOnce
+  size: 5Gi
+# Optional extra env vars
+extraEnvVars: []
