@@ -23,13 +23,5 @@ helmCharts:
           password: admin
       postgresql:
         enabled: true
-        auth:
-          enablePostgresUser: true
-          postgresPassword: secret
-          username: test
-          password: secret
-        postgresqlDatabase: airflow
-      connections:
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://test:secret@airflow-postgresql.airflow.svc.cluster.local:5432/airflow
       redis:
         enabled: false
