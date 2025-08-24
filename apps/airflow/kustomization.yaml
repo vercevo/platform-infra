@@ -6,7 +6,6 @@ namespace: airflow
 helmCharts:
   - name: airflow
     repo: https://charts.bitnami.com/bitnami
-    chart: airflow
     version: 16.8.3 # latest stable from Bitnami
     releaseName: airflow
     valuesInline:
