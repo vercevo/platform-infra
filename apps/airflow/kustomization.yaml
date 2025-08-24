@@ -1,10 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: airflow
+
 helmCharts:
   - name: airflow
-    repo: https://airflow.apache.org
-    version: 16.2.0
+    repo: https://charts.bitnami.com/bitnami
+    chart: airflow
+    version: 16.8.3 # latest stable from Bitnami
     releaseName: airflow
     valuesInline:
       executor: LocalExecutor
