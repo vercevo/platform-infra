@@ -14,25 +14,7 @@ image:
   tag: 3.0.5-debian-12-r0
   pullPolicy: IfNotPresent
 # Set images for scheduler, worker, and web explicitly
-scheduler:
-  image:
-    repository: bitnami/airflow-scheduler
-    tag: 3.0.5-debian-12-r0
-worker:
-  image:
-    repository: bitnami/airflow-worker
-    tag: 3.0.5-debian-12-r0
-web:
-  image:
-    repository: bitnami/airflow-web
-    tag: 3.0.5-debian-12-r0
-# Replicas
-scheduler:
-  replicas: 1
-web:
-  replicas: 1
-worker:
-  replicas: 1
+
 # Optional: Persist logs and configs
 persistence:
   enabled: true
