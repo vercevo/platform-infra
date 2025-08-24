@@ -30,7 +30,13 @@ helmCharts:
           username: admin
           password: admin
       postgresql:
-        enabled: false
+        enabled: true
+        auth:
+          enablePostgresUser: true
+          postgresPassword: postgres
+          username: "test"
+          password: "secret"
+
       redis:
         enabled: false
       createUserJob:
