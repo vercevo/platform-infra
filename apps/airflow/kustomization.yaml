@@ -1,3 +1,6 @@
+resources:
+  - http.yaml
+
 helmCharts:
   - name: airflow
     repo: https://airflow.apache.org
