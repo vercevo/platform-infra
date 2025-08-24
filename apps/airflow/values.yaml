@@ -1,0 +1,5 @@
+airflow:
+  fernetKey: "MFRGGZDFMZTWQ2LKNNWG23TPOI======"
+  secretKey: "MFRGGZDFMZTWQ2LKNNWG23TPOI======"
+postgresql:
+  postgresqlPassword: "YOUR_DB_PASSWORD"
