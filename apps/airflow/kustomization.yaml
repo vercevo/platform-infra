@@ -1,7 +1,7 @@
 helmCharts:
   - name: airflow
     repo: https://airflow.apache.org
-    version: 1.18.0 # match the repo version
+    version: 1.18.0
     releaseName: airflow
     valuesInline:
       executor: LocalExecutor
@@ -23,9 +23,11 @@ helmCharts:
           password: admin
       postgresql:
         enabled: true
+        auth:
+          username: airflow
+          password: airflow
+          postgresPassword: airflow
         postgresqlDatabase: airflow
-        postgresqlUsername: airflow
-        postgresqlPassword: airflow
       redis:
         enabled: false
       createUserJob:
