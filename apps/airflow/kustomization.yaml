@@ -5,8 +5,8 @@ namespace: airflow
 
 helmCharts:
   - name: airflow
-    repo: https://charts.bitnami.com/bitnami
-    version: 16.8.3 # latest stable from Bitnami
+    repo: https://airflow.apache.org
+    version: 2.10.3 # pick a stable release
     releaseName: airflow
     valuesInline:
       executor: LocalExecutor
@@ -33,12 +33,9 @@ helmCharts:
         postgresqlPassword: airflow
       redis:
         enabled: false
-      scheduler:
-        image:
-          tag: latest
-      web:
-        image:
-          tag: latest
-      worker:
-        image:
-          tag: latest
+      createUserJob:
+        useHelmHooks: false
+        applyCustomEnv: false
+      migrateDatabaseJob:
+        useHelmHooks: false
+        applyCustomEnv: false
