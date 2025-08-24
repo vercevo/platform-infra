@@ -8,8 +8,3 @@ redis:
 postgresql:
   enabled: true
   postgresqlPassword: "YOUR_DB_PASSWORD" # or use existing secret
-# Use Bitnami default images (v3.0.5)
-image:
-  repository: bitnami/airflow
-  tag: 3.0.5-debian-12-r0
-  pullPolicy: IfNotPresent
