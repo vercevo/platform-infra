@@ -4,18 +4,5 @@ kind: Kustomization
 helmCharts:
   - name: airbyte
     repo: https://airbytehq.github.io/helm-charts
-    version: 0.38.1
+    version: 1.7.1
     releaseName: airbyte
-    namespace: default
-    valuesInline:
-      image:
-        tag: 1.7.1
-      postgresql:
-        enabled: true
-        postgresqlUsername: airbyte
-        postgresqlPassword: airbyte
-        postgresqlDatabase: airbyte
-      scheduler:
-        replicas: 1
-      worker:
-        replicas: 1
