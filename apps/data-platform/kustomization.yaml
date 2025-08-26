@@ -1,3 +1,0 @@
-resources:
-  - ./minio/kustomization.yaml
-  - ./airbyte/kustomization.yaml
