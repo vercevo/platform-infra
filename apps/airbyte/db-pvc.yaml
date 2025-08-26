@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: airbyte-db-pvc
+  name: airbyte-db
 spec:
   accessModes:
     - ReadWriteOnce
