@@ -37,4 +37,4 @@ spec:
       volumes:
         - name: airbyte-db-storage
           persistentVolumeClaim:
-            claimName: airbyte-db-pvc
+            claimName: airbyte-db
