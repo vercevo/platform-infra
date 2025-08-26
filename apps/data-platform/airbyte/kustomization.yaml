@@ -1,0 +1,7 @@
+resources:
+  - ./db-deployment.yaml
+  - ./db-service.yaml
+  - ./db-pvc.yaml
+  - ./deployment.yaml
+  - ./service.yaml
+  - ./http.yaml
