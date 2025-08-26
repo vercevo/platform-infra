@@ -1,9 +1,0 @@
-resources:
-  - http.yaml
-helmCharts:
-  - name: airflow
-    repo: https://charts.bitnami.com/bitnami
-    version: 13.0.4
-    releaseName: airflow
-    namespace: airflow
-    valuesFile: values.yaml
