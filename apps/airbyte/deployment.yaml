@@ -21,7 +21,7 @@ spec:
             requests:
               memory: "512Mi"
               cpu: "500m"
-          image: airbyte/airbyte:latest
+          image: airbyte-server:latest
           env:
             - name: AIRBYTE_ROLE
               value: "server"
