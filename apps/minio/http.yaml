@@ -15,4 +15,4 @@ spec:
             value: /
       backendRefs:
         - name: minio
-          port: 9000
+          port: 9001
