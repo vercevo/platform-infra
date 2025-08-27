@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - http.yaml
+
+helmCharts:
+  - name: openmetadata
+    repo: https://helm.open-metadata.org
+    version: 1.9.3
+    releaseName: openmetadata
