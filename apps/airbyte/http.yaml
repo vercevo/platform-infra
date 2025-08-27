@@ -15,7 +15,7 @@ spec:
             type: PathPrefix
             value: /api/v1/connector_builder
       backendRefs:
-        - name: airbyte-airbyte-connector-builder-server-svc
+        - name: airbyte-connector-builder-server
           port: 80
     - matches:
         - path:
