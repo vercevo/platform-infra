@@ -1,26 +1,21 @@
 openmetadata:
-  # --- no built-in deps, no Airflow ---
+  # ---- Use your external Postgres (NOT MySQL)
   config:
-    airflow:
-      enabled: false
-    pipelineServiceClientConfig:
-      enabled: false
-
-    # --- use your external Postgres (NOT MySQL) ---
     database:
       enabled: true
       dbScheme: postgresql
       driverClass: org.postgresql.Driver
-      host: postgres.postgres.svc.cluster.local # change if different
+      host: postgres.postgres.svc.cluster.local # <- your service DNS
       port: 5432
       databaseName: openmetadata_db
       auth:
         username: myuser
         password:
-          secretRef: openmetadata-secrets # single secret for all creds
-          secretKey: db-password
+          # IMPORTANT: point to the PG secret below (do NOT leave mysql-secrets)
+          secretRef: openmetadata-postgresql-secrets
+          secretKey: openmetadata-postgresql-password
 
-    # --- use your external Elasticsearch ---
+    # ---- Use your external Elasticsearch
     elasticsearch:
       enabled: true
       searchType: elasticsearch # or "opensearch" if that’s what you run
@@ -31,10 +26,16 @@ openmetadata:
         enabled: true
         username: elastic
         password:
-          secretRef: openmetadata-secrets
-          secretKey: es-password
+          secretRef: elasticsearch-secrets
+          secretKey: openmetadata-elasticsearch-password
 
-  # Pod sizing (you asked to always include resources in deployments)
+    # If you’re NOT using Airflow yet, keep pipelines off
+    airflow:
+      enabled: false
+    pipelineServiceClientConfig:
+      enabled: false
+
+  # Keep resources on the Deployment (your preference)
   resources:
     requests:
       cpu: 250m
@@ -42,13 +43,3 @@ openmetadata:
     limits:
       cpu: 500m
       memory: 1Gi
-
-  # OPTIONAL: enable Ingress if you want HTTP right away (nginx example)
-  # ingress:
-  #   enabled: true
-  #   className: nginx
-  #   hosts:
-  #     - host: openmetadata.example.com
-  #       paths:
-  #         - path: /
-  #           pathType: Prefix
