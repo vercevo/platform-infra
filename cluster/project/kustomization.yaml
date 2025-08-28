@@ -7,6 +7,3 @@ resources:
   - base/istio-controlplane.yaml
   - base/istio-operator.yaml
   - base/metallb.yaml
-  - base/data/postgres.yaml
-  - base/data/elasticsearch.yaml
-  - base/data/minio.yaml
