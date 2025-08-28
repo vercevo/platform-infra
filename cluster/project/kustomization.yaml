@@ -7,8 +7,6 @@ resources:
   - base/istio-controlplane.yaml
   - base/istio-operator.yaml
   - base/metallb.yaml
-  #- base/pihole.yaml
-  # - base/eck-stack.yaml
-  - base/jaeger.yaml
-  - base/prom-stack.yaml
-  - base/postgres.yaml
+  - base/data/postgres.yaml
+  - base/data/elasticsearch.yaml
+  - base/data/minio.yaml
