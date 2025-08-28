@@ -1,0 +1,25 @@
+openmetadata:
+  config:
+    database:
+      enabled: true
+      dbScheme: postgresql
+      driverClass: org.postgresql.Driver
+      host: postgres.postgres.svc.cluster.local
+      port: 5432
+      databaseName: openmetadata_db
+      auth:
+        username: myuser
+  elasticsearch:
+    enabled: true
+    searchType: elasticsearch
+    host: elasticsearch.elastic.svc.cluster.local
+    port: 9200
+    scheme: http
+    auth:
+      enabled: true
+      username: elastic
+  extraEnvs:
+    - name: DB_USER_PASSWORD
+      value: mypassword
+    - name: ELASTICSEARCH_PASSWORD
+      value: mypassword
