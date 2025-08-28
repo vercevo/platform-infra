@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-openmetadata-db
+  namespace: postgres # <-- run it where your postgres client can reach the service (any namespace works)
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: psql
+          image: postgres:16-alpine
+          env:
+            - name: PGPASSWORD
+              value: "<SUPERUSER_PASSWORD>" # password for the superuser below
+          command:
+            - sh
+            - -lc
+            - |
+              set -euo pipefail
+              psql "host=postgres.postgres.svc.cluster.local port=5432 user=postgres dbname=postgres" -v ON_ERROR_STOP=1 <<'SQL'
+              DO $$
+              BEGIN
+                IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'myuser') THEN
+                  CREATE ROLE myuser LOGIN PASSWORD 'mypassword';
+                END IF;
+                IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'openmetadata_db') THEN
+                  CREATE DATABASE openmetadata_db OWNER myuser ENCODING 'UTF8';
+                END IF;
+              END
+              $$;
+              SQL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
