@@ -23,6 +23,12 @@ spec:
               value: single-node
             - name: ES_JAVA_OPTS
               value: "-Xms512m -Xmx512m" # cap JVM heap
+            - name: xpack.security.enabled
+              value: "false"
+            - name: xpack.security.enabled
+              value: "true"
+            - name: ELASTIC_PASSWORD
+              value: "mypassword"
           resources:
             requests:
               memory: "1Gi"
