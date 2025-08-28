@@ -6,7 +6,7 @@ openmetadata:
       driverClass: org.postgresql.Driver
       host: postgres.postgres.svc.cluster.local # matches your Service
       port: 5432
-      databaseName: openmetadata_db
+      databaseName: openmetadata_dbs
       auth:
         username: myuser
         password:
