@@ -3,6 +3,7 @@ kind: Application
 metadata:
   name: postgres
   namespace: argocd
+  tags: ["data"]
 spec:
   source:
     path: cluster/data/postgres
