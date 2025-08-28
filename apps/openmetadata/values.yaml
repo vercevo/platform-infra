@@ -1,45 +1,14 @@
 openmetadata:
-  # ---- Use your external Postgres (NOT MySQL)
   config:
     database:
       enabled: true
       dbScheme: postgresql
       driverClass: org.postgresql.Driver
-      host: postgres.postgres.svc.cluster.local # <- your service DNS
+      host: postgres.postgres.svc.cluster.local # matches your Service
       port: 5432
       databaseName: openmetadata_db
       auth:
         username: myuser
         password:
-          # IMPORTANT: point to the PG secret below (do NOT leave mysql-secrets)
           secretRef: openmetadata-postgresql-secrets
           secretKey: openmetadata-postgresql-password
-
-    # ---- Use your external Elasticsearch
-    elasticsearch:
-      enabled: true
-      searchType: elasticsearch # or "opensearch" if that’s what you run
-      host: elasticsearch.elastic.svc.cluster.local
-      port: 9200
-      scheme: http
-      auth:
-        enabled: true
-        username: elastic
-        password:
-          secretRef: elasticsearch-secrets
-          secretKey: openmetadata-elasticsearch-password
-
-    # If you’re NOT using Airflow yet, keep pipelines off
-    airflow:
-      enabled: false
-    pipelineServiceClientConfig:
-      enabled: false
-
-  # Keep resources on the Deployment (your preference)
-  resources:
-    requests:
-      cpu: 250m
-      memory: 512Mi
-    limits:
-      cpu: 500m
-      memory: 1Gi
