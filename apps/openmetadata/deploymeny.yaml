@@ -36,63 +36,33 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 20
           env:
-            # --- Postgres ---
+            # ===== Postgres =====
             - name: DB_DRIVER_CLASS
               value: org.postgresql.Driver
             - name: DB_SCHEME
               value: postgresql
             - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: om-db
-                  key: host
+              value: postgres.postgres.svc.cluster.local
             - name: DB_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: om-db
-                  key: port
+              value: "5432"
             - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: om-db
-                  key: username
+              value: myuser
             - name: DB_USER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: om-db
-                  key: password
+              value: mypassword
             - name: OM_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: om-db
-                  key: database
-            # --- Elasticsearch / OpenSearch ---
+              value: openmetadata_db
+
+            # ===== Elasticsearch =====
             - name: ELASTICSEARCH_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: om-es
-                  key: host
+              value: elasticsearch.elastic.svc.cluster.local
             - name: ELASTICSEARCH_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: om-es
-                  key: port
+              value: "9200"
             - name: ELASTICSEARCH_SCHEME
               value: http
-            # Optional, only if your ES needs auth:
-            # - name: ELASTICSEARCH_USER
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: om-es
-            #       key: username
-            # - name: ELASTICSEARCH_PASSWORD
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: om-es
-            #       key: password
-
-            # --- Misc/server tuning (JVM heap etc.) ---
-            # Adjust to your node size; OM defaults ~1Gi heap.
+            - name: ELASTICSEARCH_USER
+              value: elastic
+            - name: ELASTICSEARCH_PASSWORD
+              value: mypassword
             - name: JVM_OPTS
               value: "-Xms512m -Xmx1024m"
           resources:
