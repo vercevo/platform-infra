@@ -1,5 +1,10 @@
+# Disable the bundled dependency chart
+dependencies:
+  enabled: false
+
 openmetadata:
   config:
+    # --- Database: Postgres instead of MySQL ---
     database:
       enabled: true
       dbScheme: postgresql
@@ -9,15 +14,17 @@ openmetadata:
       databaseName: openmetadata_db
       auth:
         username: myuser
-  elasticsearch:
-    enabled: true
-    searchType: elasticsearch
-    host: elasticsearch.elastic.svc.cluster.local
-    port: 9200
-    scheme: http
-    auth:
+    # Elasticsearch connection
+    elasticsearch:
       enabled: true
-      username: elastic
+      searchType: elasticsearch
+      host: elasticsearch.elastic.svc.cluster.local
+      port: 9200
+      scheme: http
+      auth:
+        enabled: true
+        username: elastic
+  # Put passwords here if you don’t want Secrets yet
   extraEnvs:
     - name: DB_USER_PASSWORD
       value: mypassword
