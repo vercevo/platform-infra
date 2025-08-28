@@ -11,3 +11,4 @@ resources:
   # - base/eck-stack.yaml
   - base/jaeger.yaml
   - base/prom-stack.yaml
+  - base/postgres.yaml
