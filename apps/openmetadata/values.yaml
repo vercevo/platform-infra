@@ -18,8 +18,8 @@ openmetadata:
         username: myuser
         # IMPORTANT: clear secretRef/secretKey so Helm doesn't template mysql-secrets
         password:
-          secretRef: ""
-          secretKey: ""
+          secretRef: "openmetadata"
+          secretKey: "db-password"
 
     # --- external Elasticsearch ---
     elasticsearch:
@@ -31,13 +31,9 @@ openmetadata:
       auth:
         enabled: true
         username: elastic
-
-  # supply passwords via env (quick start). Use Secrets in prod.
-  extraEnvs:
-    - name: DB_USER_PASSWORD
-      value: mypassword
-    - name: ELASTICSEARCH_PASSWORD
-      value: mypassword
+        password:
+          secretRef: "openmetadata"
+          secretKey: "db-password"
 
   # optional pod sizing
   resources:
