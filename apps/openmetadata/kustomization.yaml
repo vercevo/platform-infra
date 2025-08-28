@@ -1,0 +1,4 @@
+resources:
+  - Chart
+  - airflow-httproute.yaml
+  - airflow-referencepolicy.yaml
