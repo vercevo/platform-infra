@@ -1,0 +1,56 @@
+openmetadata:
+  config:
+    # Database (default MySQL, bundled inside chart)
+    database:
+      enabled: true
+      dbScheme: mysql
+      host: openmetadata-mysql.openmetadata.svc.cluster.local
+      port: 3306
+      databaseName: openmetadata_db
+      auth:
+        username: openmetadata_user
+        password:
+          secretRef: openmetadata-mysql-secrets
+          secretKey: openmetadata-mysql-password
+
+    # Elasticsearch
+    elasticsearch:
+      enabled: true
+      host: openmetadata-elasticsearch.openmetadata.svc.cluster.local
+      port: 9200
+      scheme: http
+      auth:
+        enabled: true
+        username: elastic
+        password:
+          secretRef: openmetadata-elasticsearch-secrets
+          secretKey: openmetadata-elasticsearch-password
+
+    # MinIO (S3-compatible storage)
+    minio:
+      enabled: true
+      endpoint: http://openmetadata-minio.openmetadata.svc.cluster.local:9000
+      bucket: openmetadata
+      accessKeyId:
+        secretRef: openmetadata-minio-secrets
+        secretKey: minio-access-key
+      secretAccessKey:
+        secretRef: openmetadata-minio-secrets
+        secretKey: minio-secret-key
+
+    # Airflow (for metadata ingestion pipelines)
+    airflow:
+      enabled: true
+      auth:
+        username: admin
+        password:
+          secretRef: openmetadata-airflow-secrets
+          secretKey: airflow-password
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
