@@ -5,6 +5,10 @@ type: application
 version: 0.1.0
 
 dependencies:
+  - name: openmetadata-dependencies
+    version: 1.9.3
+    repository: https://helm.open-metadata.org/
+
   - name: openmetadata
-    version: 1.9.4
-    repository: https://open-metadata.github.io/helm-charts
+    version: 1.9.3
+    repository: https://helm.open-metadata.org/
