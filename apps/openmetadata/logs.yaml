@@ -2,13 +2,13 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: openmetadata-dependencies-logs
+  namespace: openmetadata
   labels:
-    storage.k8s.io/name: nfs
     app: airflow
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs-client
+  storageClassName: longhorn
   resources:
     requests:
       storage: 10Gi
