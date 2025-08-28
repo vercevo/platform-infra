@@ -7,6 +7,6 @@ helmCharts:
   - name: openmetadata
     releaseName: openmetadata
     namespace: openmetadata
-    version: 1.9.4
-    repo: https://open-metadata.github.io/helm-charts
+    version: 1.9.3
+    repo: https://helm.open-metadata.org
     valuesFile: values.yaml
