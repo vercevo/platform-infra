@@ -1,0 +1,15 @@
+openmetadata-dependencies:
+  mysql:
+    primary:
+      persistence:
+        accessModes: ["ReadWriteOnce"]
+  elasticsearch:
+    master:
+      persistence:
+        accessModes: ["ReadWriteOnce"]
+  minio:
+    persistence:
+      accessModes: ["ReadWriteOnce"]
+  airflow:
+    logsPersistence:
+      accessModes: ["ReadWriteOnce"]
