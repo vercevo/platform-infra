@@ -1,0 +1,10 @@
+apiVersion: v2
+name: openmetadata-stack
+description: Full OpenMetadata stack with default dependencies
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: openmetadata
+    version: 1.9.4
+    repository: https://open-metadata.github.io/helm-charts
