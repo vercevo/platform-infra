@@ -58,6 +58,9 @@ openmetadata-dependencies:
 opensearch:
   enabled: true
   fullnameOverride: opensearch
+  extraEnvs:
+    - name: OPENSEARCH_JAVA_OPTS
+      value: "-Xms256m -Xmx512m"
   master:
     replicas: 1
     resources:
