@@ -1,6 +1,14 @@
 openmetadata:
+  # --- turn OFF Airflow to avoid airflow-secrets ---
   config:
+    airflow:
+      enabled: false
+    pipelineServiceClientConfig:
+      enabled: false
+
+    # --- use external Postgres (no mysql-secrets) ---
     database:
+      enabled: true
       dbScheme: postgresql
       driverClass: org.postgresql.Driver
       host: postgres.postgres.svc.cluster.local
@@ -8,6 +16,12 @@ openmetadata:
       databaseName: openmetadata_db
       auth:
         username: myuser
+        # IMPORTANT: clear secretRef/secretKey so Helm doesn't template mysql-secrets
+        password:
+          secretRef: ""
+          secretKey: ""
+
+    # --- external Elasticsearch ---
     elasticsearch:
       enabled: true
       searchType: elasticsearch
@@ -17,10 +31,19 @@ openmetadata:
       auth:
         enabled: true
         username: elastic
-    pipelineServiceClient:
-      host: http://airflow.airflow.svc.cluster.local:8080 # only if you deploy Airflow
+
+  # supply passwords via env (quick start). Use Secrets in prod.
   extraEnvs:
     - name: DB_USER_PASSWORD
       value: mypassword
     - name: ELASTICSEARCH_PASSWORD
       value: mypassword
+
+  # optional pod sizing
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
