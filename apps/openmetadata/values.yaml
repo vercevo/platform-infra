@@ -1,0 +1,43 @@
+# Disable bundled deps since you already have Postgres, MinIO & ES
+dependencies:
+  enabled: false
+
+# Point OpenMetadata to external Postgres
+postgresql:
+  enabled: false
+  host: postgres.postgres.svc.cluster.local
+  port: 5432
+  user: myuser
+  password: mypassword
+  db: openmetadata_db
+
+# Elasticsearch config
+elasticsearch:
+  host: elasticsearch.elastic.svc.cluster.local
+  port: 9200
+extraEnvs:
+  - name: ELASTICSEARCH_USERNAME
+    value: elastic
+  - name: ELASTICSEARCH_PASSWORD
+    value: mypassword
+
+# MinIO / S3 config
+storage:
+  name: s3
+  config:
+    bucketName: openmetadata
+    endpoint: http://minio.minio.svc.cluster.local:9000
+    accessKeyId: myuser
+    secretAccessKey: mypassword
+    region: us-east-1
+    forcePathStyle: true
+
+# Resource tuning
+openmetadata:
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
