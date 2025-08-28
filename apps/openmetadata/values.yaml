@@ -42,7 +42,7 @@ openmetadata:
     airflow:
       enabled: true
       auth:
-        username: admin
+        username: airflow_user
         password:
           secretRef: openmetadata-airflow-secrets
           secretKey: airflow-password
