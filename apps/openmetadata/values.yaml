@@ -1,14 +1,44 @@
 openmetadata:
   config:
+    # === Database: Postgres only ===
     database:
       enabled: true
       dbScheme: postgresql
       driverClass: org.postgresql.Driver
-      host: postgres.postgres.svc.cluster.local # matches your Service
+      host: postgres.postgres.svc.cluster.local
       port: 5432
-      databaseName: openmetadata_dbs
+      databaseName: openmetadata_db
       auth:
         username: myuser
         password:
           secretRef: openmetadata-postgresql-secrets
           secretKey: openmetadata-postgresql-password
+
+    # === Elasticsearch ===
+    elasticsearch:
+      enabled: true
+      searchType: elasticsearch
+      host: elasticsearch.elastic.svc.cluster.local
+      port: 9200
+      scheme: http
+      auth:
+        enabled: true
+        username: elastic
+        password:
+          secretRef: openmetadata-elasticsearch-secrets
+          secretKey: openmetadata-elasticsearch-password
+
+    # === Disable Airflow completely ===
+    airflow:
+      enabled: false
+    pipelineServiceClientConfig:
+      enabled: false
+
+  # Resources (as you always want in your Deployments)
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
