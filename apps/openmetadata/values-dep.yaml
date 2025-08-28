@@ -22,3 +22,33 @@ openmetadata-dependencies:
     path: /airflow-logs
     persistence:
       enabled: false
+  mysql:
+    primary:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 512Mi
+opensearch:
+  enabled: true
+  fullnameOverride: opensearch
+  master:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+  data:
+    replicas: 1
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
