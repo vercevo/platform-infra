@@ -1,5 +1,29 @@
 openmetadata-dependencies:
   airflow:
+    scheduler:
+      resources:
+        requests:
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+    triggerer:
+      resources:
+        requests:
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+    web:
+      resources:
+        requests:
+          memory: 256Mi
+        limits:
+          memory: 512Mi
+    workers:
+      resources:
+        requests:
+          memory: 256Mi
+        limits:
+          memory: 512Mi
     extraVolumeMounts:
       - mountPath: /airflow-logs
         name: efs-airflow-logs
