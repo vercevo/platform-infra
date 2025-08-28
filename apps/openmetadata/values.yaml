@@ -1,30 +1,29 @@
 openmetadata:
-  # --- turn OFF Airflow to avoid airflow-secrets ---
+  # --- no built-in deps, no Airflow ---
   config:
     airflow:
       enabled: false
     pipelineServiceClientConfig:
       enabled: false
 
-    # --- use external Postgres (no mysql-secrets) ---
+    # --- use your external Postgres (NOT MySQL) ---
     database:
       enabled: true
       dbScheme: postgresql
       driverClass: org.postgresql.Driver
-      host: postgres.postgres.svc.cluster.local
+      host: postgres.postgres.svc.cluster.local # change if different
       port: 5432
       databaseName: openmetadata_db
       auth:
         username: myuser
-        # IMPORTANT: clear secretRef/secretKey so Helm doesn't template mysql-secrets
         password:
-          secretRef: "openmetadata"
-          secretKey: "db-password"
+          secretRef: openmetadata-secrets # single secret for all creds
+          secretKey: db-password
 
-    # --- external Elasticsearch ---
+    # --- use your external Elasticsearch ---
     elasticsearch:
       enabled: true
-      searchType: elasticsearch
+      searchType: elasticsearch # or "opensearch" if that’s what you run
       host: elasticsearch.elastic.svc.cluster.local
       port: 9200
       scheme: http
@@ -32,10 +31,10 @@ openmetadata:
         enabled: true
         username: elastic
         password:
-          secretRef: "openmetadata"
-          secretKey: "db-password"
+          secretRef: openmetadata-secrets
+          secretKey: es-password
 
-  # optional pod sizing
+  # Pod sizing (you asked to always include resources in deployments)
   resources:
     requests:
       cpu: 250m
@@ -43,3 +42,13 @@ openmetadata:
     limits:
       cpu: 500m
       memory: 1Gi
+
+  # OPTIONAL: enable Ingress if you want HTTP right away (nginx example)
+  # ingress:
+  #   enabled: true
+  #   className: nginx
+  #   hosts:
+  #     - host: openmetadata.example.com
+  #       paths:
+  #         - path: /
+  #           pathType: Prefix
