@@ -13,7 +13,7 @@ spec:
           image: postgres:16-alpine
           env:
             - name: PGPASSWORD
-              value: "<SUPERUSER_PASSWORD>" # password for the superuser below
+              value: "mypassword" # password for the superuser below
           command:
             - sh
             - -lc
