@@ -1,31 +1,6 @@
-# === Dependencies chart ===
-dependencies:
-  mysql:
-    enabled: false # disable MySQL
-  elasticsearch:
-    enabled: true # you have your own cluster
-    host: elasticsearch.elastic.svc.cluster.local
-    port: 9200
-    scheme: http
-    auth:
-      enabled: true
-      username: elastic
-      password: mypassword
-  minio:
-    enabled: true # you have MinIO already
-    host: minio.minio.svc.cluster.local
-    port: 9000
-    bucket: openmetadata
-    accessKey: myuser
-    secretKey: mypassword
-    region: us-east-1
-    forcePathStyle: true
-
-# === OpenMetadata server ===
 openmetadata:
   config:
     database:
-      enabled: true
       dbScheme: postgresql
       driverClass: org.postgresql.Driver
       host: postgres.postgres.svc.cluster.local
@@ -42,6 +17,8 @@ openmetadata:
       auth:
         enabled: true
         username: elastic
+    pipelineServiceClient:
+      host: http://airflow.airflow.svc.cluster.local:8080 # only if you deploy Airflow
   extraEnvs:
     - name: DB_USER_PASSWORD
       value: mypassword
