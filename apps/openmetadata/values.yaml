@@ -1,19 +1,44 @@
+# === Dependency chart overrides ===
+openmetadata-dependencies:
+  mysql:
+    enabled: false # disable MySQL
+  elasticsearch:
+    enabled: true
+    host: elasticsearch.elastic.svc.cluster.local
+    port: 9200
+    scheme: http
+    auth:
+      enabled: true
+      username: elastic
+      password: mypassword
+  minio:
+    enabled: true
+    host: minio.minio.svc.cluster.local
+    port: 9000
+    bucket: openmetadata
+    accessKey: myuser
+    secretKey: mypassword
+    region: us-east-1
+    forcePathStyle: true
+  airflow:
+    enabled: false # skip Airflow for now
+
+# === Core OpenMetadata server ===
 openmetadata:
   config:
     database:
-      host: <postgresql_endpoint>
-      port: 5432
-      driverClass: org.postgresql.Driver
+      enabled: true
       dbScheme: postgresql
-      dbUseSSL: true
-      databaseName: <openmetadata_database_name>
+      driverClass: org.postgresql.Driver
+      host: postgres.postgres.svc.cluster.local
+      port: 5432
+      databaseName: openmetadata_db
       auth:
-        username: <database_login_user>
+        username: myuser
         password:
-          secretRef: openmetadata-postgresql-secrets
+          secretRef: openmetadata-db-secret
           secretKey: openmetadata-postgresql-password
 
-    # === Elasticsearch ===
     elasticsearch:
       enabled: true
       searchType: elasticsearch
@@ -24,16 +49,14 @@ openmetadata:
         enabled: true
         username: elastic
         password:
-          secretRef: openmetadata-elasticsearch-secrets
+          secretRef: openmetadata-es-secret
           secretKey: openmetadata-elasticsearch-password
 
-    # === Disable Airflow completely ===
     airflow:
       enabled: false
     pipelineServiceClientConfig:
       enabled: false
 
-  # Resources (as you always want in your Deployments)
   resources:
     requests:
       cpu: 250m
