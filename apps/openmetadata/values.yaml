@@ -1,15 +1,14 @@
 openmetadata:
   config:
-    # === Database: Postgres only ===
     database:
-      enabled: true
-      dbScheme: postgresql
-      driverClass: org.postgresql.Driver
-      host: postgres.postgres.svc.cluster.local
+      host: <postgresql_endpoint>
       port: 5432
-      databaseName: openmetadata_db
+      driverClass: org.postgresql.Driver
+      dbScheme: postgresql
+      dbUseSSL: true
+      databaseName: <openmetadata_database_name>
       auth:
-        username: myuser
+        username: <database_login_user>
         password:
           secretRef: openmetadata-postgresql-secrets
           secretKey: openmetadata-postgresql-password
