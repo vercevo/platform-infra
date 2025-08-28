@@ -14,6 +14,8 @@ spec:
           env:
             - name: PGPASSWORD
               value: "mypassword" # password for the superuser below
+            - name: POSTGRES_USER
+              value: "myuser" # password for the superuser below
           command:
             - sh
             - -lc
