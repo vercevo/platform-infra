@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openmetadata
+  namespace: openmetadata
+  labels:
+    app: openmetadata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openmetadata
+  template:
+    metadata:
+      labels:
+        app: openmetadata
+    spec:
+      containers:
+        - name: server
+          image: openmetadata/server:1.9.3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8585
+            - name: admin
+              containerPort: 8586
+          # Simple TCP probes on the admin port (8586) to avoid guessing health path
+          readinessProbe:
+            tcpSocket:
+              port: 8586
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 8586
+            initialDelaySeconds: 60
+            periodSeconds: 20
+          env:
+            # --- Postgres ---
+            - name: DB_DRIVER_CLASS
+              value: org.postgresql.Driver
+            - name: DB_SCHEME
+              value: postgresql
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: om-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: om-db
+                  key: port
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: om-db
+                  key: username
+            - name: DB_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: om-db
+                  key: password
+            - name: OM_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: om-db
+                  key: database
+            # --- Elasticsearch / OpenSearch ---
+            - name: ELASTICSEARCH_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: om-es
+                  key: host
+            - name: ELASTICSEARCH_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: om-es
+                  key: port
+            - name: ELASTICSEARCH_SCHEME
+              value: http
+            # Optional, only if your ES needs auth:
+            # - name: ELASTICSEARCH_USER
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: om-es
+            #       key: username
+            # - name: ELASTICSEARCH_PASSWORD
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: om-es
+            #       key: password
+
+            # --- Misc/server tuning (JVM heap etc.) ---
+            # Adjust to your node size; OM defaults ~1Gi heap.
+            - name: JVM_OPTS
+              value: "-Xms512m -Xmx1024m"
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
