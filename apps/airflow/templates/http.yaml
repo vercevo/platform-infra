@@ -7,7 +7,7 @@ spec:
     - name: gateway
       namespace: istio-system
   hostnames:
-    - "openmetadata.bergtobias.com"
+    - "airflow.bergtobias.com"
   rules:
     - matches:
         - path:
