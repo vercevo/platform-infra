@@ -1,0 +1,11 @@
+apiVersion: v2
+name: my-airflow-chart
+description: A wrapper chart that installs the Airflow Helm Chart version 8.9.0
+type: application
+version: 0.1.0 # Your chart’s version
+appVersion: "8.9.0" # The Airflow Helm chart version for reference
+
+dependencies:
+  - name: airflow
+    version: "8.9.0"
+    repository: "https://airflow-helm.github.io/charts"
