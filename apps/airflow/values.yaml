@@ -1,4 +1,4 @@
-airflow:
+af:
   airflow:
     config:
       AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
