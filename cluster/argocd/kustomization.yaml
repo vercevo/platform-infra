@@ -26,6 +26,7 @@ patches:
         path: /spec/template/spec/nodeSelector
         value:
           kubernetes.io/arch: arm64
+  - path: overlays/production/argocd-application-controller-node-selector.yaml
 
 images:
   - name: quay.io/argoproj/argocd
