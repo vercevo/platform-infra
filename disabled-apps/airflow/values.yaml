@@ -6,8 +6,10 @@ airflow:
     useHelmHooks: false
   secret:
     - envName: GITHUB_CLIENT_ID
-      secretName: github-airflow-oauth
+      secretName: airflow-secret
       secretKey: client-id
     - envName: GITHUB_CLIENT_SECRET
-      secretName: github-airflow-oauth
+      secretName: airflow-secret
       secretKey: client-secret
+  fernetKey: fernet-key
+  fernetKeySecretName: airflow-secret
