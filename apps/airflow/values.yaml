@@ -1,0 +1,4 @@
+dags:
+  gitSync:
+    enabled: true
+    repo: https://github.com/vercevo/dags
