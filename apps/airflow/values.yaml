@@ -4,3 +4,10 @@ airflow:
     useHelmHooks: false
   createUserJob:
     useHelmHooks: false
+  secret:
+    - envName: GITHUB_CLIENT_ID
+      secretName: github-airflow-oauth
+      secretKey: client-id
+    - envName: GITHUB_CLIENT_SECRET
+      secretName: github-airflow-oauth
+      secretKey: client-secret
