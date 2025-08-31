@@ -93,7 +93,7 @@ airflow:
                 },
                 "user_info": github_user_info,
             }
-        ]t
+        ]
 
   redis:
     ## if the `stable/redis` chart is used
