@@ -1,17 +1,7 @@
 airflow:
-  extraEnv:
-    - name: TEST_ENV_VAR
-      value: "Hello, World!"
-    - name: GITHUB_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: github-airflow-oauth
-          key: client-id
-    - name: GITHUB_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: github-airflow-oauth
-          key: client-secret
+  envFrom:
+    - secretRef:
+        name: github-airflow-oauth
 
   web:
     webserverConfig:
