@@ -88,13 +88,15 @@ airflow:
                 # Default role
                 role_keys = ["Viewer"]
 
-                # Grant Admin only if in vercevo/eggmans
-                for team in teams:
-                    if team.get("organization", {}).get("login", "").lower() == "vercevo" \
-                      and team.get("slug", "").lower() == "eggmans":
-                        role_keys = ["Admin"]
+                # Admin if in vercevo/eggmans
+                if any(
+                    team.get("organization", {}).get("login", "").lower() == "vercevo"
+                    and team.get("slug", "").lower() == "eggmans"
+                    for team in teams
+                ):
+                    role_keys = ["Admin"]
 
-                return {
+                user_info = {
                     "username": f"github_{me.get('login')}",
                     "email": me.get("email") or f"{me.get('login')}@email.notfound",
                     "first_name": me.get("name") or me.get("login"),
@@ -102,6 +104,8 @@ airflow:
                     "role_keys": role_keys,
                 }
 
+                log.info("Assigning roles: %s", role_keys)
+                return user_info
 
         SECURITY_MANAGER_CLASS = CustomSecurityManager
 
