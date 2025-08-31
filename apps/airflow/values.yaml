@@ -58,8 +58,8 @@ airflow:
                 "icon": "fa-github",
                 "token_key": "access_token",
                 "remote_app": {
-                    "client_id": os.getenv("OAUTH_APP_ID"),
-                    "client_secret": os.getenv("OAUTH_APP_SECRET"),
+                    "client_id": os.getenv("GITHUB_CLIENT_ID"),
+                    "client_secret": os.getenv("GITHUB_CLIENT_SECRET"),
                     "api_base_url": "https://api.github.com",
                     "client_kwargs": {"scope": "read:user,user:email,read:org"},
                     "access_token_url": "https://github.com/login/oauth/access_token",
