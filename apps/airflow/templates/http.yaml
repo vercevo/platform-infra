@@ -14,5 +14,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: airflow-web
+        - name: airflow-api-server
           port: 8080
