@@ -10,7 +10,22 @@ patches:
   - path: overlays/production/argocd-cmd-params-cm.yaml
   - path: overlays/production/argocd-rbac-cm.yaml
   - path: overlays/production/argocd-server-service.yaml
-  - path: overlays/production/argocd-node-selector.yaml
+  - target:
+      kind: Deployment
+      namespace: argocd
+    patch: |-
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          kubernetes.io/arch: arm64
+  - target:
+      kind: StatefulSet
+      namespace: argocd
+    patch: |-
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value:
+          kubernetes.io/arch: arm64
 
 images:
   - name: quay.io/argoproj/argocd
