@@ -40,64 +40,70 @@ airflow:
       enabled: true
       stringOverride: |-
         from airflow.providers.fab.auth_manager.security_manager.override import FabAirflowSecurityManagerOverride
+        from flask_appbuilder.security.manager import AUTH_OAUTH
+        import requests
+        import os
         import logging
-        from typing import Any, Dict, List, Union
 
         log = logging.getLogger(__name__)
 
-        FAB_ADMIN_ROLE = "Admin"
-        FAB_VIEWER_ROLE = "Viewer"
-        FAB_PUBLIC_ROLE = "Public"  # Default with no permissions
+        AUTH_TYPE = AUTH_OAUTH
+        AUTH_ROLES_SYNC_AT_LOGIN = True
+        AUTH_USER_REGISTRATION = True
+        AUTH_USER_REGISTRATION_ROLE = "Viewer"  # fallback
 
-        # Replace these IDs with your actual GitHub team IDs
-        TEAM_ID_ADMIN = "vercevo/eggmans"     # e.g. vercevo/eggmans
-        TEAM_ID_VIEWER = "eggmans"    # another team
+        OAUTH_PROVIDERS = [
+            {
+                "name": "github",
+                "icon": "fa-github",
+                "token_key": "access_token",
+                "remote_app": {
+                    "client_id": os.getenv("OAUTH_APP_ID"),
+                    "client_secret": os.getenv("OAUTH_APP_SECRET"),
+                    "api_base_url": "https://api.github.com",
+                    "client_kwargs": {"scope": "read:user,user:email,read:org"},
+                    "access_token_url": "https://github.com/login/oauth/access_token",
+                    "authorize_url": "https://github.com/login/oauth/authorize",
+                    "request_token_url": None,
+                },
+            },
+        ]
 
-
-        def team_parser(team_payload: List[Dict[str, Any]]) -> List[int]:
-            """Extract team IDs from the GitHub API response."""
-            return [team["id"] for team in team_payload]
-
-
-        def map_roles(team_list: List[int]) -> List[str]:
-            """Map GitHub team IDs to Airflow roles."""
-            team_role_map = {
-                TEAM_ID_ADMIN: FAB_ADMIN_ROLE,
-                TEAM_ID_VIEWER: FAB_VIEWER_ROLE,
-            }
-            return list(set(team_role_map.get(team, FAB_PUBLIC_ROLE) for team in team_list))
-
-
-        class GithubTeamAuthorizer(FabAirflowSecurityManagerOverride):
-            def get_oauth_user_info(self, provider: str, resp: Any) -> Dict[str, Union[str, List[str]]]:
+        class CustomSecurityManager(FabAirflowSecurityManagerOverride):
+            def get_oauth_user_info(self, provider, resp):
                 if provider != "github":
                     return super().get_oauth_user_info(provider, resp)
 
-                remote_app = self.appbuilder.sm.oauth_remotes[provider]
+                token = resp.get("access_token")
+                headers = {"Authorization": f"token {token}"}
 
-                # Query GitHub APIs
-                me_resp = remote_app.get("user")
-                user_data = me_resp.json()
-                teams_resp = remote_app.get("user/teams")
-                team_data = teams_resp.json()
+                # Fetch GitHub user + teams
+                me = requests.get("https://api.github.com/user", headers=headers).json()
+                teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
 
-                # Parse + map to roles
-                team_ids = team_parser(team_data)
-                roles = map_roles(team_ids)
+                log.info("=== GitHub login ===")
+                log.info("User: %s", me)
+                log.info("Teams: %s", teams)
 
-                log.info("=== DEBUG: GitHub user info ===")
-                log.info("User: %s", user_data)
-                log.info("Teams: %s", team_data)
-                log.info("Mapped roles: %s", roles)
-                log.info("===============================")
+                # Default role = Viewer
+                role_keys = ["Viewer"]
+
+                # Check if user is in vercevo/eggmans
+                for team in teams:
+                    org = team.get("organization", {}).get("login", "").lower()
+                    slug = team.get("slug", "").lower()
+                    if org == "vercevo" and slug == "eggmans":
+                        role_keys = ["Admin"]
 
                 return {
-                    "username": "github_" + user_data.get("login"),
-                    "email": user_data.get("email") or f"{user_data.get('login')}@email.notfound",
-                    "first_name": user_data.get("name") or user_data.get("login"),
+                    "username": f"github_{me.get('login')}",
+                    "email": me.get("email") or f"{me.get('login')}@email.notfound",
+                    "first_name": me.get("name") or me.get("login"),
                     "last_name": "",
-                    "role_keys": roles,
+                    "role_keys": role_keys,
                 }
+
+        SECURITY_MANAGER_CLASS = CustomSecurityManager
 
   redis:
     ## if the `stable/redis` chart is used
