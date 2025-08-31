@@ -1,7 +1,7 @@
+config:
+  AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
+  AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
 airflow:
-  config:
-    AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
-    AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
   airflow:
     extraEnvFrom:
       - secretRef:
