@@ -1,9 +1,8 @@
 airflow:
   airflow:
-    extraEnv:
-      envFrom:
-        - secretRef:
-            name: github-airflow-oauth
+    extraEnvFrom:
+      - secretRef:
+          name: github-airflow-oauth
   web:
     webserverConfig:
       enabled: true
