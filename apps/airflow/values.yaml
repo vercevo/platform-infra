@@ -1,6 +1,6 @@
 airflow:
   airflow:
-    executors: "KubernetesExecutor"
+    executor: "KubernetesExecutor"
     config:
       AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
       AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
@@ -35,7 +35,7 @@ airflow:
     replicas: 2
     webserverConfig:
       enabled: true
-      stringOverride: |
+      stringOverride: |-
         import os
         from flask_appbuilder.security.manager import AUTH_OAUTH
 
