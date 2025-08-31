@@ -19,7 +19,9 @@ airflow:
   dags:
     gitSync:
       enabled: true
-      repo: "https://github.com/vercevo/dags"
+      repo: "https://github.com/vercevo/dags.git"
+      branch: main
+      depth: 1
 
   apiServer:
     extraVolumes:
