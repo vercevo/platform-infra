@@ -3,9 +3,6 @@ af:
     config:
       AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
       AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
-    extraEnvFrom:
-      - secretRef:
-          name: github-airflow-oauth
   web:
     webserverConfig:
       enabled: true
