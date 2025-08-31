@@ -4,3 +4,32 @@ airflow:
     useHelmHooks: false
   createUserJob:
     useHelmHooks: false
+  env:
+    - name: GITHUB_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: github-airflow-oauth
+          key: client-id
+    - name: GITHUB_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: github-airflow-oauth
+          key: client-secret
+    - name: AIRFLOW__FAB_AUTH_MANAGER__OAUTH_PROVIDERS
+      value: |
+        [
+          {
+            "name": "github",
+            "icon": "fa-github",
+            "token_key": "access_token",
+            "remote_app": {
+              "client_id": "${GITHUB_CLIENT_ID}",
+              "client_secret": "${GITHUB_CLIENT_SECRET}",
+              "api_base_url": "https://api.github.com",
+              "client_kwargs": {"scope": "read:user, read:org"},
+              "access_token_url": "https://github.com/login/oauth/access_token",
+              "authorize_url": "https://github.com/login/oauth/authorize",
+              "request_token_url": null
+            }
+          }
+        ]
