@@ -1,0 +1,13 @@
+airflow:
+  executor: "KubernetesExecutor"
+  env: []
+
+  volumes: []
+
+  volumeMounts: []
+
+  secret: []
+  # - envName: ""
+  #   secretName: ""
+  #   secretKey: ""
+  createUserJob:
