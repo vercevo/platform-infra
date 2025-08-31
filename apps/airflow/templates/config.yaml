@@ -7,21 +7,13 @@ data:
   webserver_config.py: |
     from flask_appbuilder.security.manager import AUTH_OAUTH
     from airflow.providers.fab.auth_manager.security_manager.override import FabAirflowSecurityManagerOverride
-    import os
-    import logging
+    import os, logging, re
 
     log = logging.getLogger(__name__)
 
     AUTH_TYPE = AUTH_OAUTH
     AUTH_USER_REGISTRATION = True
     AUTH_ROLES_SYNC_AT_LOGIN = True
-
-    # Map the role keys we return to actual FAB roles
-    AUTH_ROLES_MAPPING = {
-        "Admin": ["Admin"],
-        "Viewer": ["Viewer"],
-        "Public": ["Public"],
-    }
 
     OAUTH_PROVIDERS = [
         {
@@ -32,13 +24,23 @@ data:
                 "client_id": os.environ.get("GITHUB_CLIENT_ID"),
                 "client_secret": os.environ.get("GITHUB_CLIENT_SECRET"),
                 "api_base_url": "https://api.github.com",
-                "client_kwargs": {"scope": "read:user, read:org"},
+                # If you want reliable email, add user:email
+                "client_kwargs": {"scope": "read:user, read:org, user:email"},
                 "access_token_url": "https://github.com/login/oauth/access_token",
                 "authorize_url": "https://github.com/login/oauth/authorize",
                 "request_token_url": None,
             },
         }
     ]
+
+    def _split_name(full: str | None, fallback: str) -> tuple[str, str]:
+        """Split a full name into (first, last) with sensible fallbacks."""
+        if not full:
+            return fallback, ""
+        parts = re.split(r"\s+", full.strip())
+        if len(parts) == 1:
+            return parts[0], ""
+        return parts[0], " ".join(parts[1:])
 
     class GithubTeamAuthorizer(FabAirflowSecurityManagerOverride):
         def get_oauth_user_info(self, provider, resp):
@@ -47,27 +49,36 @@ data:
 
             remote = self.appbuilder.sm.oauth_remotes[provider]
 
-            # Basic user info
             me = remote.get("user").json()
+            login = (me.get("login") or "").strip()
+            full_name = (me.get("name") or "").strip()
+            first_name, last_name = _split_name(full_name, login or "github_user")
 
-            # Team membership (requires read:org scope)
+            # Teams (needs read:org)
             teams_resp = remote.get("user/teams")
             teams = teams_resp.json() if teams_resp.ok else []
 
-            # Admin if member of org 'vercevo' AND team 'eggmans'
             is_admin = any(
                 (t.get("organization", {}) or {}).get("login", "").lower() == "vercevo"
                 and t.get("slug", "").lower() == "eggmans"
                 for t in teams
             )
-
             roles = ["Admin"] if is_admin else ["Viewer"]
 
+            # Optional: get a verified primary email if not public on profile
+            email = me.get("email")
+            if not email:
+                emails_resp = remote.get("user/emails")
+                if emails_resp.ok:
+                    emails = emails_resp.json()
+                    primary = next((e["email"] for e in emails if e.get("primary") and e.get("verified")), None)
+                    email = primary or (emails[0]["email"] if emails else None)
+
             return {
-                "username": "github_" + (me.get("login") or ""),
-                "email": me.get("email"),
-                "first_name": (me.get("name") or me.get("login") or ""),
-                "last_name": "",
+                "username": f"github_{login}",
+                "email": email,
+                "first_name": first_name,
+                "last_name": last_name,
                 "role_keys": roles,
             }
 
