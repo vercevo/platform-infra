@@ -17,6 +17,20 @@ spec:
       nodeSelector:
         kubernetes.io/arch: arm64
       initContainers:
+        - name: ensure-files
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              for f in automations.yaml scenes.yaml scripts.yaml; do
+                if [ ! -f /config/$f ]; then
+                  echo "[]" > /config/$f
+                fi
+              done
+          volumeMounts:
+            - name: config-pvc
+              mountPath: /config
         - name: copy-config
           image: busybox
           command:
