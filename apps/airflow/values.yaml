@@ -15,7 +15,7 @@ airflow:
   fernetKeySecretName: airflow-secret
   extraEnv:
     - name: AIRFLOW__FAB_AUTH_MANAGER__OAUTH_PROVIDERS
-      value: |
+      value: |-
         [
           {
             "name": "github",
