@@ -36,88 +36,50 @@ airflow:
     webserverConfig:
       enabled: true
       stringOverride: |-
-        from airflow.providers.fab.auth_manager.security_manager.override import FabAirflowSecurityManagerOverride
-        from flask_appbuilder.security.manager import AUTH_OAUTH
-        import requests
         import os
-        import logging
-
-        log = logging.getLogger(__name__)
+        from flask_appbuilder.security.manager import AUTH_OAUTH
 
         AUTH_TYPE = AUTH_OAUTH
-        AUTH_ROLES_SYNC_AT_LOGIN = True   # refresh roles on every login
-        AUTH_USER_REGISTRATION = True     # allow auto user creation
-        AUTH_USER_REGISTRATION_ROLE = "Viewer"  # fallback role if no match
+        AUTH_ROLES_SYNC_AT_LOGIN = True
+        AUTH_USER_REGISTRATION = True
+        AUTH_USER_REGISTRATION_ROLE = "Viewer"
 
-        # Configure OAuth providers
+        AUTH_ROLES_MAPPING = {
+            "vercevo:eggmans": ["Admin"],
+        }
+
+        def github_user_info(resp):
+            token = resp.json().get("access_token")
+            import requests
+            headers = {"Authorization": f"token {token}"}
+            me = requests.get("https://api.github.com/user", headers=headers).json()
+            teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
+            print("DEBUG User:", me)
+            print("DEBUG Teams:", teams)
+            return {
+                "username": me.get("login"),
+                "email": me.get("email") or f"{me.get('login')}@email.notfound",
+                "first_name": me.get("name") or me.get("login"),
+                "last_name": "",
+            }
+
         OAUTH_PROVIDERS = [
             {
                 "name": "github",
                 "icon": "fa-github",
                 "token_key": "access_token",
                 "remote_app": {
-                    "client_id": os.getenv("OAUTH_APP_ID"),
-                    "client_secret": os.getenv("OAUTH_APP_SECRET"),
-                    "api_base_url": "https://api.github.com",
-                    "client_kwargs": {"scope": "read:user, user:email, read:org"},
+                    "client_id": os.getenv("GITHUB_CLIENT_ID"),
+                    "client_secret": os.getenv("GITHUB_CLIENT_SECRET"),
+                    "api_base_url": "https://api.github.com/",
+                    "client_kwargs": {"scope": "read:user,user:email,read:org"},
                     "access_token_url": "https://github.com/login/oauth/access_token",
                     "authorize_url": "https://github.com/login/oauth/authorize",
                     "request_token_url": None,
                 },
-            },
+                "user_info": github_user_info,
+            }
         ]
-
-
-        class CustomSecurityManager(FabAirflowSecurityManagerOverride):
-            """
-            Custom Airflow SecurityManager that enforces GitHub team membership
-            and maps teams → Airflow roles.
-            """
-
-            def get_oauth_user_info(self, provider, resp):
-                if provider != "github":
-                    return super().get_oauth_user_info(provider, resp)
-
-                token = resp.json().get("access_token")
-                if not token:
-                    raise Exception("No GitHub OAuth token returned")
-
-                headers = {"Authorization": f"token {token}"}
-
-                # Get user profile
-                me = requests.get("https://api.github.com/user", headers=headers).json()
-                username = me.get("login")
-
-                # Get teams (requires read:org scope)
-                teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
-
-                log.info("=== GitHub OAuth Debug ===")
-                log.info(f"User: {username}")
-                log.info(f"Teams: {teams}")
-                log.info("==========================")
-
-                # Example: only vercevo/eggmans gets Admin
-                role_keys = []
-                for team in teams:
-                    org = team["organization"]["login"].lower()
-                    slug = team["slug"].lower()
-                    if org == "vercevo" and slug == "eggmans":
-                        role_keys.append("Admin")
-
-                # If no match, fall back to Viewer
-                if not role_keys:
-                    role_keys = ["Viewer"]
-
-                return {
-                    "username": f"github_{username}",
-                    "email": me.get("email") or f"{username}@email.notfound",
-                    "first_name": me.get("name") or username,
-                    "last_name": "",
-                    "role_keys": role_keys,
-                }
-
-
-        SECURITY_MANAGER_CLASS = CustomSecurityManager
 
   redis:
     ## if the `stable/redis` chart is used
