@@ -1,7 +1,5 @@
 airflow:
   airflow:
-    executor: KubernetesExecutor
-
     config:
       AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
       AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
@@ -60,21 +58,3 @@ airflow:
                 },
             }
         ]
-
-  scheduler:
-    replicas: 2
-
-  redis:
-    enabled: false
-  flower:
-    enabled: false
-  pgbouncer:
-    enabled: false
-
-  resources:
-    requests:
-      cpu: 200m
-      memory: 512Mi
-    limits:
-      cpu: 1
-      memory: 1Gi
