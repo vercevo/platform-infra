@@ -1,4 +1,9 @@
-dags:
-  gitSync:
-    enabled: true
-    repo: https://github.com/vercevo/dags
+airflow:
+  dags:
+    gitSync:
+      enabled: true
+      repo: https://github.com/vercevo/dags
+      branch: main # usually needed
+      rev: HEAD # (optional) pin to revision
+      depth: 1 # (optional) shallow clone
+      syncWait: 60 # (optional) seconds between syncs
