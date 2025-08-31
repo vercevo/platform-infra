@@ -8,12 +8,12 @@ airflow:
         valueFrom:
           secretKeyRef:
             name: github-airflow-oauth
-            key: client_id
+            key: client-id
       - name: GITHUB_CLIENT_SECRET
         valueFrom:
           secretKeyRef:
             name: github-airflow-oauth
-            key: client_secret
+            key: client-secret
 
   web:
     webserverConfig:
