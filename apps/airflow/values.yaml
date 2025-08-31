@@ -60,11 +60,12 @@ airflow:
             }
         ]
 
-  flower:
-    enabled: false
-  pgbouncer:
-    enabled: false
   redis:
+    ## if the `stable/redis` chart is used
     enabled: false
-  worker:
+  flower:
+    ## if the airflow flower UI should be deployed
+    enabled: false
+  workers:
+    ## if the airflow workers StatefulSet should be deployed
     enabled: false
