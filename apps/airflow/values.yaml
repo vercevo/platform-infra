@@ -41,7 +41,13 @@ airflow:
 
         AUTH_TYPE = AUTH_OAUTH
         AUTH_USER_REGISTRATION = True
-        AUTH_USER_REGISTRATION_ROLE = "User"
+        AUTH_USER_REGISTRATION_ROLE = "Public"   # fallback role (can be stripped of all perms)
+        AUTH_ROLES_SYNC_AT_LOGIN = True
+
+        # Map team to Airflow role
+        AUTH_ROLES_MAPPING = {
+            "vercevo:eggmans": ["User"],   # only members of vercevo/eggmans get "User" role
+        }
 
         OAUTH_PROVIDERS = [
             {
