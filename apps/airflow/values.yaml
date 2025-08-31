@@ -32,7 +32,7 @@ airflow:
       wait: 60
 
   web:
-    replicas: 2
+    replicas: 1
     webserverConfig:
       enabled: true
       stringOverride: |-
