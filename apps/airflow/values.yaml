@@ -5,16 +5,6 @@ airflow:
   createUserJob:
     useHelmHooks: false
   env:
-    - name: GITHUB_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: github-airflow-oauth
-          key: client-id
-    - name: GITHUB_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: github-airflow-oauth
-          key: client-secret
     - name: AIRFLOW__FAB_AUTH_MANAGER__OAUTH_PROVIDERS
       value: |
         [
@@ -33,3 +23,14 @@ airflow:
             }
           }
         ]
+  extraEnv:
+    - name: GITHUB_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: github-airflow-oauth
+          key: client-id
+    - name: GITHUB_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: github-airflow-oauth
+          key: client-secret
