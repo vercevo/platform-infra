@@ -77,7 +77,7 @@ airflow:
                 token = resp.get("access_token")
                 headers = {"Authorization": f"token {token}"}
 
-                # Fetch GitHub user + teams
+                import requests
                 me = requests.get("https://api.github.com/user", headers=headers).json()
                 teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
 
@@ -85,14 +85,13 @@ airflow:
                 log.info("User: %s", me)
                 log.info("Teams: %s", teams)
 
-                # Default role = Viewer
+                # Default role
                 role_keys = ["Viewer"]
 
-                # Check if user is in vercevo/eggmans
+                # Grant Admin only if in vercevo/eggmans
                 for team in teams:
-                    org = team.get("organization", {}).get("login", "").lower()
-                    slug = team.get("slug", "").lower()
-                    if org == "vercevo" and slug == "eggmans":
+                    if team.get("organization", {}).get("login", "").lower() == "vercevo" \
+                      and team.get("slug", "").lower() == "eggmans":
                         role_keys = ["Admin"]
 
                 return {
@@ -102,6 +101,7 @@ airflow:
                     "last_name": "",
                     "role_keys": role_keys,
                 }
+
 
         SECURITY_MANAGER_CLASS = CustomSecurityManager
 
