@@ -1,32 +1,39 @@
 airflow:
   extraEnv:
-    envFrom:
-      - secretRef:
+    - name: GITHUB_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
           name: github-airflow-oauth
-  web:
-    webserverConfig:
-      enabled: true
-      stringOverride: |
-        import os
-        from flask_appbuilder.security.manager import AUTH_OAUTH
+          key: client-id
+    - name: GITHUB_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: github-airflow-oauth
+          key: client-secret
+  # (alt) mount whole secret at once:
+  # extraEnvFrom:
+  #   - secretRef: { name: github-airflow-oauth }
 
-        AUTH_TYPE = AUTH_OAUTH
-        AUTH_USER_REGISTRATION = True
-        AUTH_USER_REGISTRATION_ROLE = "User"
-
-        OAUTH_PROVIDERS = [
-            {
-                "name": "github",
-                "icon": "fa-github",
-                "token_key": "access_token",
-                "remote_app": {
-                    "client_id": os.getenv("GITHUB_CLIENT_ID"),
-                    "client_secret": os.getenv("GITHUB_CLIENT_SECRET"),
-                    "api_base_url": "https://api.github.com/",
-                    "client_kwargs": {"scope": "read:user,user:email,read:org"},
-                    "access_token_url": "https://github.com/login/oauth/access_token",
-                    "authorize_url": "https://github.com/login/oauth/authorize",
-                    "request_token_url": None,
-                },
-            }
-        ]
+web:
+  webserverConfig:
+    enabled: true
+    stringOverride: |
+      import os
+      from flask_appbuilder.security.manager import AUTH_OAUTH
+      AUTH_TYPE = AUTH_OAUTH
+      AUTH_USER_REGISTRATION = True
+      AUTH_USER_REGISTRATION_ROLE = "User"
+      OAUTH_PROVIDERS = [{
+        "name": "github",
+        "icon": "fa-github",
+        "token_key": "access_token",
+        "remote_app": {
+          "client_id": os.getenv("GITHUB_CLIENT_ID"),
+          "client_secret": os.getenv("GITHUB_CLIENT_SECRET"),
+          "api_base_url": "https://api.github.com/",
+          "client_kwargs": {"scope": "read:user,user:email,read:org"},
+          "access_token_url": "https://github.com/login/oauth/access_token",
+          "authorize_url": "https://github.com/login/oauth/authorize",
+          "request_token_url": None,
+        },
+      }]
