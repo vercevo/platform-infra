@@ -39,18 +39,49 @@ airflow:
     webserverConfig:
       enabled: true
       stringOverride: |-
-        from airflow.providers.fab.auth_manager.security_manager.override import FabAirflowSecurityManagerOverride
-        from flask_appbuilder.security.manager import AUTH_OAUTH
-        import requests
         import os
         import logging
+        from airflow.providers.fab.auth_manager.security_manager.override import FabAirflowSecurityManagerOverride
+        from typing import Any, Union
 
         log = logging.getLogger(__name__)
+        log.setLevel(os.getenv("AIRFLOW__LOGGING__FAB_LOGGING_LEVEL", "INFO"))
 
-        AUTH_TYPE = AUTH_OAUTH
-        AUTH_ROLES_SYNC_AT_LOGIN = True
-        AUTH_USER_REGISTRATION = True
-        AUTH_USER_REGISTRATION_ROLE = "Viewer"  # fallback
+        FAB_ADMIN_ROLE = "Admin"
+        FAB_VIEWER_ROLE = "Viewer"
+        FAB_PUBLIC_ROLE = "Public"  # fallback role
+
+        TEAM_ID_A_FROM_GITHUB = 123  # Replace with real team IDs
+        TEAM_ID_B_FROM_GITHUB = 456
+
+
+        def team_parser(team_payload: list[dict[str, Any]]) -> list[int]:
+            return [team["id"] for team in team_payload]
+
+
+        def map_roles(team_list: list[int]) -> list[str]:
+            team_role_map = {
+                TEAM_ID_A_FROM_GITHUB: FAB_ADMIN_ROLE,
+                TEAM_ID_B_FROM_GITHUB: FAB_VIEWER_ROLE,
+            }
+            return list({team_role_map.get(team, FAB_PUBLIC_ROLE) for team in team_list})
+
+
+        class GithubTeamAuthorizer(FabAirflowSecurityManagerOverride):
+            def get_oauth_user_info(self, provider: str, resp: Any) -> dict[str, Union[str, list[str]]]:
+                remote_app = self.appbuilder.sm.oauth_remotes[provider]
+                me = remote_app.get("user")
+                user_data = me.json()
+                team_data = remote_app.get("user/teams")
+                teams = team_parser(team_data.json())
+                roles = map_roles(teams)
+
+                log.debug(f"User info from GitHub: {user_data}\nTeam info from GitHub: {teams}")
+                return {
+                    "username": "github_" + user_data.get("login"),
+                    "role_keys": roles,
+                }
+
 
         OAUTH_PROVIDERS = [
             {
@@ -58,56 +89,19 @@ airflow:
                 "icon": "fa-github",
                 "token_key": "access_token",
                 "remote_app": {
-                    "client_id": os.getenv("GITHUB_CLIENT_ID"),
-                    "client_secret": os.getenv("GITHUB_CLIENT_SECRET"),
-                    "api_base_url": "https://api.github.com",
-                    "client_kwargs": {"scope": "read:user,user:email,read:org"},
+                    "client_id": os.environ.get("GITHUB_CLIENT_ID"),
+                    "client_secret": os.environ.get("GITHUB_CLIENT_SECRET"),
+                    "api_base_url": "https://api.github.com/",
+                    "request_token_url": None,
                     "access_token_url": "https://github.com/login/oauth/access_token",
                     "authorize_url": "https://github.com/login/oauth/authorize",
-                    "request_token_url": None,
+                    "client_kwargs": {"scope": "read:org"},
                 },
-            },
+            }
         ]
 
-        class CustomSecurityManager(FabAirflowSecurityManagerOverride):
-            def get_oauth_user_info(self, provider, resp):
-                if provider != "github":
-                    return super().get_oauth_user_info(provider, resp)
-
-                token = resp.get("access_token")
-                headers = {"Authorization": f"token {token}"}
-
-                import requests
-                me = requests.get("https://api.github.com/user", headers=headers).json()
-                teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
-
-                log.info("=== GitHub login ===")
-                log.info("User: %s", me)
-                log.info("Teams: %s", teams)
-
-                # Default role
-                role_keys = ["Viewer"]
-
-                # Admin if in vercevo/eggmans
-                if any(
-                    team.get("organization", {}).get("login", "").lower() == "vercevo"
-                    and team.get("slug", "").lower() == "eggmans"
-                    for team in teams
-                ):
-                    role_keys = ["Admin"]
-
-                user_info = {
-                    "username": f"github_{me.get('login')}",
-                    "email": me.get("email") or f"{me.get('login')}@email.notfound",
-                    "first_name": me.get("name") or me.get("login"),
-                    "last_name": "",
-                    "role_keys": role_keys,
-                }
-
-                log.info("Assigning roles: %s", role_keys)
-                return user_info
-
-        SECURITY_MANAGER_CLASS = CustomSecurityManager
+        AUTH_ROLE_ADMIN = FAB_ADMIN_ROLE
+        AUTH_ROLE_PUBLIC = FAB_PUBLIC_ROLE
 
   redis:
     ## if the `stable/redis` chart is used
