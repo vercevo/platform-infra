@@ -16,6 +16,11 @@ airflow:
   fernetKey: fernet-key
   fernetKeySecretName: airflow-secret
 
+  dags:
+    gitSync:
+      enabled: true
+      repo: "https://github.com/vercevo/dags"
+
   apiServer:
     extraVolumes:
       - name: webserver-config
