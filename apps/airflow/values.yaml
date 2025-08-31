@@ -6,13 +6,14 @@ airflow:
   executor: "KubernetesExecutor"
 
   config:
-    # Base config
-    AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
-    AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: "True"
-    AIRFLOW__KUBERNETES__NAMESPACE: "airflow"
-    AIRFLOW__KUBERNETES__DELETE_WORKER_PODS: "True"
-    AIRFLOW__KUBERNETES__DELETE_WORKER_PODS_ON_FAILURE: "True"
-    AIRFLOW__KUBERNETES__DAGS_IN_IMAGE: "False"
+    webserver:
+      base_url: "https://airflow.bergtobias.com"
+      enable_proxy_fix: "True"
+    kubernetes:
+      namespace: "airflow"
+      delete_worker_pods: "True"
+      delete_worker_pods_on_failure: "True"
+      dags_in_image: "False"
 
     # Enable new auth_manager (FabAuthManager)
     AIRFLOW__WEBSERVER__AUTH_BACKEND: "airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager"
