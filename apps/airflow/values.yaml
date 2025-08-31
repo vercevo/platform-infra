@@ -50,8 +50,8 @@ airflow:
         FAB_PUBLIC_ROLE = "Public"  # Default with no permissions
 
         # Replace these IDs with your actual GitHub team IDs
-        TEAM_ID_ADMIN = vercevo/eggmans     # e.g. vercevo/eggmans
-        TEAM_ID_VIEWER = eggmans    # another team
+        TEAM_ID_ADMIN = "vercevo/eggmans"     # e.g. vercevo/eggmans
+        TEAM_ID_VIEWER = "eggmans"    # another team
 
 
         def team_parser(team_payload: List[Dict[str, Any]]) -> List[int]:
