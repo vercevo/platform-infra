@@ -58,3 +58,10 @@ airflow:
                 },
             }
         ]
+        '
+  flower:
+    enabled: false
+  pgbouncer:
+    enabled: false
+  redis:
+    enabled: false
