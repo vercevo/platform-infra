@@ -7,9 +7,9 @@ airflow:
   secret:
     - envName: GITHUB_CLIENT_ID
       secretName: airflow-secret
-      secretKey: client-id
+      secretKey: github-id
     - envName: GITHUB_CLIENT_SECRET
       secretName: airflow-secret
-      secretKey: client-secret
+      secretKey: github-secret
   fernetKey: fernet-key
   fernetKeySecretName: airflow-secret
