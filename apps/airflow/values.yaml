@@ -46,7 +46,7 @@ airflow:
 
         # Map team to Airflow role
         AUTH_ROLES_MAPPING = {
-            "vercevo:eggmans": ["User"],   # only members of vercevo/eggmans get "User" role
+            "vercevo:eggmans": ["Admin"],   # only members of vercevo/eggmans get "User" role
         }
 
         OAUTH_PROVIDERS = [
