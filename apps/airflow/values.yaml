@@ -77,6 +77,7 @@ airflow:
                 token = resp.get("access_token")
                 headers = {"Authorization": f"token {token}"}
 
+                import requests
                 me = requests.get("https://api.github.com/user", headers=headers).json()
                 teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
 
@@ -84,23 +85,23 @@ airflow:
                 log.info("User: %s", me)
                 log.info("Teams: %s", teams)
 
-                # Check membership in vercevo/eggmans
-                in_team = any(
-                    team.get("organization", {}).get("login", "").lower() == "vercevo"
-                    and team.get("slug", "").lower() == "eggmans"
-                    for team in teams
-                )
+                # Default role
+                role_keys = ["Viewer"]
 
-                if not in_team:
-                    raise Exception(f"Access denied: {me.get('login')} not in vercevo/eggmans")
+                # Grant Admin only if in vercevo/eggmans
+                for team in teams:
+                    if team.get("organization", {}).get("login", "").lower() == "vercevo" \
+                      and team.get("slug", "").lower() == "eggmans":
+                        role_keys = ["Admin"]
 
                 return {
                     "username": f"github_{me.get('login')}",
                     "email": me.get("email") or f"{me.get('login')}@email.notfound",
                     "first_name": me.get("name") or me.get("login"),
                     "last_name": "",
-                    "role_keys": ["Admin"],
+                    "role_keys": role_keys,
                 }
+
 
         SECURITY_MANAGER_CLASS = CustomSecurityManager
 
