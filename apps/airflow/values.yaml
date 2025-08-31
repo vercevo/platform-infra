@@ -2,3 +2,5 @@ airflow:
   executor: "KubernetesExecutor"
   migrateDatabaseJob:
     useHelmHooks: false
+  createUserJob:
+    useHelmHooks: false
