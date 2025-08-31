@@ -1,8 +1,9 @@
 airflow:
-  web:
+  extraEnv:
     envFrom:
       - secretRef:
           name: github-airflow-oauth
+  web:
     webserverConfig:
       enabled: true
       stringOverride: |
