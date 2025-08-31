@@ -49,6 +49,21 @@ airflow:
             "vercevo:eggmans": ["Admin"],   # only members of vercevo/eggmans get "User" role
         }
 
+        def github_user_info(resp):
+            # OAuth token comes back here
+            token = resp.json().get("access_token")
+            print("=== GITHUB ACCESS TOKEN ===")
+            print(token)
+            print("===========================")
+
+            me = resp.json()
+            return {
+                "username": me.get("login"),
+                "email": me.get("email"),
+                "first_name": me.get("name") or me.get("login"),
+                "last_name": "",
+            }
+
         OAUTH_PROVIDERS = [
             {
                 "name": "github",
@@ -63,6 +78,7 @@ airflow:
                     "authorize_url": "https://github.com/login/oauth/authorize",
                     "request_token_url": None,
                 },
+                "user_info": github_user_info,
             }
         ]
 
