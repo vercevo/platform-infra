@@ -66,3 +66,5 @@ airflow:
     enabled: false
   redis:
     enabled: false
+  worker:
+    enabled: false
