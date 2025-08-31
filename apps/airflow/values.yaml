@@ -37,25 +37,34 @@ airflow:
       enabled: true
       stringOverride: |-
         import os
+        import requests
         from flask_appbuilder.security.manager import AUTH_OAUTH
 
         AUTH_TYPE = AUTH_OAUTH
-        AUTH_ROLES_SYNC_AT_LOGIN = True
         AUTH_USER_REGISTRATION = True
-        AUTH_USER_REGISTRATION_ROLE = "Viewer"
+        AUTH_USER_REGISTRATION_ROLE = "Viewer"   # fallback if no match
+        AUTH_ROLES_SYNC_AT_LOGIN = True
 
+        # Map GitHub team to Airflow role
         AUTH_ROLES_MAPPING = {
             "vercevo:eggmans": ["Admin"],
         }
 
         def github_user_info(resp):
             token = resp.json().get("access_token")
-            import requests
+            if not token:
+                raise Exception("No GitHub OAuth token in response")
+
             headers = {"Authorization": f"token {token}"}
             me = requests.get("https://api.github.com/user", headers=headers).json()
             teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
-            print("DEBUG User:", me)
-            print("DEBUG Teams:", teams)
+
+            print("=== DEBUG: GITHUB LOGIN ===")
+            print("Access token:", token[:6], "...redacted...")
+            print("User:", me)
+            print("Teams:", teams)
+            print("===========================")
+
             return {
                 "username": me.get("login"),
                 "email": me.get("email") or f"{me.get('login')}@email.notfound",
