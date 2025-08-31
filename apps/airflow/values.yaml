@@ -42,35 +42,10 @@ airflow:
 
         AUTH_TYPE = AUTH_OAUTH
         AUTH_USER_REGISTRATION = True
-        AUTH_USER_REGISTRATION_ROLE = "Viewer"   # fallback if no match
         AUTH_ROLES_SYNC_AT_LOGIN = True
 
-        # Map GitHub team to Airflow role
-        AUTH_ROLES_MAPPING = {
-            "vercevo:eggmans": ["Admin"],
-        }
-
         def github_user_info(resp):
-            token = resp.json().get("access_token")
-            if not token:
-                raise Exception("No GitHub OAuth token in response")
-
-            headers = {"Authorization": f"token {token}"}
-            me = requests.get("https://api.github.com/user", headers=headers).json()
-            teams = requests.get("https://api.github.com/user/teams", headers=headers).json()
-
-            print("=== DEBUG: GITHUB LOGIN ===")
-            print("Access token:", token[:6], "...redacted...")
-            print("User:", me)
-            print("Teams:", teams)
-            print("===========================")
-
-            return {
-                "username": me.get("login"),
-                "email": me.get("email") or f"{me.get('login')}@email.notfound",
-                "first_name": me.get("name") or me.get("login"),
-                "last_name": "",
-            }
+            raise Exception("DEBUG: github_user_info CALLED!")  # 🔥 prove it's wired
 
         OAUTH_PROVIDERS = [
             {
@@ -86,7 +61,7 @@ airflow:
                     "authorize_url": "https://github.com/login/oauth/authorize",
                     "request_token_url": None,
                 },
-                "user_info": github_user_info,
+                "user_info": github_user_info,   # 👈 CRITICAL
             }
         ]
 
