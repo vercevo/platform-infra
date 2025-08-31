@@ -17,11 +17,14 @@ airflow:
   fernetKeySecretName: airflow-secret
 
   dags:
+    persistence:
+      enabled: false
     gitSync:
       enabled: true
       repo: "https://github.com/vercevo/dags.git"
       branch: main
       depth: 1
+      subPath: ""
 
   apiServer:
     extraVolumes:
