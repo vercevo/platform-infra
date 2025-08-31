@@ -1,5 +1,7 @@
 airflow:
   extraEnv:
+    - name: TEST_ENV_VAR
+      value: "Hello, World!"
     - name: GITHUB_CLIENT_ID
       valueFrom:
         secretKeyRef:
