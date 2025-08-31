@@ -8,6 +8,8 @@ airflow:
   env:
     - name: AIRFLOW__WEBSERVER__BASE_URL
       value: "https://airflow.bergtobias.com"
+    - name: AIRFLOW__APISERVER__BASE_URL
+      value: "https://airflow.bergtobias.com"
   secret:
     - envName: GITHUB_CLIENT_ID
       secretName: airflow-secret
