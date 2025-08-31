@@ -34,15 +34,15 @@ airflow:
                 },
             }
         ]
-  extraEnv:
-    - name: GITHUB_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: github-airflow-oauth
-          key: client-id
+    extraEnv:
+      - name: GITHUB_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: github-airflow-oauth
+            key: client-id
 
-    - name: GITHUB_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: github-airflow-oauth
-          key: client-secret
+      - name: GITHUB_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: github-airflow-oauth
+            key: client-secret
