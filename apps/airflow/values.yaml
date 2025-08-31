@@ -1,5 +1,8 @@
 airflow:
   airflow:
+    image:
+      repository: apache/airflow
+      tag: "2.9.3" # or latest stable 2.9.x
     executor: "KubernetesExecutor"
     config:
       AIRFLOW__WEBSERVER__BASE_URL: "https://airflow.bergtobias.com"
