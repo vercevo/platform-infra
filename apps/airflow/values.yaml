@@ -16,24 +16,13 @@ airflow:
   fernetKey: fernet-key
   fernetKeySecretName: airflow-secret
 
-  env:
-    - name: AIRFLOW__FAB_AUTH_MANAGER__OAUTH_PROVIDERS
-      value: |
-        [
-          {
-            "name": "github",
-            "icon": "fa-github",
-            "token_key": "access_token",
-            "remote_app": {
-              "client_id": "${GITHUB_CLIENT_ID}",
-              "client_secret": "${GITHUB_CLIENT_SECRET}",
-              "api_base_url": "https://api.github.com",
-              "client_kwargs": {"scope": "read:user, read:org"},
-              "access_token_url": "https://github.com/login/oauth/access_token",
-              "authorize_url": "https://github.com/login/oauth/authorize",
-              "request_token_url": null
-            }
-          }
-        ]
-    - name: AIRFLOW__FAB_AUTH_MANAGER__AUTH_TYPE
-      value: AUTH_OAUTH
+  apiServer:
+    extraVolumes:
+      - name: webserver-config
+        configMap:
+          name: airflow-webserver
+    extraVolumeMounts:
+      - name: webserver-config
+        mountPath: /opt/airflow/webserver_config.py
+        subPath: webserver_config.py
+        readOnly: true

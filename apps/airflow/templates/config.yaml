@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: airflow-webserver
+  namespace: airflow
+data:
+  webserver_config.py: |
+    from flask_appbuilder.security.manager import AUTH_OAUTH
+    from airflow.providers.fab.auth_manager.security_manager.override import FabAirflowSecurityManagerOverride
+    import os
+
+    AUTH_TYPE = AUTH_OAUTH
+    AUTH_USER_REGISTRATION = True
+    AUTH_ROLES_SYNC_AT_LOGIN = True
+
+    OAUTH_PROVIDERS = [
+        {
+            "name": "github",
+            "icon": "fa-github",
+            "token_key": "access_token",
+            "remote_app": {
+                "client_id": os.environ.get("GITHUB_CLIENT_ID"),
+                "client_secret": os.environ.get("GITHUB_CLIENT_SECRET"),
+                "api_base_url": "https://api.github.com",
+                "client_kwargs": {"scope": "read:user, read:org"},
+                "access_token_url": "https://github.com/login/oauth/access_token",
+                "authorize_url": "https://github.com/login/oauth/authorize",
+                "request_token_url": None,
+            },
+        }
+    ]
+
+    class CustomSecurityManager(FabAirflowSecurityManagerOverride):
+        pass
+
+    SECURITY_MANAGER_CLASS = CustomSecurityManager
