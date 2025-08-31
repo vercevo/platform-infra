@@ -15,7 +15,7 @@ data:
 
     OAUTH_PROVIDERS = [
         {
-            "name": "GitHub",
+            "name": "github",
             "icon": "fa-github",
             "token_key": "access_token",
             "remote_app": {
