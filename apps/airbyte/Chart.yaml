@@ -7,5 +7,5 @@ appVersion: "1.8.2"
 
 dependencies:
   - name: airbyte
-    version: "1.8.2" # check helm search repo for latest
+    version: "1.8.2" # check helm search repo for latests
     repository: "https://airbytehq.github.io/helm-charts"
