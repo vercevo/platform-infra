@@ -3,9 +3,9 @@ name: airbyte-stack
 description: Deploy Airbyte with GitOps
 type: application
 version: 0.1.0
-appVersion: "1.0"
+appVersion: "1.8.2"
 
 dependencies:
   - name: airbyte
-    version: "0.59.0" # check helm search repo for latest
+    version: "1.8.2" # check helm search repo for latest
     repository: "https://airbytehq.github.io/helm-charts"
