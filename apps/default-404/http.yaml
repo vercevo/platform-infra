@@ -8,7 +8,7 @@ spec:
     - name: gateway
       namespace: istio-system
   hostnames:
-    - "airbyte.bergtobias.com"
+    - "airbyte.example.com"
   rules:
     - matches:
         - path:
