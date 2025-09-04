@@ -3,7 +3,6 @@ name: airbyte-stack
 description: Deploy Airbyte with GitOps
 type: application
 version: 0.1.0
-appVersion: "1.8.2"
 
 dependencies:
   - name: airbyte
