@@ -8,3 +8,4 @@ resources:
   - base/istio-operator.yaml
   - base/metallb.yaml
   - base/keycloak.yaml
+  - base/vault.yaml
