@@ -47,3 +47,4 @@ terraform.rc
 # But allow example secrets
 !**/secret.example.yaml
 !**/secret.*.example.yaml
+!**/kustomization.yaml

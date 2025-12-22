@@ -1,6 +1,5 @@
 # Argo CD deployment
 
-
 ## Secrets
 
 See .examples in /cluster/secrets for secrets
@@ -13,7 +12,7 @@ kubectl apply -k cluster/cert-manager
 kubectl apply -k cluster/istio-controlplane
 
 
-kubectl apply -f cluster/secrets
+kubectl apply -k cluster/secrets
 
 kubectl apply -k cluster/argocd -n argocd
 
