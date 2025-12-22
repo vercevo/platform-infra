@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+spec:
+  source:
+    path: cluster/keycloak
+    repoURL: https://github.com/vercevo/platform-infra
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: istio-system
+  project: default
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
