@@ -10,7 +10,7 @@ spec:
     targetRevision: HEAD
   destination:
     server: https://kubernetes.default.svc
-    namespace: istio-system
+    namespace: vault
   project: default
   syncPolicy:
     syncOptions:
