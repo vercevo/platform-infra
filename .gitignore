@@ -25,26 +25,8 @@ override.tf.json
 .terraformrc
 terraform.rc
 
-/terraform/secrets
+# Ignore ALL files under any folder named "secrets"
+**/secrets/**
 
-# Ignore files (not folders) directly under /secrets
-*/secrets/*
-
-# But do NOT ignore directories under /secrets (unignore all directories)
-*/secrets/*/
-
-# Explicitly allow all files/folders inside /secrets/examples/
-!*/secrets/examples/
-!*/secrets/examples/**
-
-# (Optional) if you want to allow hidden files inside /secrets/examples
-!*/secrets/examples/.*
-
-# Ignore anything with "secret" in the name
-**/*secret*
-**/secret*/**
-
-# But allow example secrets
-!**/secret.example.yaml
-!**/secret.*.example.yaml
-!**/kustomization.yaml
+# But allow kustomization.yaml in secrets folders
+!**/secrets/kustomization.yaml

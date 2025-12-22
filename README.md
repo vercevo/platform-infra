@@ -5,14 +5,20 @@
 See .examples in /cluster/secrets for secrets
 
 ```
+// Create secrets from template
+
 kubectl apply -k cluster/cluster-config -n kube-system
+
+kubectl apply -k cluster/secrets
+
+
 
 kubectl apply -k cluster/cert-manager
 
 kubectl apply -k cluster/istio-controlplane
 
 
-kubectl apply -k cluster/secrets
+
 
 kubectl apply -k cluster/argocd -n argocd
 

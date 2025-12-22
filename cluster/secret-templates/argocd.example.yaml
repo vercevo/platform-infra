@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-app-creds
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: repo-creds
+stringData:
+  type: git
+  url: https://github.com/vercevo
+  githubAppID: "1402420" # GitHub App ID
+  githubAppInstallationID: "71146974" # Installation ID of the app in your repo/org
+  githubAppPrivateKey: |
+    -----BEGIN RSA PRIVATE KEY-----
+    ... your private key here ...
+    -----END RSA PRIVATE KEY-----
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-secret
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-secret
+    app.kubernetes.io/part-of: argocd
+type: Opaque
+stringData:
+  clientId: "your-client-id" # Replace with your GitHub OAuth client ID
+  clientSecret: "your-client-secret" # Replace with your GitHub OAuth client secretq
