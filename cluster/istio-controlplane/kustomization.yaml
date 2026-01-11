@@ -1,5 +1,6 @@
 resources:
   - base/gateway.yaml
+  - base/lan-gateway.yaml
   - base/istio-controlplane.yaml
   - base/certificate.yaml
   - base/issuer.yaml
