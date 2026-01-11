@@ -5,10 +5,10 @@ metadata:
   namespace: vault
 spec:
   parentRefs:
-    - name: gateway
+    - name: lan-gateway
       namespace: istio-system
   hostnames:
-    - "vault.bergtobias.com" # change to your domain
+    - "vault.lan.bergtobias.com" # change to your domain
   rules:
     - matches:
         - path:
