@@ -1,0 +1,938 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: albin
+spec:
+  selector:
+    app: albin
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: albin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: albin
+  template:
+    metadata:
+      labels:
+        app: albin
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m # reserve minimal CPU
+              memory: 32Mi # reserve minimal memory
+            limits:
+              cpu: 100m # max 0.1 core
+              memory: 64Mi # max 64 MB RAM
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: html
+          configMap:
+            name: albin-html
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: albin-html
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="sv">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>ALBIN // BILVISION MODE</title>
+      <meta name="description" content="En orimligt överdriven sida för Albin." />
+      <style>
+        :root{
+          --bg0:#070812;
+          --bg1:#0a0e2a;
+          --card:rgba(255,255,255,.06);
+          --card2:rgba(255,255,255,.10);
+          --text:rgba(255,255,255,.88);
+          --muted:rgba(255,255,255,.62);
+          --a:#7c3aed;
+          --b:#22d3ee;
+          --c:#f97316;
+          --ok:#10b981;
+          --warn:#f59e0b;
+          --bad:#ef4444;
+          --shadow: 0 18px 55px rgba(0,0,0,.55);
+          --radius: 20px;
+        }
+    
+        *{ box-sizing:border-box; }
+        html,body{ height:100%; }
+        body{
+          margin:0;
+          font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+          color:var(--text);
+          background:
+            radial-gradient(1200px 700px at 20% 10%, rgba(124,58,237,.25), transparent 55%),
+            radial-gradient(900px 600px at 80% 20%, rgba(34,211,238,.18), transparent 55%),
+            radial-gradient(700px 600px at 60% 85%, rgba(249,115,22,.12), transparent 60%),
+            linear-gradient(160deg, var(--bg0), var(--bg1));
+          overflow-x:hidden;
+        }
+    
+        /* Subtilt “grid” */
+        .gridbg{
+          position:fixed; inset:0;
+          background:
+            linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px) 0 0/56px 56px,
+            linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px) 0 0/56px 56px;
+          mask-image: radial-gradient(600px 350px at 55% 15%, black 40%, transparent 80%);
+          pointer-events:none;
+          opacity:.35;
+        }
+    
+        /* Glödande “blob” som följer musen */
+        .cursorGlow{
+          position:fixed;
+          width: 520px;
+          height: 520px;
+          border-radius: 999px;
+          background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.22), transparent 55%),
+                      radial-gradient(circle at 60% 60%, rgba(124,58,237,.18), transparent 58%),
+                      radial-gradient(circle at 30% 70%, rgba(249,115,22,.10), transparent 55%);
+          filter: blur(12px) saturate(1.15);
+          transform: translate(-50%, -50%);
+          pointer-events:none;
+          opacity:.9;
+          mix-blend-mode: screen;
+        }
+    
+        header{
+          position:sticky; top:0; z-index:20;
+          backdrop-filter: blur(14px);
+          background: linear-gradient(to bottom, rgba(7,8,18,.85), rgba(7,8,18,.25));
+          border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+    
+        .wrap{ max-width: 1100px; margin:0 auto; padding: 18px 18px; }
+        .topbar{
+          display:flex; align-items:center; justify-content:space-between; gap:12px;
+        }
+        .brand{
+          display:flex; align-items:center; gap:10px;
+          user-select:none;
+        }
+        .logo{
+          width:34px; height:34px; border-radius:12px;
+          background:
+            radial-gradient(circle at 30% 30%, rgba(34,211,238,.9), transparent 55%),
+            radial-gradient(circle at 70% 60%, rgba(124,58,237,.85), transparent 58%),
+            radial-gradient(circle at 40% 75%, rgba(249,115,22,.75), transparent 55%),
+            rgba(255,255,255,.10);
+          box-shadow: 0 10px 30px rgba(124,58,237,.25);
+          border:1px solid rgba(255,255,255,.18);
+        }
+        .brand h1{ font-size: 13px; margin:0; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.78); }
+        .brand .sub{ font-size: 12px; color:var(--muted); margin-top:2px; }
+    
+        .btnrow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+        button, a.btn{
+          appearance:none;
+          border:none;
+          padding: 10px 12px;
+          border-radius: 999px;
+          color: rgba(255,255,255,.9);
+          background: rgba(255,255,255,.07);
+          border: 1px solid rgba(255,255,255,.10);
+          cursor:pointer;
+          transition: transform .15s ease, background .15s ease, border-color .15s ease;
+          text-decoration:none;
+          display:inline-flex; align-items:center; gap:8px;
+          box-shadow: 0 10px 28px rgba(0,0,0,.25);
+          user-select:none;
+          font-weight: 600;
+          font-size: 13px;
+        }
+        button:hover, a.btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+        button:active, a.btn:active{ transform: translateY(0); }
+    
+        .btn-primary{
+          background: linear-gradient(135deg, rgba(34,211,238,.22), rgba(124,58,237,.22));
+          border-color: rgba(34,211,238,.22);
+        }
+        .pill{
+          font-size: 12px;
+          padding: 4px 9px;
+          border-radius: 999px;
+          background: rgba(255,255,255,.08);
+          border: 1px solid rgba(255,255,255,.12);
+          color: rgba(255,255,255,.75);
+          display:inline-flex; gap:8px; align-items:center;
+        }
+        .dot{ width:8px; height:8px; border-radius:99px; background: var(--ok); box-shadow:0 0 18px rgba(16,185,129,.55); }
+    
+        main{ padding: 26px 0 60px; }
+        .hero{
+          position:relative;
+          padding: 24px 0 18px;
+        }
+        .heroGrid{
+          display:grid;
+          grid-template-columns: 1.1fr .9fr;
+          gap: 18px;
+          align-items:stretch;
+        }
+        @media (max-width: 900px){
+          .heroGrid{ grid-template-columns: 1fr; }
+        }
+    
+        .card{
+          background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+          border: 1px solid rgba(255,255,255,.11);
+          border-radius: var(--radius);
+          box-shadow: var(--shadow);
+          overflow:hidden;
+          position:relative;
+        }
+        .card .pad{ padding: 18px; }
+        .card::before{
+          content:"";
+          position:absolute; inset:-2px;
+          background:
+            radial-gradient(500px 260px at 10% 0%, rgba(34,211,238,.22), transparent 60%),
+            radial-gradient(520px 260px at 80% 10%, rgba(124,58,237,.20), transparent 60%),
+            radial-gradient(420px 240px at 50% 100%, rgba(249,115,22,.12), transparent 60%);
+          opacity:.9;
+          pointer-events:none;
+          filter: blur(18px);
+          z-index:0;
+        }
+        .card > *{ position:relative; z-index:1; }
+    
+        .bigTitle{
+          margin:0;
+          font-size: clamp(28px, 4vw, 46px);
+          letter-spacing: -0.02em;
+          line-height: 1.04;
+        }
+        .bigTitle .glitch{
+          display:inline-block;
+          position:relative;
+          text-shadow:
+            0 0 22px rgba(34,211,238,.18),
+            0 0 22px rgba(124,58,237,.18);
+        }
+        .bigTitle .glitch::before,
+        .bigTitle .glitch::after{
+          content: attr(data-text);
+          position:absolute; left:0; top:0;
+          opacity:.6;
+          clip-path: inset(0 0 0 0);
+        }
+        .bigTitle .glitch::before{ transform: translate(1px, 0); color: rgba(34,211,238,.85); mix-blend-mode: screen; }
+        .bigTitle .glitch::after{ transform: translate(-1px, 0); color: rgba(124,58,237,.85); mix-blend-mode: screen; }
+        @media (prefers-reduced-motion: no-preference){
+          .bigTitle .glitch::before{ animation: glitch1 2.6s infinite; }
+          .bigTitle .glitch::after{ animation: glitch2 2.8s infinite; }
+          @keyframes glitch1{
+            0%,100%{ clip-path: inset(0 0 0 0); }
+            12%{ clip-path: inset(10% 0 60% 0); }
+            15%{ clip-path: inset(50% 0 15% 0); }
+            60%{ clip-path: inset(25% 0 55% 0); }
+            62%{ clip-path: inset(0 0 0 0); }
+          }
+          @keyframes glitch2{
+            0%,100%{ clip-path: inset(0 0 0 0); }
+            18%{ clip-path: inset(45% 0 20% 0); }
+            22%{ clip-path: inset(12% 0 62% 0); }
+            72%{ clip-path: inset(35% 0 45% 0); }
+            75%{ clip-path: inset(0 0 0 0); }
+          }
+        }
+    
+        .lead{
+          margin: 12px 0 0;
+          color: rgba(255,255,255,.75);
+          font-size: 15px;
+          line-height: 1.55;
+          max-width: 70ch;
+        }
+    
+        .statRow{
+          margin-top: 16px;
+          display:flex; gap:10px; flex-wrap:wrap;
+        }
+        .stat{
+          padding: 10px 12px;
+          border-radius: 14px;
+          background: rgba(0,0,0,.22);
+          border: 1px solid rgba(255,255,255,.10);
+          min-width: 180px;
+        }
+        .stat .k{ font-size: 11px; color: rgba(255,255,255,.60); letter-spacing:.14em; text-transform:uppercase; }
+        .stat .v{ font-size: 18px; margin-top:6px; font-weight:800; }
+        .bar{
+          height: 7px;
+          background: rgba(255,255,255,.10);
+          border-radius: 999px;
+          margin-top:10px;
+          overflow:hidden;
+        }
+        .bar > i{
+          display:block; height:100%;
+          width: 60%;
+          border-radius: 999px;
+          background: linear-gradient(90deg, rgba(34,211,238,.85), rgba(124,58,237,.85));
+          box-shadow: 0 0 20px rgba(34,211,238,.25);
+        }
+    
+        .panelTitle{
+          margin:0;
+          font-size: 14px;
+          letter-spacing:.14em;
+          text-transform:uppercase;
+          color: rgba(255,255,255,.65);
+        }
+    
+        .terminal{
+          background: rgba(0,0,0,.30);
+          border:1px solid rgba(255,255,255,.11);
+          border-radius: 16px;
+          padding: 14px;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+          font-size: 12.5px;
+          line-height: 1.55;
+          color: rgba(255,255,255,.82);
+          min-height: 280px;
+          position:relative;
+          overflow:hidden;
+        }
+        .termTop{
+          display:flex; gap:7px; align-items:center;
+          margin-bottom: 10px;
+          opacity:.9;
+        }
+        .lamp{ width:10px; height:10px; border-radius:99px; }
+        .r{ background:#ff5f56; }
+        .y{ background:#ffbd2e; }
+        .g{ background:#27c93f; }
+    
+        .termLine{ display:flex; gap:10px; }
+        .prompt{ color: rgba(34,211,238,.85); }
+        .muted{ color: rgba(255,255,255,.58); }
+        .ok{ color: rgba(16,185,129,.95); }
+        .warn{ color: rgba(245,158,11,.95); }
+        .bad{ color: rgba(239,68,68,.95); }
+    
+        .scanline{
+          position:absolute; inset:0;
+          background: linear-gradient(to bottom, transparent, rgba(255,255,255,.07), transparent);
+          height: 140px;
+          transform: translateY(-160px);
+          opacity:.18;
+          pointer-events:none;
+        }
+        @media (prefers-reduced-motion: no-preference){
+          .scanline{ animation: scan 3.4s linear infinite; }
+          @keyframes scan{
+            0%{ transform: translateY(-160px); }
+            100%{ transform: translateY(420px); }
+          }
+        }
+    
+        .section{
+          margin-top: 18px;
+          display:grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 14px;
+        }
+        @media (max-width: 980px){
+          .section{ grid-template-columns: 1fr; }
+        }
+    
+        .mini{
+          padding: 16px;
+          border-radius: 18px;
+          background: rgba(255,255,255,.06);
+          border:1px solid rgba(255,255,255,.10);
+        }
+        .mini h3{
+          margin:0;
+          font-size: 14px;
+          letter-spacing:.10em;
+          text-transform:uppercase;
+          color: rgba(255,255,255,.74);
+        }
+        .mini p{
+          margin: 10px 0 0;
+          color: rgba(255,255,255,.70);
+          font-size: 14px;
+          line-height: 1.5;
+        }
+    
+        .badgeRow{ margin-top: 12px; display:flex; flex-wrap:wrap; gap:8px; }
+        .badge{
+          font-size: 12px;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(0,0,0,.24);
+          border: 1px solid rgba(255,255,255,.10);
+          color: rgba(255,255,255,.78);
+          display:inline-flex; align-items:center; gap:8px;
+        }
+        .badge i{
+          width:8px; height:8px; border-radius:99px; display:inline-block;
+          background: rgba(255,255,255,.35);
+        }
+        .badge.ok i{ background: rgba(16,185,129,.9); box-shadow:0 0 16px rgba(16,185,129,.35); }
+        .badge.warn i{ background: rgba(245,158,11,.9); box-shadow:0 0 16px rgba(245,158,11,.35); }
+        .badge.bad i{ background: rgba(239,68,68,.9); box-shadow:0 0 16px rgba(239,68,68,.35); }
+    
+        footer{
+          margin-top: 26px;
+          padding: 24px 0 40px;
+          color: rgba(255,255,255,.55);
+          text-align:center;
+          font-size: 13px;
+        }
+    
+        /* Modal */
+        dialog{
+          border:none;
+          border-radius: 18px;
+          padding:0;
+          width:min(720px, calc(100% - 30px));
+          background: rgba(12,14,30,.92);
+          color: var(--text);
+          box-shadow: 0 26px 85px rgba(0,0,0,.70);
+          border: 1px solid rgba(255,255,255,.12);
+          backdrop-filter: blur(14px);
+        }
+        dialog::backdrop{
+          background: rgba(0,0,0,.55);
+          backdrop-filter: blur(6px);
+        }
+        .modalHead{
+          padding: 16px 16px 0;
+          display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+        }
+        .modalHead h2{ margin:0; font-size: 16px; letter-spacing:.08em; text-transform:uppercase; color: rgba(255,255,255,.78); }
+        .modalBody{ padding: 14px 16px 16px; color: rgba(255,255,255,.72); line-height:1.55; }
+        .modalGrid{
+          margin-top: 12px;
+          display:grid; gap:10px;
+          grid-template-columns: 1fr 1fr;
+        }
+        @media (max-width: 720px){
+          .modalGrid{ grid-template-columns: 1fr; }
+        }
+        .kbd{
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+          font-size: 12px;
+          padding: 3px 7px;
+          border-radius: 8px;
+          border: 1px solid rgba(255,255,255,.14);
+          background: rgba(255,255,255,.06);
+          color: rgba(255,255,255,.78);
+        }
+    
+        /* Fullscreen “party mode” */
+        .party{
+          position:fixed; inset:0; z-index:999;
+          display:none;
+          background:
+            radial-gradient(900px 500px at 30% 20%, rgba(34,211,238,.28), transparent 55%),
+            radial-gradient(900px 500px at 70% 60%, rgba(124,58,237,.28), transparent 55%),
+            radial-gradient(900px 500px at 50% 90%, rgba(249,115,22,.16), transparent 55%),
+            rgba(0,0,0,.55);
+          backdrop-filter: blur(10px);
+          align-items:center;
+          justify-content:center;
+          flex-direction:column;
+          gap: 12px;
+          text-align:center;
+          padding: 22px;
+        }
+        .party.show{ display:flex; }
+        .party h2{
+          margin:0;
+          font-size: clamp(26px, 4.5vw, 54px);
+          letter-spacing:-.02em;
+        }
+        .party p{ margin:0; color: rgba(255,255,255,.75); max-width: 70ch; }
+        .confetti{
+          position:absolute; inset:0;
+          pointer-events:none;
+          opacity:.8;
+          filter: blur(.1px);
+        }
+        canvas{ display:block; }
+    
+        /* Små “easter egg” notifieringar */
+        .toast{
+          position: fixed;
+          bottom: 18px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 200;
+          padding: 10px 12px;
+          border-radius: 999px;
+          background: rgba(0,0,0,.55);
+          border: 1px solid rgba(255,255,255,.16);
+          box-shadow: 0 18px 60px rgba(0,0,0,.55);
+          color: rgba(255,255,255,.82);
+          font-size: 13px;
+          display:none;
+          max-width: min(92vw, 760px);
+          text-align:center;
+        }
+        .toast.show{ display:block; }
+      </style>
+    </head>
+    
+    <body>
+      <div class="gridbg" aria-hidden="true"></div>
+      <div class="cursorGlow" id="cursorGlow" aria-hidden="true"></div>
+    
+      <header>
+        <div class="wrap">
+          <div class="topbar">
+            <div class="brand">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <h1>ALBIN // BILVISION</h1>
+                <div class="sub">Operatör av KPI:er, krossare av buggar, chef över “det löser sig”</div>
+              </div>
+            </div>
+    
+            <div class="btnrow">
+              <span class="pill"><span class="dot" aria-hidden="true"></span> Status: ONLINE</span>
+              <button class="btn-primary" id="openBrief" type="button">Öppna Brief</button>
+              <button id="partyBtn" type="button">Party Mode</button>
+            </div>
+          </div>
+        </div>
+      </header>
+    
+      <main class="wrap">
+        <section class="hero">
+          <div class="heroGrid">
+            <article class="card">
+              <div class="pad">
+                <h2 class="bigTitle">
+                  <span class="glitch" data-text="ALBIN">ALBIN</span>
+                  <br />
+                  <span style="opacity:.92">levererar</span>
+                  <span style="background:linear-gradient(90deg, rgba(34,211,238,.95), rgba(124,58,237,.95)); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:900;">
+                    brutal ordning
+                  </span>
+                  <span style="opacity:.92">i kaoset</span>
+                </h2>
+    
+                <p class="lead">
+                  Den här sidan har ett enda syfte: att vara oproportionerligt stilig och få Albin att se ut som att han
+                  kontrollerar verkligheten med ett tangenttryck.
+                </p>
+    
+                <div class="statRow" id="stats">
+                  <div class="stat">
+                    <div class="k">Deploys/vecka</div>
+                    <div class="v" id="deploys">7</div>
+                    <div class="bar"><i id="barDeploys"></i></div>
+                  </div>
+                  <div class="stat">
+                    <div class="k">Buggar utplånade</div>
+                    <div class="v" id="bugs">1337</div>
+                    <div class="bar"><i id="barBugs"></i></div>
+                  </div>
+                  <div class="stat">
+                    <div class="k">Kaffeflöde</div>
+                    <div class="v" id="coffee">MAX</div>
+                    <div class="bar"><i id="barCoffee"></i></div>
+                  </div>
+                </div>
+    
+                <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                  <a class="btn" href="#intel">Se Albin Intel</a>
+                  <button id="copyLink" type="button">Kopiera “certifiering”</button>
+                  <button id="panic" type="button">Panikknapp</button>
+                </div>
+              </div>
+            </article>
+    
+            <aside class="card">
+              <div class="pad">
+                <p class="panelTitle">ALBIN CONSOLE</p>
+    
+                <div class="terminal" role="region" aria-label="Albin Console">
+                  <div class="termTop" aria-hidden="true">
+                    <span class="lamp r"></span><span class="lamp y"></span><span class="lamp g"></span>
+                    <span style="margin-left:8px; color:rgba(255,255,255,.55)">bilvision://ops/albin</span>
+                  </div>
+    
+                  <div id="termOut"></div>
+                  <div class="scanline" aria-hidden="true"></div>
+                </div>
+    
+                <div class="badgeRow">
+                  <span class="badge ok"><i></i> Observability: ON</span>
+                  <span class="badge warn"><i></i> Legacy: Tolereras</span>
+                  <span class="badge ok"><i></i> PR-review: Stenhård</span>
+                  <span class="badge bad"><i></i> “Snabbfix”: Misstänkt</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+    
+          <div class="section" id="intel">
+            <div class="mini">
+              <h3>Bilvision Aura</h3>
+              <p>
+                Albin rör sig mellan dashboards som om det är en sport. När någon säger “det går inte” svarar han “okej”
+                och så går det.
+              </p>
+            </div>
+            <div class="mini">
+              <h3>Styrkor</h3>
+              <p>
+                Lugn under press. Sätter gränser. Fixar saker utan att göra en grej av det. Ser problem innan de händer.
+              </p>
+            </div>
+            <div class="mini">
+              <h3>Svagheter</h3>
+              <p>
+                Har låg tolerans för flum. Blir allergisk av “vi tar det sen”. Kan råka vinna diskussioner utan att försöka.
+              </p>
+            </div>
+          </div>
+        </section>
+    
+        <footer>
+          <div>
+            Byggd med överdriven energi. Tips: skriv <span class="kbd">↑ ↑ ↓ ↓ ← → ← → B A</span> för en hemlig grej.
+          </div>
+        </footer>
+      </main>
+    
+      <dialog id="brief">
+        <div class="modalHead">
+          <div>
+            <h2>Brief: “Operation Albin”</h2>
+            <div style="margin-top:8px; color:rgba(255,255,255,.62); font-size:13px;">
+              Det här är en skämtsida. Inga externa anrop. Allt är lokalt. Allt är onödigt snyggt.
+            </div>
+          </div>
+          <button id="closeBrief" type="button">Stäng</button>
+        </div>
+        <div class="modalBody">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="pill"><span class="dot" style="background:var(--warn); box-shadow:0 0 18px rgba(245,158,11,.55)"></span> Hint: tryck Panikknapp</span>
+            <span class="pill"><span class="dot" style="background:var(--b)"></span> Hint: Party Mode</span>
+          </div>
+    
+          <div class="modalGrid">
+            <div class="mini" style="background:rgba(255,255,255,.05)">
+              <h3>Snabbkommandon</h3>
+              <p>
+                <span class="kbd">P</span> Party Mode<br/>
+                <span class="kbd">ESC</span> Stäng modal/party<br/>
+                <span class="kbd">C</span> Kopiera certifiering
+              </p>
+            </div>
+            <div class="mini" style="background:rgba(255,255,255,.05)">
+              <h3>Reality check</h3>
+              <p>
+                Om Albin jobbar på Bilvision så jobbar Bilvision också lite på Albin. Det är ett utbyte.
+              </p>
+            </div>
+          </div>
+        </div>
+      </dialog>
+    
+      <section class="party" id="party" aria-hidden="true">
+        <canvas class="confetti" id="confetti"></canvas>
+        <h2>PARTY MODE: ALBIN ONLINE</h2>
+        <p>Tryck <span class="kbd">ESC</span> för att stänga. Eller tryck igen för mer kaos.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+          <button id="boost" class="btn-primary" type="button">BOOST</button>
+          <button id="calm" type="button">CALM DOWN</button>
+        </div>
+      </section>
+    
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    
+      <script>
+        // ---------- små utilities ----------
+        const $ = (s, el=document) => el.querySelector(s);
+        const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+        const rnd = (a,b) => Math.random()*(b-a)+a;
+    
+        function toast(msg, ms=1900){
+          const t = $("#toast");
+          t.textContent = msg;
+          t.classList.add("show");
+          clearTimeout(toast._tm);
+          toast._tm = setTimeout(()=>t.classList.remove("show"), ms);
+        }
+    
+        // ---------- cursor glow ----------
+        const glow = $("#cursorGlow");
+        let gx = innerWidth/2, gy = innerHeight/2, tx=gx, ty=gy;
+        addEventListener("mousemove", (e)=>{ tx=e.clientX; ty=e.clientY; }, {passive:true});
+        function animGlow(){
+          gx += (tx-gx)*0.08;
+          gy += (ty-gy)*0.08;
+          glow.style.left = gx + "px";
+          glow.style.top  = gy + "px";
+          requestAnimationFrame(animGlow);
+        }
+        animGlow();
+    
+        // ---------- “terminal” output ----------
+        const term = $("#termOut");
+        const lines = [
+          ["system", "Booting Albin subsystem…"],
+          ["ok", "✅  RLS: stabilt. Ingen skugga i modellen."],
+          ["ok", "✅  Build: grön. Samvetet: också grönt."],
+          ["warn", "⚠️  Legacy hittad. Albin tolererar. Inte gillar."],
+          ["ok", "✅  Dashboard-latens: 42ms (psykologiskt omöjligt)"],
+          ["bad", "❌  “Kan vi bara…” upptäckt. Avvisad med blick."],
+          ["ok", "✅  Leverans: on time. Som vanligt."],
+          ["system", "Hint: skriv Konami-koden 😉"]
+        ];
+        let i = 0;
+        function writeLine(kind, text){
+          const row = document.createElement("div");
+          row.className = "termLine";
+          const p = document.createElement("div");
+          p.className = "prompt";
+          p.textContent = "albin@bilvision:~$";
+          const out = document.createElement("div");
+          out.innerHTML = `<span class="${kind}">${escapeHtml(text)}</span>`;
+          row.appendChild(p);
+          row.appendChild(out);
+          term.appendChild(row);
+          term.scrollTop = term.scrollHeight;
+        }
+        function escapeHtml(str){
+          return str.replace(/[&<>"']/g, m => ({
+            "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+          }[m]));
+        }
+        function playTerminal(){
+          if(i >= lines.length) return;
+          const [kind, text] = lines[i++];
+          writeLine(kind, text);
+          setTimeout(playTerminal, 520);
+        }
+        playTerminal();
+    
+        // ---------- stats "levande" ----------
+        const deploysEl = $("#deploys");
+        const bugsEl = $("#bugs");
+        const coffeeEl = $("#coffee");
+        const b1 = $("#barDeploys"), b2 = $("#barBugs"), b3 = $("#barCoffee");
+    
+        function bump(){
+          const d = clamp(parseInt(deploysEl.textContent,10) + (Math.random()<0.35 ? 1 : 0), 1, 12);
+          const bugs = clamp(parseInt(bugsEl.textContent,10) + (Math.random()<0.55 ? Math.floor(rnd(1,7)) : 0), 1, 9999);
+          deploysEl.textContent = d;
+          bugsEl.textContent = bugs;
+    
+          b1.style.width = (d/12*100).toFixed(1) + "%";
+          b2.style.width = (Math.min(bugs, 2000)/2000*100).toFixed(1) + "%";
+          b3.style.width = (88 + rnd(-6,6)).toFixed(1) + "%";
+    
+          // coffee "blink" ibland
+          if(Math.random()<0.18){
+            coffeeEl.textContent = ["MAX","MAX+","OVERDRIVE","STABIL","MAX"][Math.floor(rnd(0,5))];
+          }
+        }
+        bump();
+        setInterval(bump, 1300);
+    
+        // ---------- modal ----------
+        const brief = $("#brief");
+        $("#openBrief").addEventListener("click", ()=> brief.showModal());
+        $("#closeBrief").addEventListener("click", ()=> brief.close());
+        addEventListener("keydown", (e)=>{
+          if(e.key === "Escape"){
+            if(brief.open) brief.close();
+            hideParty();
+          }
+          if(e.key.toLowerCase() === "p") toggleParty();
+          if(e.key.toLowerCase() === "c") copyCert();
+        });
+    
+        // ---------- copy cert ----------
+        const certText = "CERTIFIERAD: ALBIN // BILVISION // KPI-OPERATÖR // STATUS: LEGEND";
+        async function copyCert(){
+          try{
+            await navigator.clipboard.writeText(certText);
+            toast("Kopierat: “CERTIFIERAD: ALBIN …”");
+          }catch{
+            toast("Kunde inte kopiera (browsern blockerar). Markera texten manuellt.");
+          }
+        }
+        $("#copyLink").addEventListener("click", copyCert);
+    
+        // ---------- panikknapp ----------
+        $("#panic").addEventListener("click", ()=>{
+          writeLine("warn", "🚨 PANIK: Någon sa “vi skippar test”");
+          setTimeout(()=>writeLine("ok","🧯 ÅTGÄRD: Albin drog i handbromsen. Test körs."), 520);
+          toast("Panik hanterad. Albin tog över.");
+        });
+    
+        // ---------- party mode + confetti ----------
+        const party = $("#party");
+        const canvas = $("#confetti");
+        const ctx = canvas.getContext("2d");
+        let particles = [];
+        let partyOn = false;
+        let intensity = 1.0;
+        let raf = 0;
+    
+        function resizeCanvas(){
+          canvas.width = innerWidth;
+          canvas.height = innerHeight;
+        }
+        addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+    
+        function spawn(n){
+          for(let k=0;k<n;k++){
+            particles.push({
+              x: rnd(0, canvas.width),
+              y: rnd(-50, -10),
+              vx: rnd(-1.8, 1.8)*intensity,
+              vy: rnd(2.2, 5.8)*intensity,
+              r: rnd(2, 5),
+              a: rnd(0.5, 1.0),
+              rot: rnd(0, Math.PI*2),
+              vr: rnd(-0.12, 0.12)
+            });
+          }
+        }
+    
+        function step(){
+          ctx.clearRect(0,0,canvas.width, canvas.height);
+    
+          // Lätt glow bakgrund i party-läget
+          ctx.globalAlpha = 0.10;
+          ctx.fillStyle = "white";
+          ctx.fillRect(0,0,canvas.width, canvas.height);
+          ctx.globalAlpha = 1;
+    
+          // confetti
+          ctx.globalCompositeOperation = "lighter";
+          for(const p of particles){
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vr;
+            p.vx *= 0.995;
+            p.vy *= 0.995;
+    
+            const hue = (p.x + p.y) % 360;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.globalAlpha = p.a;
+            ctx.fillStyle = `hsl(${hue}, 90%, 60%)`;
+            ctx.fillRect(-p.r, -p.r/2, p.r*2.2, p.r*1.1);
+            ctx.restore();
+          }
+          ctx.globalCompositeOperation = "source-over";
+    
+          particles = particles.filter(p => p.y < canvas.height + 30);
+          spawn(Math.floor(10 * intensity));
+    
+          if(partyOn) raf = requestAnimationFrame(step);
+        }
+    
+        function showParty(){
+          partyOn = true;
+          party.classList.add("show");
+          party.setAttribute("aria-hidden","false");
+          toast("PARTY MODE: ON");
+          intensity = clamp(intensity, 0.6, 3.2);
+          particles = [];
+          spawn(180);
+          cancelAnimationFrame(raf);
+          step();
+        }
+        function hideParty(){
+          if(!partyOn) return;
+          partyOn = false;
+          party.classList.remove("show");
+          party.setAttribute("aria-hidden","true");
+          cancelAnimationFrame(raf);
+          toast("PARTY MODE: OFF");
+        }
+        function toggleParty(){
+          partyOn ? hideParty() : showParty();
+        }
+    
+        $("#partyBtn").addEventListener("click", toggleParty);
+        $("#boost").addEventListener("click", ()=>{
+          intensity = clamp(intensity + 0.45, 0.6, 3.2);
+          toast("BOOST: " + intensity.toFixed(2));
+          spawn(120);
+        });
+        $("#calm").addEventListener("click", ()=>{
+          intensity = clamp(intensity - 0.45, 0.6, 3.2);
+          toast("CALM: " + intensity.toFixed(2));
+        });
+    
+        // ---------- konami code ----------
+        const konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
+        let kpos = 0;
+    
+        addEventListener("keydown", (e)=>{
+          const key = e.key;
+          const expected = konami[kpos];
+          if(key === expected || key.toLowerCase() === expected){
+            kpos++;
+            if(kpos === konami.length){
+              kpos = 0;
+              writeLine("ok", "🕹️  KONAMI: unlocked. Albin får +25% aura.");
+              intensity = 2.4;
+              showParty();
+            }
+          } else {
+            kpos = 0;
+          }
+        });
+    
+        // liten “intro toast”
+        setTimeout(()=>toast("Pro-tip: tryck P för Party Mode."), 900);
+      </script>
+    </body>
+    </html>
+    ---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: albin
+spec:
+  parentRefs:
+    - name: gateway
+      namespace: istio-system # same Gateway your airflow route uses
+  hostnames:
+    - "albin.bergtobias.com" # catch all hosts
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: albin
+          port: 80
