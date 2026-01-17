@@ -7,3 +7,5 @@ resources:
   - mqtt/deployment.yaml
   - mqtt/config.yaml
   - mqtt/service.yaml
+  - whisper/deployment.yaml
+  - whisper/service.yaml
