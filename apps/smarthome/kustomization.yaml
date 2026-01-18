@@ -9,3 +9,5 @@ resources:
   - mqtt/service.yaml
   - whisper/deployment.yaml
   - whisper/service.yaml
+  - matter/deployment.yaml
+  - matter/pvc.yaml
