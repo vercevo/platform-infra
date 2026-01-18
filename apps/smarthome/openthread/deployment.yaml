@@ -19,21 +19,12 @@ spec:
         ha-stack: "true"
       containers:
         - name: otbr
-          image: openthread/border-router:latest
-          resources:
-            requests:
-              memory: 256Mi
-              cpu: 100m
-            limits:
-              memory: 512Mi
-              cpu: 250m
+          image: ghcr.io/home-assistant-libs/otbr:latest
           securityContext:
             privileged: true
           env:
             - name: OTBR_INFRA_IF_NAME
               value: eth0
-            - name: OTBR_TREL_ENABLED
-              value: "0"
             - name: OTBR_RADIO_URL
               value: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=1000000
           volumeMounts:
