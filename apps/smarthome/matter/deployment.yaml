@@ -13,6 +13,8 @@ spec:
       labels:
         app: matter-server
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         ha-stack: "true"
       containers:
