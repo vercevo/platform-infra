@@ -15,7 +15,7 @@ spec:
         app: homeassistant
     spec:
       nodeSelector:
-        kubernetes.io/arch: arm64
+        ha-stack: "true"
       initContainers:
         - name: ensure-files
           image: busybox
