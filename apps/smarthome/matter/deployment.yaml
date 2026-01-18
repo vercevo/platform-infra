@@ -17,10 +17,24 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         ha-stack: "true"
+
       containers:
         - name: matter-server
           image: ghcr.io/home-assistant-libs/python-matter-server:stable
           imagePullPolicy: IfNotPresent
+
+          securityContext:
+            capabilities:
+              add:
+                - NET_RAW
+                - NET_ADMIN
+
+          env:
+            - name: MATTER_SERVER_STORAGE_PATH
+              value: /data
+            - name: MATTER_SERVER_INTERFACE
+              value: eth0
+
           resources:
             requests:
               cpu: 100m
@@ -28,15 +42,15 @@ spec:
             limits:
               cpu: 250m
               memory: 256Mi
+
           ports:
             - containerPort: 5580
               protocol: TCP
-          env:
-            - name: MATTER_SERVER_STORAGE_PATH
-              value: /data
+
           volumeMounts:
             - name: matter-data
               mountPath: /data
+
       volumes:
         - name: matter-data
           persistentVolumeClaim:
