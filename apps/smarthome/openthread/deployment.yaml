@@ -25,17 +25,20 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
           env:
             - name: OT_RCP_DEVICE
-              value: "spinel+hdlc+uart:///dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_008ecfc2048dec119f3674e883c5466d-if00-port0?uart-baudrate=115200"
+              value: "spinel+hdlc+uart:///dev/ttyUSB0?uart-baudrate=460800&uart-flow-control"
             - name: OT_INFRA_IF
               value: "eth0"
             - name: OT_THREAD_IF
               value: "wpan0"
-            - name: OT_REST_LISTEN_ADDR
-              value: "0.0.0.0"
-            - name: OT_REST_LISTEN_PORT
-              value: "8081"
             - name: OT_LOG_LEVEL
               value: "5"
           volumeMounts:
