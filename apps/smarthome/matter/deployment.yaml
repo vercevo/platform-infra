@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: matter-server
+  namespace: smarthome
 spec:
   replicas: 1
   selector:
@@ -12,8 +13,6 @@ spec:
       labels:
         app: matter-server
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       nodeSelector:
         ha-stack: "true"
       containers:
@@ -22,20 +21,20 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              memory: 128Mi
               cpu: 100m
+              memory: 128Mi
             limits:
-              memory: 256Mi
               cpu: 250m
+              memory: 256Mi
           ports:
             - containerPort: 5580
               protocol: TCP
-          volumeMounts:
-            - name: matter-data
-              mountPath: /data
           env:
             - name: MATTER_SERVER_STORAGE_PATH
               value: /data
+          volumeMounts:
+            - name: matter-data
+              mountPath: /data
       volumes:
         - name: matter-data
           persistentVolumeClaim:
