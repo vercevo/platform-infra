@@ -11,3 +11,4 @@ resources:
   - whisper/service.yaml
   - matter/deployment.yaml
   - matter/pvc.yaml
+  - openthread/deployment.yaml
