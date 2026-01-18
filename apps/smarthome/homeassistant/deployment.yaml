@@ -13,11 +13,11 @@ spec:
     metadata:
       labels:
         app: homeassistant
-  spec:
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
-    nodeSelector:
-      ha-stack: "true"
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        ha-stack: "true"
       initContainers:
         - name: ensure-files
           image: busybox
