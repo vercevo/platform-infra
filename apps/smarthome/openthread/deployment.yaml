@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: otbr
+  namespace: smarthome
 spec:
   replicas: 1
   selector:
@@ -31,8 +32,8 @@ spec:
           env:
             - name: OTBR_INFRA_IF_NAME
               value: eth0
-            - name: OTBR_DBUS_BUS_TYPE
-              value: system
+            - name: OTBR_RADIO_URL
+              value: spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=1000000
           volumeMounts:
             - name: dev
               mountPath: /dev
