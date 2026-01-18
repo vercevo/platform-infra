@@ -27,7 +27,7 @@ spec:
                 - NET_ADMIN
           env:
             - name: OT_RCP_DEVICE
-              value: "spinel+hdlc+uart:///dev/ttyACM0?uart-baudrate=115200"
+              value: "spinel+hdlc+uart:///dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_008ecfc2048dec119f3674e883c5466d-if00-port0?uart-baudrate=115200"
             - name: OT_INFRA_IF
               value: "eth0"
             - name: OT_THREAD_IF
@@ -39,17 +39,17 @@ spec:
             - name: OT_LOG_LEVEL
               value: "5"
           volumeMounts:
-            - name: skyconnect
-              mountPath: /dev/ttyACM0
+            - name: dev
+              mountPath: /dev
             - name: tun
               mountPath: /dev/net/tun
             - name: data
               mountPath: /data
       volumes:
-        - name: skyconnect
+        - name: dev
           hostPath:
-            path: /dev/serial/by-id/usb-Nabu_Casa_SkyConnect_v1.0_008ecfc2048dec119f3674e883c5466d-if00-port0
-            type: CharDevice
+            path: /dev
+            type: Directory
         - name: tun
           hostPath:
             path: /dev/net/tun
