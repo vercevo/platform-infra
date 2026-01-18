@@ -41,6 +41,10 @@ spec:
               value: "wpan0"
             - name: OT_LOG_LEVEL
               value: "5"
+            - name: OTBR_WEB_LISTEN_ADDR
+              value: "0.0.0.0"
+            - name: OTBR_WEB_LISTEN_PORT
+              value: "8081"
           volumeMounts:
             - name: dev
               mountPath: /dev
