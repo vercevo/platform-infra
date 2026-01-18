@@ -11,6 +11,8 @@ data:
       use_x_forwarded_for: true
       trusted_proxies:
         - 10.42.0.0/16
+        - 192.168.10.0/24    # ditt LAN / gateway
+
 
     frontend:
       themes:
