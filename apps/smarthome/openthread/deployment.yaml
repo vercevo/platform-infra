@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otbr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otbr
+  template:
+    metadata:
+      labels:
+        app: otbr
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      nodeSelector:
+        ha-stack: "true"
+      containers:
+        - name: otbr
+          image: ghcr.io/openthread/otbr-agent:latest
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 250m
+          securityContext:
+            privileged: true
+          env:
+            - name: OTBR_INFRA_IF_NAME
+              value: eth0
+            - name: OTBR_DBUS_BUS_TYPE
+              value: system
+          volumeMounts:
+            - name: dev
+              mountPath: /dev
+            - name: dbus
+              mountPath: /var/run/dbus/system_bus_socket
+              readOnly: true
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+        - name: dbus
+          hostPath:
+            path: /var/run/dbus/system_bus_socket
+            type: Socket
