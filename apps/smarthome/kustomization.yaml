@@ -12,3 +12,4 @@ resources:
   - matter/deployment.yaml
   - matter/pvc.yaml
   - openthread/deployment.yaml
+  - job.yaml

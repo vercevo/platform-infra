@@ -1,0 +1,29 @@
+vapiVersion: batch/v1
+kind: Job
+metadata:
+  name: ha-reset-auth
+  namespace: smarthome
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: reset-auth
+          image: busybox
+          command:
+            - sh
+            - -c
+            - |
+              echo "Resetting Home Assistant auth..."
+              rm -f /config/.storage/auth
+              rm -f /config/.storage/auth_provider.homeassistant
+              rm -f /config/.storage/onboarding
+              echo "Done."
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: homeassistant
