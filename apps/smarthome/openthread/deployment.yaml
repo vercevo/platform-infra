@@ -19,7 +19,7 @@ spec:
         ha-stack: "true"
       containers:
         - name: otbr
-          image: ghcr.io/home-assistant-libs/otbr:2024.11.0
+          image: homeassistant/otbr:latest
           resources:
             requests:
               memory: 256Mi
