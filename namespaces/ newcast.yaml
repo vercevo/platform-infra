@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: newcast
+  labels:
+    backstage.io/system: newcast
+  annotations:
+    backstage.io/kubernetes-id: newcast
