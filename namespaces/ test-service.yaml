@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-service
+  labels:
+    backstage.io/system: test-service
+  annotations:
+    backstage.io/kubernetes-id: test-service

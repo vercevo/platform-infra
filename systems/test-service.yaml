@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: test-service
+  description: test
+  annotations:
+    backstage.io/managed-by-location: https://github.com/vercevo/platform-infra/blob/main/systems/test-service.yaml
+spec:
+  owner: group:default/eggmans
+  lifecycle: production
